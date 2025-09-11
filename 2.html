@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自行车骑行时速计算工具</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3498db;
+            --primary-dark: #2980b9;
+            --secondary: #2c3e50;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --gray: #7f8c8d;
+            --light-gray: #f5f7f9;
+            --white: #ffffff;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --border-radius: 8px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-gray);
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 20px;
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+        
+        h1 {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--secondary);
+            font-size: 2.2rem;
+        }
+        
+        .header-icon {
+            color: var(--primary);
+            margin-right: 12px;
+        }
+        
+        .subtitle {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
+            transition: var(--transition);
+        }
+        
+        .card:hover {
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+        }
+        
+        .card-title {
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        
+        .card-title i {
+            margin-right: 12px;
+            color: var(--primary);
+        }
+        
+        .form-group {
+            margin-bottom: 22px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+        }
+        
+        label i {
+            margin-right: 10px;
+            width: 20px;
+            color: var(--primary);
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #e1e5e9;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: var(--transition);
+            color: var(--dark);
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+        }
+        
+        .input-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .input-row .form-group {
+            flex: 1;
+        }
+        
+        .info-tip {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-top: 6px;
+            padding: 8px 12px;
+            background: var(--light-gray);
+            border-radius: var(--border-radius);
+            line-height: 1.4;
+        }
+        
+        .reference-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            margin-top: 5px;
+        }
+        
+        .reference-link:hover {
+            text-decoration: underline;
+        }
+        
+        .optional-section {
+            background: var(--light-gray);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-top: 25px;
+            border-left: 3px solid var(--primary);
+        }
+        
+        .optional-title {
+            color: var(--primary);
+            margin-bottom: 18px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+        
+        .optional-title i {
+            margin-right: 10px;
+        }
+        
+        button {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 16px 24px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            width: 100%;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        
+        button i {
+            margin-right: 10px;
+        }
+        
+        button:hover {
+            background: var(--primary-dark);
+        }
+        
+        .result-box {
+            text-align: center;
+            padding: 35px 25px;
+            background: var(--light);
+            border-radius: var(--border-radius);
+            margin-bottom: 25px;
+        }
+        
+        .speed-label {
+            font-size: 1.1rem;
+            color: var(--gray);
+            margin-bottom: 10px;
+        }
+        
+        .speed-value {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 15px 0;
+            line-height: 1.1;
+        }
+        
+        .unit {
+            font-size: 1.2rem;
+            color: var(--gray);
+            font-weight: 500;
+        }
+        
+        .result-details {
+            margin-bottom: 25px;
+        }
+        
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e1e5e9;
+        }
+        
+        .detail-value {
+            font-weight: 600;
+            color: var(--secondary);
+        }
+        
+        .note {
+            background: #fff8e6;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            font-size: 0.95rem;
+            color: #8a6d3b;
+            border-left: 3px solid #ffc107;
+            margin-top: 20px;
+        }
+        
+        .copy-btn {
+            background: var(--secondary);
+            margin-top: 20px;
+        }
+        
+        .copy-btn:hover {
+            background: #1a252f;
+        }
+        
+        .copy-success {
+            background: var(--success);
+        }
+        
+        .ad-container {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .ad-space {
+            height: 120px; /* 优化后的广告高度 */
+            background: var(--white);
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            font-size: 1.1rem;
+            transition: var(--transition);
+            max-width: 100%;
+            margin: 0 auto;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .ad-space img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .ad-space:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: var(--gray);
+            font-size: 0.95rem;
+            padding: 20px;
+        }
+        
+        /* 弹窗样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e1e5e9;
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--secondary);
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--gray);
+            cursor: pointer;
+            width: auto;
+            padding: 0;
+        }
+        
+        .close-btn:hover {
+            color: var(--dark);
+        }
+        
+        .reference-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        .reference-table th, .reference-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #e1e5e9;
+        }
+        
+        .reference-table th {
+            background-color: var(--light-gray);
+            font-weight: 600;
+        }
+        
+        .reference-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            margin-left: 8px;
+        }
+        
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 250px;
+            background-color: var(--dark);
+            color: white;
+            text-align: left;
+            border-radius: var(--border-radius);
+            padding: 12px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.85rem;
+            font-weight: normal;
+            line-height: 1.5;
+        }
+        
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-bicycle header-icon"></i>自行车骑行时速计算</h1>
+            <p class="subtitle">精准计算您的骑行速度，优化骑行体验</p>
+        </header>
+        
+        <div class="main-content">
+            <section class="card">
+                <h2 class="card-title"><i class="fas fa-sliders-h"></i>参数设置</h2>
+                
+                <div class="form-group">
+                    <label for="cadence"><i class="fas fa-tachometer-alt"></i>踏频 (RPM)</label>
+                    <input type="number" id="cadence" min="0" max="200" value="90" placeholder="每分钟踩踏圈数">
+                    <div class="info-tip">
+                        <i class="fas fa-info-circle"></i> 建议踏频范围：70-100 RPM。业余骑手通常70-90 RPM，职业选手平路85-100 RPM，爬坡60-80 RPM。
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="wheelSize"><i class="fas fa-circle"></i>轮圈尺寸</label>
+                    <select id="wheelSize">
+                        <option value="12">12英寸 (儿童车)</option>
+                        <option value="14">14英寸 (儿童车)</option>
+                        <option value="16">16英寸 (折叠车)</option>
+                        <option value="20">20英寸 (BMX/折叠车)</option>
+                        <option value="24">24英寸 (青少年车)</option>
+                        <option value="26" selected>26英寸 (山地车)</option>
+                        <option value="27.5">27.5英寸 (山地车)</option>
+                        <option value="29">29英寸 (山地车)</option>
+                        <option value="28">28英寸 (老式通勤车)</option>
+                        <option value="622">700C (公路车 - 622mm)</option>
+                        <option value="custom">自定义尺寸</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="customWheelSizeGroup" style="display: none;">
+                    <label for="customWheelSize"><i class="fas fa-ruler"></i>自定义轮圈尺寸 (毫米)</label>
+                    <input type="number" id="customWheelSize" min="200" max="1000" value="559" placeholder="输入自定义轮圈尺寸(mm)">
+                </div>
+                
+                <div class="form-group">
+                    <label for="tireWidth"><i class="fas fa-arrows-alt-h"></i>外胎宽度</label>
+                    <div class="input-row">
+                        <input type="number" id="tireWidth" min="10" max="100" value="40" placeholder="外胎宽度">
+                        <select id="tireWidthUnit">
+                            <option value="mm">毫米 (mm)</option>
+                            <option value="inch">英寸</option>
+                        </select>
+                    </div>
+                    <a class="reference-link" id="showTireReference">
+                        <i class="fas fa-book"></i> 查看常见外胎宽度参考
+                    </a>
+                </div>
+                
+                <div class="form-group">
+                    <label for="actualWheelDiameter"><i class="fas fa-circle-notch"></i>实际轮径 (毫米)</label>
+                    <input type="number" id="actualWheelDiameter" placeholder="自动计算或手动输入">
+                    <div class="info-tip">
+                        <i class="fas fa-info-circle"></i> 此值根据轮圈尺寸和外胎宽度自动计算，如有误差可手动修正
+                    </div>
+                </div>
+                
+                <div class="input-row">
+                    <div class="form-group">
+                        <label for="chainring"><i class="fas fa-cog"></i>前齿盘齿数</label>
+                        <input type="number" id="chainring" min="20" max="60" value="42" placeholder="前齿盘齿数">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cog"><i class="fas fa-cog"></i>后飞轮齿数</label>
+                        <input type="number" id="cog" min="10" max="50" value="16" placeholder="后飞轮齿数">
+                    </div>
+                </div>
+                
+                <div class="optional-section">
+                    <h3 class="optional-title"><i class="fas fa-plus-circle"></i>可选参数</h3>
+                    
+                    <div class="form-group">
+                        <label for="internalGear">
+                            <i class="fas fa-exchange-alt"></i>内变速比
+                            <span class="tooltip">
+                                <i class="fas fa-question-circle" style="color: var(--gray);"></i>
+                                <span class="tooltiptext">
+                                    常见内变速比参考：<br>
+                                    - 禧玛诺3速: 0.733, 1, 1.364<br>
+                                    - 禧玛诺7速: 0.632, 0.741, 0.843, 1, 1.223, 1.419, 1.615<br>
+                                    - 日驰3速: 0.75, 1, 1.33
+                                </span>
+                            </span>
+                        </label>
+                        <input type="number" id="internalGear" step="0.001" min="0.1" max="3" value="1" placeholder="输入内变速比 (默认1)">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="midDrive">
+                            <i class="fas fa-cogs"></i>中置变速齿比
+                            <span class="tooltip">
+                                <i class="fas fa-question-circle" style="color: var(--gray);"></i>
+                                <span class="tooltiptext">
+                                    中置电机变速比参考：<br>
+                                    - Shimano Steps: 通常2.0-2.5<br>
+                                    - Bosch Performance: 通常2.2-2.8<br>
+                                    - Yamaha PW: 通常2.0-2.4<br>
+                                    无中置电机请设置为1
+                                </span>
+                            </span>
+                        </label>
+                        <input type="number" id="midDrive" step="0.1" min="0.1" max="5" value="1" placeholder="输入中置变速齿比 (默认1)">
+                    </div>
+                </div>
+                
+                <button id="calculateBtn"><i class="fas fa-calculator"></i>计算速度</button>
+            </section>
+            
+            <section class="card">
+                <h2 class="card-title"><i class="fas fa-tachometer-alt"></i>计算结果</h2>
+                
+                <div class="result-box">
+                    <div class="speed-label">预计骑行时速</div>
+                    <div class="speed-value" id="speedResult">0.00</div>
+                    <div class="unit">公里/小时 (km/h)</div>
+                </div>
+                
+                <div class="result-details">
+                    <div class="detail-item">
+                        <span>实际轮径:</span>
+                        <span class="detail-value" id="actualWheelSize">0.00 毫米</span>
+                    </div>
+                    <div class="detail-item">
+                        <span>轮周长:</span>
+                        <span class="detail-value" id="wheelCircumference">0.00 米</span>
+                    </div>
+                    <div class="detail-item">
+                        <span>总齿比:</span>
+                        <span class="detail-value" id="totalGearRatio">0.00</span>
+                    </div>
+                    <div class="detail-item">
+                        <span>每秒行进距离:</span>
+                        <span class="detail-value" id="distancePerSecond">0.00 米/秒</span>
+                    </div>
+                </div>
+                
+                <button id="copyBtn" class="copy-btn"><i class="fas fa-copy"></i>复制计算结果</button>
+                
+                <div class="note">
+                    <i class="fas fa-info-circle"></i> 请注意：此结果为理论计算值，实际骑行速度会受到路况、风向、坡度、体重、胎压等多种因素影响。
+                </div>
+            </section>
+        </div>
+        
+        <div class="ad-container">
+            <!-- 广告位 - 可以替换图片和链接 -->
+            <a href="https://example.com" target="_blank" rel="noopener noreferrer" id="adLink">
+                <div class="ad-space" id="adSpace">
+                    <img src="https://via.placeholder.com/1000x120?text=广告位（可替换图片）" alt="广告" id="adImage">
+                </div>
+            </a>
+        </div>
+        
+        <footer>
+            <p>自行车骑行时速计算工具 &copy; 2023 | 精确计算您的骑行速度</p>
+        </footer>
+    </div>
+
+    <!-- 外胎参考弹窗 -->
+    <div class="modal" id="tireReferenceModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">常见外胎宽度参考</h3>
+                <button class="close-btn">&times;</button>
+            </div>
+            <table class="reference-table">
+                <thead>
+                    <tr>
+                        <th>车型</th>
+                        <th>常见胎宽范围</th>
+                        <th>示例规格</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>山地车</td>
+                        <td>1.9~2.5英寸</td>
+                        <td>26×1.95、27.5×2.1</td>
+                    </tr>
+                    <tr>
+                        <td>公路车</td>
+                        <td>23~32毫米</td>
+                        <td>700×25C、700×28C</td>
+                    </tr>
+                    <tr>
+                        <td>混合路面车</td>
+                        <td>28~47毫米</td>
+                        <td>700×35C、650B×42</td>
+                    </tr>
+                    <tr>
+                        <td>儿童/通勤车</td>
+                        <td>1.5~1.75英寸</td>
+                        <td>20×1.5、24×1.75</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="info-tip">
+                <i class="fas fa-info-circle"></i> 提示：实际轮径 = 轮圈直径 + 2 × 轮胎厚度（轮胎厚度约等于外胎宽度）
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 获取页面元素
+        const cadenceInput = document.getElementById('cadence');
+        const wheelSizeSelect = document.getElementById('wheelSize');
+        const customWheelSizeGroup = document.getElementById('customWheelSizeGroup');
+        const customWheelSizeInput = document.getElementById('customWheelSize');
+        const tireWidthInput = document.getElementById('tireWidth');
+        const tireWidthUnitSelect = document.getElementById('tireWidthUnit');
+        const actualWheelDiameterInput = document.getElementById('actualWheelDiameter');
+        const chainringInput = document.getElementById('chainring');
+        const cogInput = document.getElementById('cog');
+        const internalGearInput = document.getElementById('internalGear');
+        const midDriveInput = document.getElementById('midDrive');
+        const calculateBtn = document.getElementById('calculateBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const speedResult = document.getElementById('speedResult');
+        const wheelCircumference = document.getElementById('wheelCircumference');
+        const totalGearRatio = document.getElementById('totalGearRatio');
+        const distancePerSecond = document.getElementById('distancePerSecond');
+        const actualWheelSize = document.getElementById('actualWheelSize');
+        const showTireReference = document.getElementById('showTireReference');
+        const tireReferenceModal = document.getElementById('tireReferenceModal');
+        const closeModalBtn = document.querySelector('.close-btn');
+        const adLink = document.getElementById('adLink');
+        const adImage = document.getElementById('adImage');
+        
+        // 是否手动修改了实际轮径
+        let isManualWheelDiameter = false;
+        
+        // 轮圈尺寸选择变化事件
+        wheelSizeSelect.addEventListener('change', function() {
+            if (this.value === 'custom') {
+                customWheelSizeGroup.style.display = 'block';
+            } else {
+                customWheelSizeGroup.style.display = 'none';
+            }
+            if (!isManualWheelDiameter) {
+                calculateActualWheelDiameter();
+            }
+            calculateSpeed();
+        });
+        
+        // 计算实际轮径函数
+        function calculateActualWheelDiameter() {
+            let rimDiameterMm = 0;
+            
+            // 获取轮圈直径（毫米）
+            if (wheelSizeSelect.value === 'custom') {
+                rimDiameterMm = parseFloat(customWheelSizeInput.value) || 559;
+            } else if (wheelSizeSelect.value === '622') {
+                // 700C特殊处理
+                rimDiameterMm = 622;
+            } else {
+                // 其他尺寸：英寸转换为毫米
+                rimDiameterMm = parseFloat(wheelSizeSelect.value) * 25.4;
+            }
+            
+            // 获取外胎宽度并转换为毫米
+            const tireWidth = parseFloat(tireWidthInput.value) || 40;
+            const tireWidthUnit = tireWidthUnitSelect.value;
+            let tireWidthMm = tireWidth;
+            
+            if (tireWidthUnit === 'inch') {
+                tireWidthMm = tireWidth * 25.4;
+            }
+            
+            // 计算实际轮径（毫米）= 轮圈直径 + 2 × 轮胎厚度（轮胎厚度约等于外胎宽度）
+            const actualDiameterMm = rimDiameterMm + (2 * tireWidthMm);
+            
+            // 更新实际轮径输入框
+            actualWheelDiameterInput.value = Math.round(actualDiameterMm);
+            
+            return actualDiameterMm;
+        }
+        
+        // 实际轮径输入框手动修正
+        actualWheelDiameterInput.addEventListener('input', function() {
+            isManualWheelDiameter = true;
+            calculateSpeed();
+        });
+        
+        // 显示外胎参考弹窗
+        showTireReference.addEventListener('click', function() {
+            tireReferenceModal.style.display = 'flex';
+        });
+        
+        // 关闭弹窗
+        closeModalBtn.addEventListener('click', function() {
+            tireReferenceModal.style.display = 'none';
+        });
+        
+        // 点击弹窗外部关闭
+        window.addEventListener('click', function(event) {
+            if (event.target === tireReferenceModal) {
+                tireReferenceModal.style.display = 'none';
+            }
+        });
+        
+        // 计算按钮点击事件
+        calculateBtn.addEventListener('click', calculateSpeed);
+        
+        // 复制按钮点击事件
+        copyBtn.addEventListener('click', copyResults);
+        
+        // 初始计算一次
+        calculateActualWheelDiameter();
+        calculateSpeed();
+        
+        // 计算速度函数
+        function calculateSpeed() {
+            // 获取输入值
+            const cadence = parseFloat(cadenceInput.value) || 90;
+            const chainring = parseFloat(chainringInput.value) || 42;
+            const cog = parseFloat(cogInput.value) || 16;
+            const internalGear = parseFloat(internalGearInput.value) || 1;
+            const midDrive = parseFloat(midDriveInput.value) || 1;
+            
+            // 获取实际轮径（毫米）并转换为米
+            let actualDiameterMm = parseFloat(actualWheelDiameterInput.value);
+            if (isNaN(actualDiameterMm) || actualDiameterMm <= 0) {
+                actualDiameterMm = calculateActualWheelDiameter();
+            }
+            const wheelDiameterM = actualDiameterMm / 1000;
+            
+            // 计算轮周长（米）
+            const circumference = Math.PI * wheelDiameterM;
+            
+            // 计算总齿比
+            const gearRatio = (chainring / cog) * internalGear * midDrive;
+            
+            // 计算速度（km/h）
+            const speed = (cadence * 60 * circumference * gearRatio) / 1000;
+            
+            // 显示结果
+            speedResult.textContent = speed.toFixed(2);
+            wheelCircumference.textContent = circumference.toFixed(2) + " 米";
+            totalGearRatio.textContent = gearRatio.toFixed(3);
+            distancePerSecond.textContent = ((cadence * circumference * gearRatio) / 60).toFixed(2) + " 米/秒";
+            actualWheelSize.textContent = actualDiameterMm.toFixed(0) + " 毫米";
+        }
+        
+        // 复制结果函数
+        function copyResults() {
+            // 获取所有输入值
+            const cadence = parseFloat(cadenceInput.value) || 90;
+            let wheelSizeText = "";
+            
+            if (wheelSizeSelect.value === 'custom') {
+                wheelSizeText = `${customWheelSizeInput.value}mm(自定义)`;
+            } else if (wheelSizeSelect.value === '622') {
+                wheelSizeText = "700C (622mm)";
+            } else {
+                wheelSizeText = `${wheelSizeSelect.value}英寸`;
+            }
+            
+            const tireWidth = parseFloat(tireWidthInput.value) || 40;
+            const tireWidthUnit = tireWidthUnitSelect.value;
+            const chainring = parseFloat(chainringInput.value) || 42;
+            const cog = parseFloat(cogInput.value) || 16;
+            const internalGear = parseFloat(internalGearInput.value) || 1;
+            const midDrive = parseFloat(midDriveInput.value) || 1;
+            const speed = speedResult.textContent;
+            const actualSize = actualWheelSize.textContent;
+            
+            // 创建要复制的文本
+            const textToCopy = `自行车骑行时速计算结果：
+
+轮圈尺寸: ${wheelSizeText}
+外胎宽度: ${tireWidth} ${tireWidthUnit}
+实际轮径: ${actualSize}
+踏频: ${cadence} RPM
+齿比: 前${chainring}T / 后${cog}T = ${(chainring/cog).toFixed(2)}
+内变速比: ${internalGear}
+中置变速齿比: ${midDrive}
+总齿比: ${totalGearRatio.textContent}
+
+理论骑行时速: ${speed} km/h
+
+注: 此为理论计算值，实际速度受路况、风向、坡度、体重、胎压等多种因素影响。`;
+            
+            // 使用Clipboard API复制文本
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    copySuccess();
+                }).catch(err => {
+                    fallbackCopyText(textToCopy);
+                });
+            } else {
+                fallbackCopyText(textToCopy);
+            }
+        }
+        
+        // 回退复制方法
+        function fallbackCopyText(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.opacity = 0;
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    copySuccess();
+                } else {
+                    alert("复制失败，请手动复制结果");
+                }
+            } catch (err) {
+                alert("复制失败，请手动复制结果");
+            }
+            
+            document.body.removeChild(textArea);
+        }
+        
+        // 复制成功提示
+        function copySuccess() {
+            const originalText = copyBtn.innerHTML;
+            copyBtn.innerHTML = '<i class="fas fa-check"></i>已复制到剪贴板';
+            copyBtn.classList.add('copy-success');
+            
+            // 2秒后恢复原状
+            setTimeout(() => {
+                copyBtn.innerHTML = originalText;
+                copyBtn.classList.remove('copy-success');
+            }, 2000);
+        }
+        
+        // 为所有输入添加自动计算功能
+        const allInputs = document.querySelectorAll('input, select');
+        allInputs.forEach(input => {
+            if (input !== actualWheelDiameterInput) {
+                input.addEventListener('input', function() {
+                    if (!isManualWheelDiameter) {
+                        calculateActualWheelDiameter();
+                    }
+                    calculateSpeed();
+                });
+            }
+        });
+        
+        // 广告位设置
+        // 如果没有链接，移除a标签
+        // 可以在这里设置广告图片和链接
+        // 示例：
+        // adImage.src = "您的图片URL";
+        // adLink.href = "您的链接URL";
+        // 如果没有链接，使用以下代码：
+        // adLink.removeAttribute("href");
+        // adLink.style.cursor = "default";
+        // adLink.onclick = function(e) { e.preventDefault(); };
+    </script>
+</body>
+</html>
