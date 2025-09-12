@@ -2,266 +2,256 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>工具导航</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高级工具导航平台</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #4361ee;
-            --primary-light: #e6ecff;
-            --secondary-color: #6c757d;
-            --light-color: #f8f9fa;
-            --dark-color: #2d3748;
-            --accent-color: #7b68ee;
-            --success-color: #10b981;
-            --warning-color: #f59e0b;
-            --danger-color: #ef4444;
-            --border-radius: 12px;
-            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --primary-color: #3498db;
+            --primary-dark: #2980b9;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --light-bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #2c3e50;
+            --light-text: #ecf0f1;
+            --border-color: #e0e0e0;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --card-hover-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
             --transition: all 0.3s ease;
-            --gradient: linear-gradient(135deg, var(--primary-color), var(--accent-color));
         }
-
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
         }
-
+        
         body {
-            background: #f5f7fa;
-            color: var(--dark-color);
+            background-color: var(--light-bg);
+            color: var(--text-color);
             line-height: 1.6;
             min-height: 100vh;
-            padding: 0;
-            overflow-x: hidden;
-        }
-
-        /* APP框架 */
-        .app-container {
-            max-width: 100%;
-            margin: 0 auto;
-            position: relative;
-            min-height: 100vh;
-            background: #fff;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-        }
-
-        /* 顶部状态栏 */
-        .status-bar {
-            height: 0;
-            background: var(--dark-color);
-            color: white;
-        }
-
-        /* 顶部导航栏 */
-        .header {
-            background: var(--dark-color);
-            color: white;
-            padding: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo {
-            height: 40px;
-            width: 40px;
-            border-radius: 10px;
-            object-fit: cover;
-            background: var(--gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
-
-        .header-text {
             display: flex;
             flex-direction: column;
         }
-
-        .platform-name {
-            font-weight: 700;
-            font-size: 1.2rem;
-            letter-spacing: 0.5px;
-        }
-
-        .platform-description {
-            font-size: 0.8rem;
-            opacity: 0.8;
-            margin-top: 2px;
-        }
-
-        /* 搜索区域 */
-        .search-container {
-            padding: 1rem;
-            background: white;
-            position: sticky;
-            top: 68px;
-            z-index: 90;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-        }
-
-        .search-box {
-            display: flex;
-            align-items: center;
-            background: var(--light-color);
-            border-radius: 50px;
-            padding: 0.8rem 1.2rem;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-        }
-
-        .search-box input {
-            border: none;
-            background: transparent;
-            outline: none;
-            padding: 0.5rem;
-            width: 100%;
-            font-size: 1rem;
-        }
-
-        /* 分类导航 */
-        .categories-container {
-            padding: 1rem;
-            background: white;
-            overflow-x: auto;
-            white-space: nowrap;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-        }
-
-        .categories-container::-webkit-scrollbar {
-            display: none;
-        }
-
-        .categories {
-            display: inline-flex;
-            gap: 0.5rem;
-        }
-
-        .category-btn {
-            background: var(--light-color);
-            border: none;
-            padding: 0.6rem 1.2rem;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: var(--transition);
-            font-weight: 500;
-            font-size: 0.9rem;
-            white-space: nowrap;
-        }
-
-        .category-btn:hover, .category-btn.active {
-            background: var(--gradient);
-            color: white;
-            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
-        }
-
-        /* 工具容器 */
-        .tools-container {
-            padding: 1rem;
-            padding-bottom: 70px; /* 为底部导航留出空间 */
-        }
-
-        .tools-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;
-        }
-
-        /* 工具卡片 */
-        .tool-card {
-            background: white;
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            box-shadow: var(--box-shadow);
-            transition: var(--transition);
-            position: relative;
-        }
-
-        .tool-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        .tool-image {
-            width: 100%;
-            height: 160px;
-            object-fit: cover;
-        }
-
-        .tool-content {
-            padding: 1.2rem;
-        }
-
-        .tool-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--dark-color);
-        }
-
-        .tool-description {
-            color: var(--secondary-color);
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-            line-height: 1.5;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .tool-actions {
+        
+        /* 顶部导航 */
+        .header {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-dark) 100%);
+            color: var(--light-text);
+            padding: 18px 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-
-        .tool-category {
-            background: var(--primary-light);
-            color: var(--primary-color);
-            padding: 0.3rem 0.8rem;
-            border-radius: 50px;
-            font-size: 0.75rem;
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .platform-name {
+            font-size: 22px;
             font-weight: 600;
+            letter-spacing: 0.5px;
         }
-
-        .use-btn {
-            background: var(--gradient);
+        
+        /* 搜索和筛选区域 */
+        .controls {
+            padding: 25px;
+            background-color: var(--card-bg);
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-radius: 0 0 15px 15px;
+        }
+        
+        .search-box {
+            display: flex;
+            margin-bottom: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px 0 0 12px;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+        
+        .search-box input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        
+        .search-box button {
+            padding: 15px 25px;
+            background: linear-gradient(to right, var(--primary-color), var(--primary-dark));
             color: white;
             border: none;
-            padding: 0.6rem 1.2rem;
-            border-radius: 50px;
+            border-radius: 0 12px 12px 0;
             cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
+            font-weight: 500;
             transition: var(--transition);
+        }
+        
+        .search-box button:hover {
+            background: linear-gradient(to right, var(--primary-dark), var(--primary-color));
+        }
+        
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+        
+        .filter-btn {
+            padding: 10px 20px;
+            background-color: var(--light-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+        
+        .filter-btn.active {
+            background: linear-gradient(to right, var(--primary-color), var(--primary-dark));
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .filter-btn:hover:not(.active) {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        /* 工具卡片布局 */
+        .main-content {
+            flex: 1;
+            padding: 0 25px 30px;
+        }
+        
+        .tools-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+        
+        .tool-card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--card-hover-shadow);
+        }
+        
+        .tool-image {
+            height: 180px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .tool-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .tool-card:hover .tool-image img {
+            transform: scale(1.08);
+        }
+        
+        .tool-info {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .tool-name {
+            font-size: 20px;
             font-weight: 600;
-            font-size: 0.9rem;
+            margin-bottom: 10px;
+            color: var(--secondary-color);
         }
-
+        
+        .tool-description {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 15px;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+        
+        .tool-category {
+            display: inline-block;
+            padding: 5px 12px;
+            background-color: rgba(52, 152, 219, 0.1);
+            color: var(--primary-color);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 15px;
+            align-self: flex-start;
+        }
+        
+        .use-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(to right, var(--primary-color), var(--primary-dark));
+            color: white;
+            text-align: center;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            margin-top: auto;
+        }
+        
         .use-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.4);
+            background: linear-gradient(to right, var(--primary-dark), var(--primary-color));
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
         }
-
+        
         /* 全屏工具模式 */
         .tool-fullscreen {
             position: fixed;
@@ -269,572 +259,535 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: white;
+            background-color: white;
             z-index: 1000;
             display: none;
+            flex-direction: column;
         }
-
+        
         .tool-header {
-            background: white;
-            color: var(--dark-color);
-            padding: 1rem;
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 15px 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: relative;
-            z-index: 2;
         }
-
+        
         .back-btn {
-            background: var(--primary-light);
-            color: var(--primary-color);
+            background: rgba(255, 255, 255, 0.2);
             border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        .back-btn:hover {
-            background: var(--primary-color);
             color: white;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            border-radius: 8px;
+            transition: var(--transition);
         }
-
+        
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
         .tool-iframe {
             width: 100%;
-            height: calc(100% - 56px);
+            flex-grow: 1;
             border: none;
         }
-
-        /* 底部导航 */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: white;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 0.5rem 0;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-            z-index: 90;
+        
+        /* 底部广告 */
+        .ad-container {
+            padding: 25px;
+            text-align: center;
+            background-color: var(--card-bg);
+            margin-top: 30px;
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
         }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 0.5rem;
-            color: var(--secondary-color);
-            text-decoration: none;
-            font-size: 0.8rem;
+        
+        .ad-image {
+            max-width: 100%;
+            height: auto;
+            max-height: 120px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             transition: var(--transition);
-            flex: 1;
         }
-
-        .nav-item.active {
-            color: var(--primary-color);
+        
+        .ad-image:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
-
-        .nav-icon {
-            font-size: 1.2rem;
-            margin-bottom: 0.2rem;
-        }
-
-        .nav-text {
-            font-size: 0.7rem;
-        }
-
-        .nav-center {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--gradient);
+        
+        /* 管理按钮 */
+        .admin-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 65px;
+            height: 65px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
             color: white;
-            margin-top: -20px;
-            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.4);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.5);
+            cursor: pointer;
+            z-index: 90;
+            font-size: 26px;
+            transition: var(--transition);
         }
-
-        /* 模态框 */
+        
+        .admin-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.6);
+        }
+        
+        /* 管理模态框 */
         .modal {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-            display: none;
-            align-items: center;
-            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.6);
             z-index: 2000;
-            padding: 1rem;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
         }
-
+        
         .modal-content {
-            background: white;
-            border-radius: var(--border-radius);
-            padding: 1.5rem;
-            width: 100%;
-            max-width: 400px;
-            max-height: 80vh;
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 550px;
+            max-height: 90vh;
             overflow-y: auto;
-            box-shadow: var(--box-shadow);
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
             position: relative;
-            animation: modalSlideIn 0.3s ease-out;
         }
-
-        @keyframes modalSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
+        
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #eee;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border-color);
         }
-
+        
         .modal-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--dark-color);
-        }
-
-        .close-btn {
-            background: transparent;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
+            font-size: 24px;
+            font-weight: 600;
             color: var(--secondary-color);
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
             transition: var(--transition);
         }
-
-        .close-btn:hover {
-            color: var(--danger-color);
+        
+        .close-modal:hover {
+            color: var(--accent-color);
+            transform: rotate(90deg);
         }
-
+        
         .form-group {
-            margin-bottom: 1.2rem;
+            margin-bottom: 20px;
         }
-
+        
         .form-group label {
             display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--dark-color);
-            font-size: 0.9rem;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--secondary-color);
         }
-
-        .form-control {
+        
+        .form-group input, .form-group select, .form-group textarea {
             width: 100%;
-            padding: 0.9rem;
-            border: 1px solid #e2e8f0;
-            border-radius: var(--border-radius);
-            font-size: 1rem;
+            padding: 14px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 16px;
             transition: var(--transition);
         }
-
-        .form-control:focus {
+        
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
             outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
         }
-
+        
         .form-actions {
             display: flex;
             justify-content: flex-end;
-            gap: 0.8rem;
-            margin-top: 1.5rem;
+            gap: 15px;
+            margin-top: 25px;
         }
-
+        
         .btn {
-            padding: 0.8rem 1.5rem;
+            padding: 12px 25px;
             border: none;
-            border-radius: var(--border-radius);
+            border-radius: 8px;
             cursor: pointer;
+            font-weight: 500;
             transition: var(--transition);
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
         }
-
+        
         .btn-primary {
-            background: var(--gradient);
+            background: linear-gradient(to right, var(--primary-color), var(--primary-dark));
             color: white;
-            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
         }
-
+        
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.4);
+            background: linear-gradient(to right, var(--primary-dark), var(--primary-color));
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
         }
-
+        
         .btn-secondary {
-            background: var(--light-color);
-            color: var(--secondary-color);
+            background-color: #f0f0f0;
+            color: #555;
         }
-
+        
         .btn-secondary:hover {
-            background: #e2e8f0;
+            background-color: #e0e0e0;
         }
-
+        
         .btn-danger {
-            background: var(--danger-color);
+            background: linear-gradient(to right, #e74c3c, #c0392b);
             color: white;
         }
-
+        
         .btn-danger:hover {
-            background: #dc2626;
+            background: linear-gradient(to right, #c0392b, #e74c3c);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
         }
-
-        /* 加载动画 */
-        .loader {
-            display: flex;
-            justify-content: center;
-            padding: 2rem;
+        
+        /* 工具管理列表 */
+        .tools-list {
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
         }
-
-        .loader-dot {
-            width: 10px;
-            height: 10px;
-            margin: 0 5px;
-            background: var(--primary-color);
-            border-radius: 50%;
-            animation: loader 1.4s infinite ease-in-out both;
-        }
-
-        .loader-dot:nth-child(1) {
-            animation-delay: -0.32s;
-        }
-
-        .loader-dot:nth-child(2) {
-            animation-delay: -0.16s;
-        }
-
-        @keyframes loader {
-            0%, 80%, 100% {
-                transform: scale(0);
-            }
-            40% {
-                transform: scale(1);
-            }
-        }
-
-        /* 响应式设计 */
-        @media (min-width: 768px) {
-            .app-container {
-                max-width: 414px; /* 模拟手机宽度 */
-                margin: 0 auto;
-                min-height: 100vh;
-                position: relative;
-            }
-
-            .tools-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        /* 下拉刷新 */
-        .pull-to-refresh {
-            text-align: center;
-            padding: 1rem;
-            color: var(--secondary-color);
-            font-size: 0.9rem;
-        }
-
-        /* 空状态 */
-        .empty-state {
-            text-align: center;
-            padding: 3rem 1rem;
-            color: var(--secondary-color);
-        }
-
-        .empty-state i {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: #cbd5e0;
-        }
-
-        .empty-state h3 {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-            color: var(--dark-color);
-        }
-
-        /* 滑动操作 */
+        
         .tool-item {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .swipe-actions {
-            position: absolute;
-            top: 0;
-            right: -100px;
-            height: 100%;
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
             display: flex;
+            justify-content: space-between;
             align-items: center;
+        }
+        
+        .tool-item:last-child {
+            border-bottom: none;
+        }
+        
+        .tool-item-info {
+            flex-grow: 1;
+        }
+        
+        .tool-item-name {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .tool-item-category {
+            font-size: 12px;
+            color: #777;
+            background-color: #f0f0f0;
+            padding: 3px 10px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+        
+        .tool-item-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .tool-item-btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
             transition: var(--transition);
         }
-
-        .swipe-action {
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 1.5rem;
-            color: white;
-            font-weight: 600;
+        
+        .edit-btn {
+            background-color: rgba(52, 152, 219, 0.1);
+            color: var(--primary-color);
         }
-
-        .swipe-edit {
-            background: var(--warning-color);
+        
+        .edit-btn:hover {
+            background-color: rgba(52, 152, 219, 0.2);
         }
-
-        .swipe-delete {
-            background: var(--danger-color);
+        
+        .delete-btn {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
         }
-
+        
+        .delete-btn:hover {
+            background-color: rgba(231, 76, 60, 0.2);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .tools-container {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+            }
+            
+            .platform-name {
+                font-size: 20px;
+            }
+            
+            .controls {
+                padding: 20px;
+            }
+            
+            .search-box {
+                margin-bottom: 15px;
+            }
+            
+            .main-content {
+                padding: 0 20px 25px;
+            }
+            
+            .tools-container {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 20px;
+            }
+            
+            .admin-btn {
+                bottom: 25px;
+                right: 25px;
+                width: 60px;
+                height: 60px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .header {
+                padding: 12px 15px;
+            }
+            
+            .logo {
+                width: 35px;
+                height: 35px;
+                font-size: 18px;
+            }
+            
+            .platform-name {
+                font-size: 18px;
+            }
+            
+            .controls {
+                padding: 15px;
+                border-radius: 0 0 12px 12px;
+            }
+            
+            .search-box input {
+                padding: 12px 15px;
+            }
+            
+            .search-box button {
+                padding: 12px 20px;
+            }
+            
+            .filter-btn {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+            
+            .main-content {
+                padding: 0 15px 20px;
+            }
+            
+            .tools-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .tool-image {
+                height: 160px;
+            }
+            
+            .admin-btn {
+                bottom: 20px;
+                right: 20px;
+                width: 55px;
+                height: 55px;
+                font-size: 24px;
+            }
+            
+            .modal-content {
+                padding: 20px;
+            }
+            
+            .modal-title {
+                font-size: 22px;
+            }
+        }
+        
         /* 动画效果 */
-        .fade-in {
-            animation: fadeIn 0.5s ease forwards;
-        }
-
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        /* 页面切换动画 */
-        .page {
-            display: none;
-            animation: pageFadeIn 0.3s ease forwards;
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
         }
-
-        .page.active {
-            display: block;
+        
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-
-        @keyframes pageFadeIn {
-            from { opacity: 0; transform: translateX(20px); }
-            to { opacity: 1; transform: translateX(0); }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #aaa;
         }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <!-- 顶部状态栏 -->
-        <div class="status-bar"></div>
-        
-        <!-- 首页 -->
-        <div class="page active" id="home-page">
-            <!-- 顶部导航栏 -->
-            <div class="header">
-                <div class="logo-area">
-                    <div class="logo">TL</div>
-                    <div class="header-text">
-                        <div class="platform-name">工具导航</div>
-                        <div class="platform-description">高效工作，从这里开始</div>
+    <!-- 顶部导航 -->
+    <div class="header">
+        <div class="logo-container">
+            <div class="logo">T</div>
+            <div class="platform-name">工具导航平台</div>
+        </div>
+    </div>
+
+    <!-- 搜索和筛选区域 -->
+    <div class="controls">
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="搜索工具名称或描述...">
+            <button id="search-btn"><i class="fas fa-search"></i> 搜索</button>
+        </div>
+        <div class="filters">
+            <button class="filter-btn active" data-category="all">全部工具</button>
+            <button class="filter-btn" data-category="design">设计</button>
+            <button class="filter-btn" data-category="development">开发</button>
+            <button class="filter-btn" data-category="efficiency">效率</button>
+            <button class="filter-btn" data-category="marketing">营销</button>
+        </div>
+    </div>
+
+    <!-- 工具卡片容器 -->
+    <div class="main-content">
+        <div class="tools-container" id="tools-container">
+            <!-- 工具卡片将通过JavaScript动态生成 -->
+        </div>
+    </div>
+
+    <!-- 底部广告 -->
+    <div class="ad-container">
+        <a href="#" id="ad-link" target="_blank">
+            <img src="https://via.placeholder.com/728x120.png?text=广告位展示" alt="广告" class="ad-image" id="ad-image">
+        </a>
+    </div>
+
+    <!-- 全屏工具模式 -->
+    <div class="tool-fullscreen" id="tool-fullscreen">
+        <div class="tool-header">
+            <button class="back-btn" id="back-btn">
+                <i class="fas fa-arrow-left"></i> 返回首页
+            </button>
+            <div id="current-tool-name">工具名称</div>
+        </div>
+        <iframe class="tool-iframe" id="tool-iframe" src="about:blank"></iframe>
+    </div>
+
+    <!-- 管理按钮 -->
+    <div class="admin-btn" id="admin-btn">
+        <i class="fas fa-cog"></i>
+    </div>
+
+    <!-- 管理模态框 -->
+    <div class="modal" id="admin-modal">
+        <div class="modal-content fade-in">
+            <div class="modal-header">
+                <h2 class="modal-title">平台管理</h2>
+                <button class="close-modal" id="close-modal">&times;</button>
+            </div>
+            <div id="admin-forms">
+                <!-- 密码验证表单 -->
+                <form id="password-form">
+                    <div class="form-group">
+                        <label for="admin-password">管理员密码</label>
+                        <input type="password" id="admin-password" required placeholder="请输入管理员密码">
                     </div>
-                </div>
-            </div>
-
-            <!-- 搜索区域 -->
-            <div class="search-container">
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="search-input" placeholder="搜索工具...">
-                </div>
-            </div>
-
-            <!-- 分类导航 -->
-            <div class="categories-container">
-                <div class="categories">
-                    <button class="category-btn active" data-category="all">全部</button>
-                    <button class="category-btn" data-category="design">设计</button>
-                    <button class="category-btn" data-category="development">开发</button>
-                    <button class="category-btn" data-category="efficiency">效率</button>
-                    <button class="category-btn" data-category="marketing">营销</button>
-                </div>
-            </div>
-
-            <!-- 工具容器 -->
-            <div class="tools-container">
-                <div class="tools-grid" id="tools-display">
-                    <!-- 工具卡片将通过JavaScript动态生成 -->
-                </div>
-                
-                <!-- 加载更多 -->
-                <div class="loader">
-                    <div class="loader-dot"></div>
-                    <div class="loader-dot"></div>
-                    <div class="loader-dot"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 分类页面 -->
-        <div class="page" id="categories-page">
-            <div class="header">
-                <div class="logo-area">
-                    <div class="logo">TL</div>
-                    <div class="header-text">
-                        <div class="platform-name">工具分类</div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">验证身份</button>
                     </div>
-                </div>
-            </div>
-            
-            <div class="tools-container">
-                <div class="empty-state">
-                    <i class="fas fa-folder-open"></i>
-                    <h3>分类页面</h3>
-                    <p>按类别浏览工具</p>
-                </div>
-            </div>
-        </div>
+                </form>
 
-        <!-- 收藏页面 -->
-        <div class="page" id="favorites-page">
-            <div class="header">
-                <div class="logo-area">
-                    <div class="logo">TL</div>
-                    <div class="header-text">
-                        <div class="platform-name">我的收藏</div>
-                    </div>
+                <!-- 管理选项表单 (默认隐藏) -->
+                <div id="admin-options" style="display: none;">
+                    <button class="btn btn-primary full-width" id="add-tool-btn" style="margin-bottom: 15px;">
+                        <i class="fas fa-plus"></i> 添加新工具
+                    </button>
+                    <button class="btn btn-secondary full-width" id="manage-tools-btn" style="margin-bottom: 15px;">
+                        <i class="fas fa-edit"></i> 编辑/删除工具
+                    </button>
+                    <button class="btn btn-secondary full-width" id="import-btn" style="margin-bottom: 15px;">
+                        <i class="fas fa-file-import"></i> 导入数据
+                    </button>
+                    <button class="btn btn-secondary full-width" id="export-btn" style="margin-bottom: 15px;">
+                        <i class="fas fa-file-export"></i> 导出数据
+                    </button>
                 </div>
-            </div>
-            
-            <div class="tools-container">
-                <div class="empty-state">
-                    <i class="fas fa-heart"></i>
-                    <h3>暂无收藏</h3>
-                    <p>您收藏的工具将显示在这里</p>
-                </div>
-            </div>
-        </div>
 
-        <!-- 设置页面 -->
-        <div class="page" id="settings-page">
-            <div class="header">
-                <div class="logo-area">
-                    <div class="logo">TL</div>
-                    <div class="header-text">
-                        <div class="platform-name">设置</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="tools-container">
-                <div class="empty-state">
-                    <i class="fas fa-cog"></i>
-                    <h3>设置页面</h3>
-                    <p>管理您的应用设置</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- 全屏工具模式 -->
-        <div class="tool-fullscreen" id="tool-fullscreen">
-            <div class="tool-header">
-                <span id="current-tool-name">工具名称</span>
-                <button class="back-btn" id="back-button">
-                    <i class="fas fa-arrow-left"></i> 返回
-                </button>
-            </div>
-            <iframe class="tool-iframe" id="tool-iframe" src="about:blank"></iframe>
-        </div>
-
-        <!-- 底部导航 -->
-        <div class="bottom-nav">
-            <a href="#" class="nav-item active" data-page="home-page">
-                <div class="nav-icon"><i class="fas fa-home"></i></div>
-                <div class="nav-text">首页</div>
-            </a>
-            <a href="#" class="nav-item" data-page="categories-page">
-                <div class="nav-icon"><i class="fas fa-th-large"></i></div>
-                <div class="nav-text">分类</div>
-            </a>
-            <a href="#" class="nav-item nav-center" id="admin-button">
-                <i class="fas fa-plus"></i>
-            </a>
-            <a href="#" class="nav-item" data-page="favorites-page">
-                <div class="nav-icon"><i class="fas fa-heart"></i></div>
-                <div class="nav-text">收藏</div>
-            </a>
-            <a href="#" class="nav-item" data-page="settings-page">
-                <div class="nav-icon"><i class="fas fa-cog"></i></div>
-                <div class="nav-text">设置</div>
-            </a>
-        </div>
-
-        <!-- 密码验证模态框 -->
-        <div class="modal" id="password-modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">管理员验证</h3>
-                    <button class="close-btn" data-modal="password-modal">&times;</button>
-                </div>
-                <div class="form-group">
-                    <label for="admin-password">管理员密码</label>
-                    <input type="password" id="admin-password" class="form-control" placeholder="请输入管理员密码">
-                </div>
-                <div class="form-actions">
-                    <button class="btn btn-secondary" data-modal="password-modal">取消</button>
-                    <button class="btn btn-primary" id="password-submit">确认</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 添加工具模态框 -->
-        <div class="modal" id="add-tool-modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">添加新工具</h3>
-                    <button class="close-btn" data-modal="add-tool-modal">&times;</button>
-                </div>
-                <form id="add-tool-form">
+                <!-- 添加工具表单 (默认隐藏) -->
+                <form id="add-tool-form" style="display: none;">
                     <div class="form-group">
                         <label for="tool-name">工具名称</label>
-                        <input type="text" id="tool-name" class="form-control" required>
+                        <input type="text" id="tool-name" required placeholder="输入工具名称">
                     </div>
                     <div class="form-group">
                         <label for="tool-description">工具描述</label>
-                        <textarea id="tool-description" class="form-control" rows="3" required></textarea>
+                        <textarea id="tool-description" required placeholder="输入工具描述" rows="3"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="tool-image">工具图片URL</label>
-                        <input type="url" id="tool-image" class="form-control" required>
+                        <input type="text" id="tool-image" required placeholder="输入工具图片链接">
                     </div>
                     <div class="form-group">
-                        <label for="tool-link">工具链接</label>
-                        <input type="url" id="tool-link" class="form-control" required>
+                        <label for="tool-url">工具链接</label>
+                        <input type="url" id="tool-url" required placeholder="输入工具网址">
                     </div>
                     <div class="form-group">
-                        <label for="tool-category">工具分类</label>
-                        <select id="tool-category" class="form-control" required>
+                        <label for="tool-category">分类</label>
+                        <select id="tool-category" required>
                             <option value="design">设计</option>
                             <option value="development">开发</option>
                             <option value="efficiency">效率</option>
@@ -842,275 +795,476 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="tool-priority">优先级 (数字越大显示越靠前)</label>
-                        <input type="number" id="tool-priority" class="form-control" value="0" required>
+                        <label for="tool-priority">排序优先级 (数字越大越靠前)</label>
+                        <input type="number" id="tool-priority" value="0" required>
                     </div>
                     <div class="form-actions">
-                        <button type="button" class="btn btn-secondary" data-modal="add-tool-modal">取消</button>
+                        <button type="button" class="btn btn-secondary" id="cancel-add">取消</button>
                         <button type="submit" class="btn btn-primary">添加工具</button>
                     </div>
                 </form>
-            </div>
-        </div>
 
-        <!-- 管理选项模态框 -->
-        <div class="modal" id="admin-modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">管理选项</h3>
-                    <button class="close-btn" data-modal="admin-modal">&times;</button>
-                </div>
-                <div class="form-actions" style="flex-direction: column; gap: 1rem;">
-                    <button class="btn btn-primary" id="add-tool-btn" style="width: 100%;">
-                        <i class="fas fa-plus"></i> 添加新工具
-                    </button>
-                    <button class="btn btn-primary" id="import-data-btn" style="width: 100%;">
-                        <i class="fas fa-file-import"></i> 导入数据
-                    </button>
-                    <button class="btn btn-primary" id="export-data-btn" style="width: 100%;">
-                        <i class="fas fa-file-export"></i> 导出数据
-                    </button>
-                    <button class="btn btn-secondary" data-modal="admin-modal" style="width: 100%;">
-                        <i class="fas fa-times"></i> 取消
-                    </button>
-                </div>
-            </div>
-        </div>
+                <!-- 编辑工具表单 (默认隐藏) -->
+                <form id="edit-tool-form" style="display: none;">
+                    <input type="hidden" id="edit-tool-id">
+                    <div class="form-group">
+                        <label for="edit-tool-name">工具名称</label>
+                        <input type="text" id="edit-tool-name" required placeholder="输入工具名称">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-tool-description">工具描述</label>
+                        <textarea id="edit-tool-description" required placeholder="输入工具描述" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-tool-image">工具图片URL</label>
+                        <input type="text" id="edit-tool-image" required placeholder="输入工具图片链接">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-tool-url">工具链接</label>
+                        <input type="url" id="edit-tool-url" required placeholder="输入工具网址">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-tool-category">分类</label>
+                        <select id="edit-tool-category" required>
+                            <option value="design">设计</option>
+                            <option value="development">开发</option>
+                            <option value="efficiency">效率</option>
+                            <option value="marketing">营销</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-tool-priority">排序优先级 (数字越大越靠前)</label>
+                        <input type="number" id="edit-tool-priority" value="0" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="cancel-edit">取消</button>
+                        <button type="submit" class="btn btn-primary">保存更改</button>
+                    </div>
+                </form>
 
-        <!-- 导入数据模态框 -->
-        <div class="modal" id="import-modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">导入数据</h3>
-                    <button class="close-btn" data-modal="import-modal">&times;</button>
-                </div>
-                <div class="form-group">
-                    <label for="import-file">选择JSON文件</label>
-                    <input type="file" id="import-file" class="form-control" accept=".json">
-                </div>
-                <div class="form-actions">
-                    <button class="btn btn-secondary" data-modal="import-modal">取消</button>
-                    <button class="btn btn-primary" id="import-submit">导入</button>
+                <!-- 工具管理列表 (默认隐藏) -->
+                <div id="tools-management" style="display: none;">
+                    <h3 style="margin-bottom: 15px;">工具管理</h3>
+                    <div class="tools-list" id="tools-list">
+                        <!-- 工具列表将通过JavaScript动态生成 -->
+                    </div>
+                    <div class="form-actions" style="margin-top: 20px;">
+                        <button type="button" class="btn btn-secondary" id="back-to-options">返回</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // 初始工具数据
-        const initialTools = [
+        // 示例工具数据
+        const defaultTools = [
             {
                 id: 1,
-                name: "Canva设计",
-                description: "在线图形设计工具，提供丰富的模板和素材",
-                image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
-                link: "https://www.canva.com/",
+                name: "Canva设计工具",
+                description: "在线图形设计平台，提供丰富的模板和设计元素，适合非专业设计师使用",
+                image: "https://via.placeholder.com/400x200.png?text=Canva+设计工具",
+                url: "https://www.canva.com",
                 category: "design",
-                priority: 5
+                priority: 10
             },
             {
                 id: 2,
-                name: "CodePen",
-                description: "在线前端代码编辑和分享平台",
-                image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
-                link: "https://codepen.io/",
+                name: "CodePen代码编辑器",
+                description: "在线前端代码编辑和分享平台，支持HTML、CSS和JavaScript实时预览",
+                image: "https://via.placeholder.com/400x200.png?text=CodePen+代码编辑器",
+                url: "https://codepen.io",
                 category: "development",
-                priority: 4
+                priority: 9
             },
             {
                 id: 3,
-                name: "Notion",
-                description: "一体化工作空间，笔记、任务、数据库于一体的生产力工具",
-                image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
-                link: "https://www.notion.so/",
+                name: "Notion笔记工具",
+                description: "多功能笔记和项目管理应用，支持团队协作和知识管理",
+                image: "https://via.placeholder.com/400x200.png?text=Notion+笔记工具",
+                url: "https://www.notion.so",
                 category: "efficiency",
-                priority: 5
+                priority: 8
             },
             {
                 id: 4,
                 name: "Google Analytics",
-                description: "网站流量和用户行为分析工具",
-                image: "https://images.unsplash.com/photo-1533750349088-cd871a92f312?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
-                link: "https://analytics.google.com/",
+                description: "网站流量和用户行为分析工具，提供详细的数据报告和洞察",
+                image: "https://via.placeholder.com/400x200.png?text=Google+Analytics",
+                url: "https://analytics.google.com",
                 category: "marketing",
-                priority: 3
+                priority: 7
             },
             {
                 id: 5,
-                name: "Figma",
-                description: "协作式界面设计工具，支持实时协作",
-                image: "https://images.unsplash.com/photo-1592503254549-d83d24a4dfab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
-                link: "https://www.figma.com/",
+                name: "Figma设计协作",
+                description: "基于浏览器的界面设计工具，支持实时协作和原型制作",
+                image: "https://via.placeholder.com/400x200.png?text=Figma+设计协作",
+                url: "https://www.figma.com",
                 category: "design",
-                priority: 4
+                priority: 9
             },
             {
                 id: 6,
-                name: "GitHub",
-                description: "代码版本控制和协作平台",
-                image: "https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
-                link: "https://github.com/",
+                name: "GitHub代码托管",
+                description: "全球最大的代码托管平台，支持版本控制和协作开发",
+                image: "https://via.placeholder.com/400x200.png?text=GitHub+代码托管",
+                url: "https://github.com",
                 category: "development",
-                priority: 5
+                priority: 10
             }
         ];
 
-        // 工具管理类
-        class ToolManager {
-            constructor() {
-                this.tools = [];
-                this.currentCategory = 'all';
-                this.searchTerm = '';
-                this.adminPassword = 'admin123';
-                
-                this.initializeEventListeners();
-                this.loadTools();
-                this.renderTools();
+        // 初始化工具数据
+        let tools = JSON.parse(localStorage.getItem('tools')) || defaultTools;
+        const ADMIN_PASSWORD = "admin123";
+        
+        // DOM元素
+        const toolsContainer = document.getElementById('tools-container');
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const toolFullscreen = document.getElementById('tool-fullscreen');
+        const toolIframe = document.getElementById('tool-iframe');
+        const backBtn = document.getElementById('back-btn');
+        const currentToolName = document.getElementById('current-tool-name');
+        const adminBtn = document.getElementById('admin-btn');
+        const adminModal = document.getElementById('admin-modal');
+        const closeModal = document.getElementById('close-modal');
+        const passwordForm = document.getElementById('password-form');
+        const adminPassword = document.getElementById('admin-password');
+        const adminOptions = document.getElementById('admin-options');
+        const addToolBtn = document.getElementById('add-tool-btn');
+        const addToolForm = document.getElementById('add-tool-form');
+        const cancelAdd = document.getElementById('cancel-add');
+        const importBtn = document.getElementById('import-btn');
+        const exportBtn = document.getElementById('export-btn');
+        const manageToolsBtn = document.getElementById('manage-tools-btn');
+        const toolsManagement = document.getElementById('tools-management');
+        const toolsList = document.getElementById('tools-list');
+        const editToolForm = document.getElementById('edit-tool-form');
+        const cancelEdit = document.getElementById('cancel-edit');
+        const backToOptions = document.getElementById('back-to-options');
+        
+        // 当前选中的分类和搜索词
+        let currentCategory = 'all';
+        let currentSearch = '';
+        
+        // 渲染工具卡片
+        function renderTools() {
+            // 清空容器
+            toolsContainer.innerHTML = '';
+            
+            // 如果没有工具数据，显示提示信息
+            if (tools.length === 0) {
+                toolsContainer.innerHTML = `
+                    <div class="no-tools" style="grid-column: 1 / -1; text-align: center; padding: 40px 20px;">
+                        <i class="fas fa-tools" style="font-size: 60px; color: #ccc; margin-bottom: 20px;"></i>
+                        <h3 style="color: #999;">暂无工具</h3>
+                        <p>点击右下角按钮添加工具</p>
+                    </div>
+                `;
+                return;
             }
             
-            // 从localStorage加载工具数据
-            loadTools() {
-                const storedTools = localStorage.getItem('tools_data');
-                if (storedTools) {
-                    this.tools = JSON.parse(storedTools);
-                } else {
-                    this.tools = initialTools;
-                    this.saveTools();
-                }
+            // 筛选和排序工具
+            const filteredTools = tools
+                .filter(tool => {
+                    const matchesCategory = currentCategory === 'all' || tool.category === currentCategory;
+                    const matchesSearch = tool.name.toLowerCase().includes(currentSearch) || 
+                                         tool.description.toLowerCase().includes(currentSearch);
+                    return matchesCategory && matchesSearch;
+                })
+                .sort((a, b) => b.priority - a.priority);
+            
+            // 如果没有匹配的工具，显示提示信息
+            if (filteredTools.length === 0) {
+                toolsContainer.innerHTML = `
+                    <div class="no-results" style="grid-column: 1 / -1; text-align: center; padding: 40px 20px;">
+                        <i class="fas fa-search" style="font-size: 60px; color: #ccc; margin-bottom: 20px;"></i>
+                        <h3 style="color: #999;">没有找到匹配的工具</h3>
+                        <p>尝试使用其他搜索关键词或分类</p>
+                    </div>
+                `;
+                return;
             }
             
-            // 保存工具数据到localStorage
-            saveTools() {
-                localStorage.setItem('tools_data', JSON.stringify(this.tools));
-            }
+            // 生成工具卡片
+            filteredTools.forEach(tool => {
+                const toolCard = document.createElement('div');
+                toolCard.className = 'tool-card';
+                toolCard.innerHTML = `
+                    <div class="tool-image">
+                        <img src="${tool.image}" alt="${tool.name}">
+                    </div>
+                    <div class="tool-info">
+                        <h3 class="tool-name">${tool.name}</h3>
+                        <p class="tool-description">${tool.description}</p>
+                        <span class="tool-category">${getCategoryName(tool.category)}</span>
+                        <button class="use-btn" data-id="${tool.id}">使用工具</button>
+                    </div>
+                `;
+                toolsContainer.appendChild(toolCard);
+            });
             
-            // 添加新工具
-            addTool(toolData) {
-                // 生成唯一ID
-                const newId = this.tools.length > 0 ? Math.max(...this.tools.map(t => t.id)) + 1 : 1;
-                
-                const newTool = {
-                    id: newId,
-                    name: toolData.name,
-                    description: toolData.description,
-                    image: toolData.image,
-                    link: toolData.link,
-                    category: toolData.category,
-                    priority: parseInt(toolData.priority) || 0
-                };
-                
-                this.tools.push(newTool);
-                this.saveTools();
-                this.renderTools();
-                
-                return newTool;
-            }
-            
-            // 获取过滤后的工具列表
-            getFilteredTools() {
-                let filteredTools = [...this.tools];
-                
-                // 按分类筛选
-                if (this.currentCategory !== 'all') {
-                    filteredTools = filteredTools.filter(tool => tool.category === this.currentCategory);
-                }
-                
-                // 按搜索词筛选
-                if (this.searchTerm) {
-                    const term = this.searchTerm.toLowerCase();
-                    filteredTools = filteredTools.filter(tool => 
-                        tool.name.toLowerCase().includes(term) || 
-                        tool.description.toLowerCase().includes(term)
-                    );
-                }
-                
-                // 按优先级排序
-                filteredTools.sort((a, b) => b.priority - a.priority);
-                
-                return filteredTools;
-            }
-            
-            // 渲染工具列表
-            renderTools() {
-                const toolsDisplay = document.getElementById('tools-display');
-                const filteredTools = this.getFilteredTools();
-                
-                // 清空当前显示
-                toolsDisplay.innerHTML = '';
-                
-                // 添加工具卡片
-                if (filteredTools.length === 0) {
-                    toolsDisplay.innerHTML = `
-                        <div class="empty-state">
-                            <i class="fas fa-search"></i>
-                            <h3>未找到工具</h3>
-                            <p>尝试调整搜索条件或分类筛选</p>
-                        </div>
-                    `;
-                    return;
-                }
-                
-                filteredTools.forEach(tool => {
-                    const toolCard = document.createElement('div');
-                    toolCard.className = 'tool-card fade-in';
-                    toolCard.innerHTML = `
-                        <img src="${tool.image}" alt="${tool.name}" class="tool-image">
-                        <div class="tool-content">
-                            <h3 class="tool-title">${tool.name}</h3>
-                            <p class="tool-description">${tool.description}</p>
-                            <div class="tool-actions">
-                                <span class="tool-category">${this.getCategoryName(tool.category)}</span>
-                                <button class="use-btn" data-tool-id="${tool.id}">
-                                    <i class="fas fa-external-link-alt"></i> 使用
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                    
-                    toolsDisplay.appendChild(toolCard);
+            // 添加工具使用事件
+            document.querySelectorAll('.use-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const toolId = parseInt(this.getAttribute('data-id'));
+                    openTool(toolId);
                 });
-                
-                // 添加工具使用事件
-                document.querySelectorAll('.use-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        const toolId = parseInt(e.target.closest('.use-btn').dataset.toolId);
-                        this.openTool(toolId);
-                    });
-                });
-            }
-            
-            // 获取分类名称
-            getCategoryName(category) {
-                const categories = {
-                    'design': '设计',
-                    'development': '开发',
-                    'efficiency': '效率',
-                    'marketing': '营销'
-                };
-                return categories[category] || '未分类';
-            }
-            
-            // 打开工具全屏视图
-            openTool(toolId) {
-                const tool = this.tools.find(t => t.id === toolId);
-                if (!tool) return;
-                
-                document.getElementById('current-tool-name').textContent = tool.name;
-                document.getElementById('tool-iframe').src = tool.link;
-                document.getElementById('tool-fullscreen').style.display = 'block';
+            });
+        }
+        
+        // 获取分类名称
+        function getCategoryName(category) {
+            const categories = {
+                'design': '设计',
+                'development': '开发',
+                'efficiency': '效率',
+                'marketing': '营销'
+            };
+            return categories[category] || '未分类';
+        }
+        
+        // 打开工具全屏模式
+        function openTool(toolId) {
+            const tool = tools.find(t => t.id === toolId);
+            if (tool) {
+                currentToolName.textContent = tool.name;
+                toolIframe.src = tool.url;
+                toolFullscreen.style.display = 'flex';
                 document.body.style.overflow = 'hidden';
             }
+        }
+        
+        // 返回首页
+        function backToHome() {
+            toolFullscreen.style.display = 'none';
+            toolIframe.src = 'about:blank';
+            document.body.style.overflow = 'auto';
+        }
+        
+        // 渲染工具管理列表
+        function renderToolsList() {
+            toolsList.innerHTML = '';
             
-            // 关闭工具全屏视图
-            closeTool() {
-                document.getElementById('tool-fullscreen').style.display = 'none';
-                document.getElementById('tool-iframe').src = 'about:blank';
-                document.body.style.overflow = '';
+            if (tools.length === 0) {
+                toolsList.innerHTML = '<div class="tool-item" style="justify-content: center;">暂无工具</div>';
+                return;
             }
             
-            // 导出数据为JSON
-            exportData() {
-                const dataStr = JSON.stringify(this.tools, null, 2);
+            // 按优先级排序
+            const sortedTools = [...tools].sort((a, b) => b.priority - a.priority);
+            
+            sortedTools.forEach(tool => {
+                const toolItem = document.createElement('div');
+                toolItem.className = 'tool-item';
+                toolItem.innerHTML = `
+                    <div class="tool-item-info">
+                        <div class="tool-item-name">${tool.name}</div>
+                        <span class="tool-item-category">${getCategoryName(tool.category)}</span>
+                    </div>
+                    <div class="tool-item-actions">
+                        <button class="tool-item-btn edit-btn" data-id="${tool.id}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="tool-item-btn delete-btn" data-id="${tool.id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                toolsList.appendChild(toolItem);
+            });
+            
+            // 添加编辑和删除事件
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const toolId = parseInt(this.getAttribute('data-id'));
+                    openEditToolForm(toolId);
+                });
+            });
+            
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const toolId = parseInt(this.getAttribute('data-id'));
+                    deleteTool(toolId);
+                });
+            });
+        }
+        
+        // 打开编辑工具表单
+        function openEditToolForm(toolId) {
+            const tool = tools.find(t => t.id === toolId);
+            if (tool) {
+                document.getElementById('edit-tool-id').value = tool.id;
+                document.getElementById('edit-tool-name').value = tool.name;
+                document.getElementById('edit-tool-description').value = tool.description;
+                document.getElementById('edit-tool-image').value = tool.image;
+                document.getElementById('edit-tool-url').value = tool.url;
+                document.getElementById('edit-tool-category').value = tool.category;
+                document.getElementById('edit-tool-priority').value = tool.priority;
+                
+                toolsManagement.style.display = 'none';
+                editToolForm.style.display = 'block';
+            }
+        }
+        
+        // 删除工具
+        function deleteTool(toolId) {
+            if (confirm('确定要删除这个工具吗？此操作不可恢复。')) {
+                tools = tools.filter(t => t.id !== toolId);
+                saveTools();
+                renderTools();
+                renderToolsList();
+                alert('工具已删除！');
+            }
+        }
+        
+        // 保存工具数据到localStorage
+        function saveTools() {
+            localStorage.setItem('tools', JSON.stringify(tools));
+        }
+        
+        // 初始化事件监听
+        function initEventListeners() {
+            // 搜索功能
+            searchBtn.addEventListener('click', function() {
+                currentSearch = searchInput.value.toLowerCase();
+                renderTools();
+            });
+            
+            searchInput.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    currentSearch = searchInput.value.toLowerCase();
+                    renderTools();
+                }
+            });
+            
+            // 分类筛选
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentCategory = this.getAttribute('data-category');
+                    renderTools();
+                });
+            });
+            
+            // 返回按钮
+            backBtn.addEventListener('click', backToHome);
+            
+            // 管理功能
+            adminBtn.addEventListener('click', function() {
+                adminModal.style.display = 'flex';
+                passwordForm.style.display = 'block';
+                adminOptions.style.display = 'none';
+                addToolForm.style.display = 'none';
+                editToolForm.style.display = 'none';
+                toolsManagement.style.display = 'none';
+                adminPassword.value = '';
+            });
+            
+            closeModal.addEventListener('click', function() {
+                adminModal.style.display = 'none';
+            });
+            
+            // 密码验证
+            passwordForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (adminPassword.value === ADMIN_PASSWORD) {
+                    passwordForm.style.display = 'none';
+                    adminOptions.style.display = 'block';
+                } else {
+                    alert('密码错误！');
+                }
+            });
+            
+            // 添加工具
+            addToolBtn.addEventListener('click', function() {
+                adminOptions.style.display = 'none';
+                addToolForm.style.display = 'block';
+            });
+            
+            cancelAdd.addEventListener('click', function() {
+                addToolForm.style.display = 'none';
+                adminOptions.style.display = 'block';
+            });
+            
+            addToolForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const newTool = {
+                    id: Date.now(),
+                    name: document.getElementById('tool-name').value,
+                    description: document.getElementById('tool-description').value,
+                    image: document.getElementById('tool-image').value,
+                    url: document.getElementById('tool-url').value,
+                    category: document.getElementById('tool-category').value,
+                    priority: parseInt(document.getElementById('tool-priority').value)
+                };
+                
+                tools.push(newTool);
+                saveTools();
+                renderTools();
+                
+                // 重置表单并返回管理选项
+                addToolForm.reset();
+                addToolForm.style.display = 'none';
+                adminOptions.style.display = 'block';
+                
+                alert('工具添加成功！');
+            });
+            
+            // 编辑工具
+            cancelEdit.addEventListener('click', function() {
+                editToolForm.style.display = 'none';
+                toolsManagement.style.display = 'block';
+            });
+            
+            editToolForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const toolId = parseInt(document.getElementById('edit-tool-id').value);
+                const toolIndex = tools.findIndex(t => t.id === toolId);
+                
+                if (toolIndex !== -1) {
+                    tools[toolIndex] = {
+                        id: toolId,
+                        name: document.getElementById('edit-tool-name').value,
+                        description: document.getElementById('edit-tool-description').value,
+                        image: document.getElementById('edit-tool-image').value,
+                        url: document.getElementById('edit-tool-url').value,
+                        category: document.getElementById('edit-tool-category').value,
+                        priority: parseInt(document.getElementById('edit-tool-priority').value)
+                    };
+                    
+                    saveTools();
+                    renderTools();
+                    renderToolsList();
+                    
+                    editToolForm.style.display = 'none';
+                    adminOptions.style.display = 'block';
+                    
+                    alert('工具更新成功！');
+                }
+            });
+            
+            // 管理工具
+            manageToolsBtn.addEventListener('click', function() {
+                adminOptions.style.display = 'none';
+                toolsManagement.style.display = 'block';
+                renderToolsList();
+            });
+            
+            backToOptions.addEventListener('click', function() {
+                toolsManagement.style.display = 'none';
+                adminOptions.style.display = 'block';
+            });
+            
+            // 导入导出功能
+            exportBtn.addEventListener('click', function() {
+                const dataStr = JSON.stringify(tools);
                 const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
                 
                 const exportFileDefaultName = 'tools-data.json';
@@ -1119,192 +1273,57 @@
                 linkElement.setAttribute('href', dataUri);
                 linkElement.setAttribute('download', exportFileDefaultName);
                 linkElement.click();
-            }
+            });
             
-            // 从JSON导入数据
-            importData(jsonData) {
-                try {
-                    const importedTools = JSON.parse(jsonData);
-                    if (Array.isArray(importedTools)) {
-                        this.tools = importedTools;
-                        this.saveTools();
-                        this.renderTools();
-                        return true;
-                    }
-                    return false;
-                } catch (e) {
-                    console.error('导入数据失败:', e);
-                    return false;
-                }
-            }
-            
-            // 初始化事件监听器
-            initializeEventListeners() {
-                // 分类筛选
-                document.querySelectorAll('.category-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-                        e.target.classList.add('active');
-                        this.currentCategory = e.target.dataset.category;
-                        this.renderTools();
-                    });
-                });
+            importBtn.addEventListener('click', function() {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.json';
                 
-                // 搜索功能
-                document.getElementById('search-input').addEventListener('input', (e) => {
-                    this.searchTerm = e.target.value;
-                    this.renderTools();
-                });
-                
-                // 返回按钮
-                document.getElementById('back-button').addEventListener('click', () => {
-                    this.closeTool();
-                });
-                
-                // 管理按钮
-                document.getElementById('admin-button').addEventListener('click', () => {
-                    this.showModal('password-modal');
-                });
-                
-                // 密码提交
-                document.getElementById('password-submit').addEventListener('click', () => {
-                    const password = document.getElementById('admin-password').value;
-                    if (password === this.adminPassword) {
-                        this.hideModal('password-modal');
-                        this.showModal('admin-modal');
-                    } else {
-                        alert('密码错误！');
-                    }
-                });
-                
-                // 管理选项
-                document.getElementById('add-tool-btn').addEventListener('click', () => {
-                    this.hideModal('admin-modal');
-                    this.showModal('add-tool-modal');
-                });
-                
-                document.getElementById('import-data-btn').addEventListener('click', () => {
-                    this.hideModal('admin-modal');
-                    this.showModal('import-modal');
-                });
-                
-                document.getElementById('export-data-btn').addEventListener('click', () => {
-                    this.exportData();
-                    this.hideModal('admin-modal');
-                });
-                
-                // 添加工具表单提交
-                document.getElementById('add-tool-form').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    
-                    const toolData = {
-                        name: document.getElementById('tool-name').value,
-                        description: document.getElementById('tool-description').value,
-                        image: document.getElementById('tool-image').value,
-                        link: document.getElementById('tool-link').value,
-                        category: document.getElementById('tool-category').value,
-                        priority: document.getElementById('tool-priority').value
-                    };
-                    
-                    this.addTool(toolData);
-                    this.hideModal('add-tool-modal');
-                    
-                    // 重置表单
-                    document.getElementById('add-tool-form').reset();
-                });
-                
-                // 导入提交
-                document.getElementById('import-submit').addEventListener('click', () => {
-                    const fileInput = document.getElementById('import-file');
-                    if (fileInput.files.length === 0) {
-                        alert('请选择文件');
-                        return;
-                    }
-                    
-                    const file = fileInput.files[0];
+                input.onchange = e => {
+                    const file = e.target.files[0];
                     const reader = new FileReader();
                     
-                    reader.onload = (e) => {
-                        const success = this.importData(e.target.result);
-                        if (success) {
-                            alert('数据导入成功！');
-                            this.hideModal('import-modal');
-                        } else {
-                            alert('数据导入失败，请检查文件格式');
+                    reader.onload = function(e) {
+                        try {
+                            const importedTools = JSON.parse(e.target.result);
+                            if (Array.isArray(importedTools)) {
+                                if (confirm('导入数据将覆盖现有工具，确定要继续吗？')) {
+                                    tools = importedTools;
+                                    saveTools();
+                                    renderTools();
+                                    alert('数据导入成功！');
+                                }
+                            } else {
+                                throw new Error('Invalid data format');
+                            }
+                        } catch (err) {
+                            alert('导入失败：文件格式不正确');
                         }
                     };
                     
                     reader.readAsText(file);
-                });
+                };
                 
-                // 关闭模态框按钮
-                document.querySelectorAll('.close-btn, .btn-secondary[data-modal]').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        const modalId = e.target.closest('[data-modal]').dataset.modal;
-                        this.hideModal(modalId);
-                    });
-                });
-                
-                // 底部导航
-                document.querySelectorAll('.nav-item').forEach(item => {
-                    item.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        if (item.id === 'admin-button') return;
-                        
-                        // 更新活动状态
-                        document.querySelectorAll('.nav-item').forEach(nav => {
-                            nav.classList.remove('active');
-                        });
-                        item.classList.add('active');
-                        
-                        // 切换页面
-                        const pageId = item.dataset.page;
-                        document.querySelectorAll('.page').forEach(page => {
-                            page.classList.remove('active');
-                        });
-                        document.getElementById(pageId).classList.add('active');
-                    });
-                });
-            }
-            
-            // 显示模态框
-            showModal(modalId) {
-                document.getElementById(modalId).style.display = 'flex';
-            }
-            
-            // 隐藏模态框
-            hideModal(modalId) {
-                document.getElementById(modalId).style.display = 'none';
-            }
-        }
-
-        // 初始化应用
-        document.addEventListener('DOMContentLoaded', () => {
-            const toolManager = new ToolManager();
-            
-            // 添加移动端触摸事件
-            let startY = 0;
-            document.addEventListener('touchstart', e => {
-                startY = e.touches[0].clientY;
+                input.click();
             });
             
-            document.addEventListener('touchmove', e => {
-                const currentY = e.touches[0].clientY;
-                const diff = currentY - startY;
-                
-                // 下拉刷新逻辑
-                if (diff > 50 && window.scrollY === 0) {
-                    // 显示刷新指示器
+            // 点击模态框外部关闭
+            adminModal.addEventListener('click', function(e) {
+                if (e.target === adminModal) {
+                    adminModal.style.display = 'none';
                 }
             });
-            
-            // 防止滚动穿透
-            document.querySelectorAll('.modal').forEach(modal => {
-                modal.addEventListener('touchmove', e => {
-                    e.stopPropagation();
-                }, { passive: false });
-            });
-        });
+        }
+        
+        // 初始化应用
+        function init() {
+            renderTools();
+            initEventListeners();
+        }
+        
+        // 启动应用
+        init();
     </script>
 </body>
 </html>
