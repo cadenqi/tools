@@ -2,7 +2,9 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>HTD皮带长度与齿数计算器</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -10,30 +12,32 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
         
         body {
             background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
             color: #334155;
             line-height: 1.6;
-            padding: 20px;
+            padding: 15px;
             min-height: 100vh;
+            -webkit-text-size-adjust: 100%;
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 100%;
             margin: 0 auto;
             background: white;
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
         
         header {
             background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
             color: white;
-            padding: 30px;
+            padding: 20px 15px;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -43,26 +47,26 @@
         }
         
         .logo-container {
-            width: 100px;
-            height: 100px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             background: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
         
         .logo {
-            width: 80px;
-            height: 80px;
+            width: 65px;
+            height: 65px;
             object-fit: contain;
         }
         
         h1 {
-            margin-bottom: 15px;
-            font-size: 32px;
+            margin-bottom: 12px;
+            font-size: 24px;
             font-weight: 800;
             letter-spacing: 0.5px;
             position: relative;
@@ -70,9 +74,9 @@
         }
         
         .description {
-            font-size: 18px;
+            font-size: 14px;
             opacity: 0.95;
-            max-width: 700px;
+            max-width: 100%;
             margin: 0 auto;
             position: relative;
             font-weight: 300;
@@ -80,81 +84,81 @@
         
         .main-content {
             display: flex;
-            flex-wrap: wrap;
-            padding: 30px;
-            gap: 30px;
+            flex-direction: column;
+            padding: 20px 15px;
+            gap: 20px;
             align-items: stretch;
         }
         
-        .input-section {
-            flex: 1;
-            min-width: 350px;
-            padding: 30px;
+        .input-section, .result-section {
+            width: 100%;
+            padding: 20px;
             background: #f8fafc;
-            border-radius: 16px;
+            border-radius: 14px;
             border: 1px solid #e2e8f0;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
             display: flex;
             flex-direction: column;
         }
         
         .section-title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
             color: #1e293b;
-            margin-bottom: 25px;
-            padding-bottom: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
             border-bottom: 2px solid #3b82f6;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .section-title i {
-            color: #3b82f6;
-            font-size: 18px;
-        }
-        
-        .form-group {
-            margin-bottom: 22px;
-            position: relative;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: 600;
-            color: #374151;
-            font-size: 16px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
         
+        .section-title i {
+            color: #3b82f6;
+            font-size: 16px;
+        }
+        
+        .form-group {
+            margin-bottom: 18px;
+            position: relative;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
         label i {
             color: #3b82f6;
-            font-size: 15px;
+            font-size: 14px;
         }
         
         .input-note {
-            font-size: 13px;
+            font-size: 12px;
             color: #64748b;
-            margin-top: 6px;
-            padding: 6px 10px;
+            margin-top: 5px;
+            padding: 5px 8px;
             background: #eef2ff;
-            border-radius: 6px;
+            border-radius: 5px;
             display: inline-block;
         }
         
         input, select {
             width: 100%;
-            padding: 14px 16px;
+            padding: 14px 14px;
             border: 1px solid #d1d5db;
             border-radius: 10px;
             font-size: 16px;
             transition: all 0.3s;
             background: white;
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+            -webkit-appearance: none;
         }
         
         input:focus, select:focus {
@@ -164,34 +168,34 @@
         }
         
         .button-group {
-            margin-top: auto;
+            margin-top: 15px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
         }
         
         button {
             background: linear-gradient(to right, #2563eb, #3b82f6);
             color: white;
             border: none;
-            padding: 16px 24px;
+            padding: 16px;
             border-radius: 12px;
             cursor: pointer;
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 600;
             width: 100%;
             transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
         }
         
-        button:hover {
+        button:active {
             background: linear-gradient(to right, #1e40af, #2563eb);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+            transform: translateY(2px);
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
         }
         
         #copy-results {
@@ -199,21 +203,9 @@
             box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
         }
         
-        #copy-results:hover {
+        #copy-results:active {
             background: linear-gradient(to right, #059669, #047857);
-            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35);
-        }
-        
-        .result-section {
-            flex: 1;
-            min-width: 350px;
-            padding: 30px;
-            background: white;
-            border-radius: 16px;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.04);
-            display: flex;
-            flex-direction: column;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35);
         }
         
         .result-content {
@@ -223,36 +215,30 @@
         .result-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 18px;
+            gap: 15px;
         }
         
         .result-item {
             display: flex;
             flex-direction: column;
-            padding: 20px;
+            padding: 16px;
             background: #f8fafc;
-            border-radius: 12px;
+            border-radius: 10px;
             border-left: 4px solid #3b82f6;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .result-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
         }
         
         .result-label {
             font-weight: 600;
             color: #64748b;
-            font-size: 15px;
-            margin-bottom: 8px;
+            font-size: 14px;
+            margin-bottom: 6px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
         
         .result-value {
-            font-size: 20px;
+            font-size: 17px;
             color: #1e293b;
             font-weight: 700;
         }
@@ -264,7 +250,7 @@
         }
         
         .combined-value {
-            font-size: 18px;
+            font-size: 16px;
             color: #3b82f6;
             font-weight: 600;
         }
@@ -272,30 +258,30 @@
         .warning {
             background: #fef3c7;
             color: #92400e;
-            padding: 16px;
-            border-radius: 12px;
-            margin-top: 20px;
+            padding: 14px;
+            border-radius: 10px;
+            margin-top: 15px;
             border-left: 4px solid #f59e0b;
-            font-size: 15px;
+            font-size: 14px;
             line-height: 1.5;
         }
         
         .note {
             background: #dbeafe;
             color: #1e40af;
-            padding: 16px;
-            border-radius: 12px;
-            margin-top: 20px;
+            padding: 14px;
+            border-radius: 10px;
+            margin-top: 15px;
             border-left: 4px solid #3b82f6;
-            font-size: 15px;
+            font-size: 14px;
             line-height: 1.5;
         }
         
         .ad-container {
-            margin: 30px;
-            border-radius: 16px;
+            margin: 20px 15px;
+            border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
             position: relative;
         }
         
@@ -321,153 +307,113 @@
             left: 0;
             right: 0;
             background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-            padding: 20px;
+            padding: 15px;
             color: white;
             text-align: center;
         }
         
         .ad-title {
-            font-size: 22px;
-            margin-bottom: 10px;
+            font-size: 18px;
+            margin-bottom: 8px;
             font-weight: 700;
         }
         
         .ad-description {
-            font-size: 16px;
+            font-size: 14px;
             opacity: 0.9;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
         
         .ad-button {
             display: inline-block;
             background: #f59e0b;
             color: white;
-            padding: 10px 20px;
+            padding: 8px 16px;
             border-radius: 30px;
             text-decoration: none;
             font-weight: 600;
-            margin-top: 8px;
+            margin-top: 5px;
             transition: all 0.3s;
-        }
-        
-        .ad-button:hover {
-            background: #d97706;
-            transform: translateY(-2px);
+            font-size: 14px;
         }
         
         footer {
             text-align: center;
-            padding: 25px;
+            padding: 20px 15px;
             color: #64748b;
-            font-size: 15px;
+            font-size: 13px;
             border-top: 1px solid #e2e8f0;
             background: #f8fafc;
-        }
-        
-        @media (max-width: 900px) {
-            .main-content {
-                flex-direction: column;
-                padding: 20px;
-                gap: 20px;
-            }
-            
-            .input-section, .result-section {
-                min-width: 100%;
-                padding: 25px;
-            }
-            
-            .ad-container {
-                margin: 20px;
-            }
-            
-            h1 {
-                font-size: 28px;
-            }
-            
-            .description {
-                font-size: 16px;
-            }
-            
-            .section-title {
-                font-size: 19px;
-            }
-            
-            .result-value {
-                font-size: 18px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            header {
-                padding: 25px 20px;
-            }
-            
-            .logo-container {
-                width: 80px;
-                height: 80px;
-                margin-bottom: 15px;
-            }
-            
-            .logo {
-                width: 65px;
-                height: 65px;
-            }
-            
-            h1 {
-                font-size: 24px;
-            }
-            
-            .description {
-                font-size: 15px;
-            }
-            
-            .input-section, .result-section {
-                padding: 20px;
-            }
-            
-            .section-title {
-                font-size: 18px;
-            }
-            
-            label {
-                font-size: 15px;
-            }
-            
-            input, select {
-                padding: 12px 14px;
-                font-size: 15px;
-            }
-            
-            button {
-                padding: 14px 20px;
-                font-size: 16px;
-            }
-            
-            .result-value {
-                font-size: 17px;
-            }
-            
-            .ad-title {
-                font-size: 19px;
-            }
-            
-            .ad-overlay {
-                padding: 15px;
-            }
-            
-            .ad-description {
-                font-size: 14px;
-            }
-            
-            footer {
-                padding: 20px;
-                font-size: 14px;
-            }
         }
         
         .custom-pitch-container {
             display: none;
             margin-top: 10px;
+        }
+        
+        /* 小屏幕设备优化 */
+        @media (min-width: 480px) {
+            .container {
+                max-width: 95%;
+            }
+            
+            header {
+                padding: 25px 20px;
+            }
+            
+            h1 {
+                font-size: 26px;
+            }
+            
+            .description {
+                font-size: 15px;
+            }
+        }
+        
+        /* 平板设备优化 */
+        @media (min-width: 768px) {
+            body {
+                padding: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            
+            .container {
+                max-width: 90%;
+            }
+            
+            .main-content {
+                flex-direction: row;
+                padding: 25px;
+            }
+            
+            .input-section, .result-section {
+                width: 50%;
+            }
+            
+            h1 {
+                font-size: 28px;
+            }
+        }
+        
+        /* 大屏设备优化 */
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 1000px;
+            }
+            
+            header {
+                padding: 30px;
+            }
+            
+            h1 {
+                font-size: 32px;
+            }
+            
+            .description {
+                font-size: 18px;
+            }
         }
     </style>
 </head>
@@ -475,7 +421,6 @@
     <div class="container">
         <header>
             <div class="logo-container">
-                <!-- 您可以替换下面的图片URL为您的Logo -->
                 <img src="https://image.qcc.com/logo/42b8de4114c25b56f8441eb40bdfa761.jpg?x-oss-process=style/logo_200" alt="HTD计算器Logo" class="logo">
             </div>
             <h1>自行车皮带长度计算器</h1>
