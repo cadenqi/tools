@@ -19,8 +19,8 @@
         body {
             background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
             color: #334155;
-            line-height: 1.6;
-            padding: 15px;
+            line-height: 1.5;
+            padding: 12px;
             min-height: 100vh;
             -webkit-text-size-adjust: 100%;
         }
@@ -29,84 +29,81 @@
             max-width: 100%;
             margin: 0 auto;
             background: white;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-radius: 14px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
         
         header {
             background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
             color: white;
-            padding: 20px 15px;
+            padding: 18px 15px;
             text-align: center;
             position: relative;
             overflow: hidden;
+        }
+        
+        .logo-title {
             display: flex;
-            flex-direction: column;
             align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 10px;
         }
         
         .logo-container {
-            width: 80px;
-            height: 80px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             background: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
         }
         
         .logo {
-            width: 65px;
-            height: 65px;
+            width: 50px;
+            height: 50px;
             object-fit: contain;
         }
         
         h1 {
-            margin-bottom: 12px;
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 800;
-            letter-spacing: 0.5px;
-            position: relative;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
         }
         
         .description {
-            font-size: 14px;
+            font-size: 13px;
             opacity: 0.95;
             max-width: 100%;
             margin: 0 auto;
-            position: relative;
             font-weight: 300;
         }
         
         .main-content {
             display: flex;
             flex-direction: column;
-            padding: 20px 15px;
-            gap: 20px;
-            align-items: stretch;
+            padding: 18px 15px;
+            gap: 18px;
         }
         
         .input-section, .result-section {
             width: 100%;
-            padding: 20px;
+            padding: 18px;
             background: #f8fafc;
-            border-radius: 14px;
+            border-radius: 12px;
             border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-            display: flex;
-            flex-direction: column;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
         }
         
         .section-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             color: #1e293b;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
             border-bottom: 2px solid #3b82f6;
             display: flex;
             align-items: center;
@@ -115,20 +112,20 @@
         
         .section-title i {
             color: #3b82f6;
-            font-size: 16px;
+            font-size: 15px;
         }
         
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 16px;
             position: relative;
         }
         
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: 600;
             color: #374151;
-            font-size: 15px;
+            font-size: 14px;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -136,76 +133,75 @@
         
         label i {
             color: #3b82f6;
-            font-size: 14px;
+            font-size: 13px;
         }
         
         .input-note {
-            font-size: 12px;
+            font-size: 11px;
             color: #64748b;
-            margin-top: 5px;
-            padding: 5px 8px;
+            margin-top: 4px;
+            padding: 4px 8px;
             background: #eef2ff;
-            border-radius: 5px;
+            border-radius: 4px;
             display: inline-block;
         }
         
         input, select {
             width: 100%;
-            padding: 14px 14px;
+            padding: 12px;
             border: 1px solid #d1d5db;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: all 0.3s;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.2s;
             background: white;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
             -webkit-appearance: none;
         }
         
         input:focus, select:focus {
             outline: none;
             border-color: #3b82f6;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
         }
         
         .button-group {
-            margin-top: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+            margin-top: 12px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
         }
         
         button {
             background: linear-gradient(to right, #2563eb, #3b82f6);
             color: white;
             border: none;
-            padding: 16px;
-            border-radius: 12px;
+            padding: 14px;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
-            width: 100%;
-            transition: all 0.3s;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+            gap: 6px;
+            box-shadow: 0 3px 8px rgba(37, 99, 235, 0.2);
         }
         
         button:active {
             background: linear-gradient(to right, #1e40af, #2563eb);
             transform: translateY(2px);
-            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+            box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
         }
         
         #copy-results {
             background: linear-gradient(to right, #10b981, #059669);
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+            box-shadow: 0 3px 8px rgba(16, 185, 129, 0.2);
         }
         
         #copy-results:active {
             background: linear-gradient(to right, #059669, #047857);
-            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35);
+            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.25);
         }
         
         .result-content {
@@ -215,30 +211,30 @@
         .result-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 15px;
+            gap: 12px;
         }
         
         .result-item {
             display: flex;
             flex-direction: column;
-            padding: 16px;
+            padding: 14px;
             background: #f8fafc;
-            border-radius: 10px;
+            border-radius: 8px;
             border-left: 4px solid #3b82f6;
         }
         
         .result-label {
             font-weight: 600;
             color: #64748b;
-            font-size: 14px;
-            margin-bottom: 6px;
+            font-size: 13px;
+            margin-bottom: 5px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
         }
         
         .result-value {
-            font-size: 17px;
+            font-size: 15px;
             color: #1e293b;
             font-weight: 700;
         }
@@ -250,7 +246,7 @@
         }
         
         .combined-value {
-            font-size: 16px;
+            font-size: 14px;
             color: #3b82f6;
             font-weight: 600;
         }
@@ -258,36 +254,37 @@
         .warning {
             background: #fef3c7;
             color: #92400e;
-            padding: 14px;
-            border-radius: 10px;
-            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 12px;
             border-left: 4px solid #f59e0b;
-            font-size: 14px;
-            line-height: 1.5;
+            font-size: 13px;
+            line-height: 1.4;
         }
         
         .note {
             background: #dbeafe;
             color: #1e40af;
-            padding: 14px;
-            border-radius: 10px;
-            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 12px;
             border-left: 4px solid #3b82f6;
-            font-size: 14px;
-            line-height: 1.5;
+            font-size: 13px;
+            line-height: 1.4;
         }
         
         .ad-container {
-            margin: 20px 15px;
-            border-radius: 14px;
+            margin: 15px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.07);
             position: relative;
         }
         
         .ad-image {
             width: 100%;
-            height: auto;
+            height: 120px;
+            object-fit: cover;
             display: block;
         }
         
@@ -307,73 +304,71 @@
             left: 0;
             right: 0;
             background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-            padding: 15px;
+            padding: 12px;
             color: white;
             text-align: center;
         }
         
         .ad-title {
-            font-size: 18px;
-            margin-bottom: 8px;
+            font-size: 16px;
+            margin-bottom: 5px;
             font-weight: 700;
         }
         
         .ad-description {
-            font-size: 14px;
+            font-size: 12px;
             opacity: 0.9;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         
         .ad-button {
             display: inline-block;
             background: #f59e0b;
             color: white;
-            padding: 8px 16px;
-            border-radius: 30px;
+            padding: 6px 12px;
+            border-radius: 20px;
             text-decoration: none;
             font-weight: 600;
-            margin-top: 5px;
-            transition: all 0.3s;
-            font-size: 14px;
+            font-size: 12px;
         }
         
         footer {
             text-align: center;
-            padding: 20px 15px;
+            padding: 15px;
             color: #64748b;
-            font-size: 13px;
+            font-size: 12px;
             border-top: 1px solid #e2e8f0;
             background: #f8fafc;
         }
         
         .custom-pitch-container {
             display: none;
-            margin-top: 10px;
+            margin-top: 8px;
         }
         
         /* 小屏幕设备优化 */
-        @media (min-width: 480px) {
+        @media (min-width: 400px) {
             .container {
                 max-width: 95%;
             }
             
             header {
-                padding: 25px 20px;
+                padding: 20px;
             }
             
             h1 {
-                font-size: 26px;
+                font-size: 22px;
             }
             
             .description {
-                font-size: 15px;
+                font-size: 14px;
             }
         }
         
         /* 平板设备优化 */
         @media (min-width: 768px) {
             body {
-                padding: 20px;
+                padding: 15px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -385,7 +380,7 @@
             
             .main-content {
                 flex-direction: row;
-                padding: 25px;
+                padding: 20px;
             }
             
             .input-section, .result-section {
@@ -393,26 +388,26 @@
             }
             
             h1 {
-                font-size: 28px;
+                font-size: 24px;
             }
         }
         
         /* 大屏设备优化 */
         @media (min-width: 1024px) {
             .container {
-                max-width: 1000px;
+                max-width: 900px;
             }
             
             header {
-                padding: 30px;
+                padding: 25px;
             }
             
             h1 {
-                font-size: 32px;
+                font-size: 26px;
             }
             
             .description {
-                font-size: 18px;
+                font-size: 15px;
             }
         }
     </style>
@@ -420,10 +415,12 @@
 <body>
     <div class="container">
         <header>
-            <div class="logo-container">
-                <img src="https://image.qcc.com/logo/42b8de4114c25b56f8441eb40bdfa761.jpg?x-oss-process=style/logo_200" alt="HTD计算器Logo" class="logo">
+            <div class="logo-title">
+                <div class="logo-container">
+                    <img src="https://image.qcc.com/logo/42b8de4114c25b56f8441eb40bdfa761.jpg?x-oss-process=style/logo_200" alt="HTD计算器Logo" class="logo">
+                </div>
+                <h1>皮带长度计算器</h1>
             </div>
-            <h1>自行车皮带长度计算器</h1>
             <p class="description">精准计算皮带参数，优化自行车传动系统设计</p>
         </header>
         
@@ -466,8 +463,8 @@
                 </div>
                 
                 <div class="button-group">
-                    <button id="calculate-btn"><i class="fas fa-calculator"></i> 计算皮带参数</button>
-                    <button id="copy-results"><i class="fas fa-copy"></i> 复制计算结果</button>
+                    <button id="calculate-btn"><i class="fas fa-calculator"></i> 计算</button>
+                    <button id="copy-results"><i class="fas fa-copy"></i> 复制结果</button>
                 </div>
                 
                 <div class="note">
@@ -688,7 +685,7 @@
                     .then(() => {
                         // 改变按钮文本提示复制成功
                         const originalText = copyBtn.innerHTML;
-                        copyBtn.innerHTML = '<i class="fas fa-check"></i> 已复制到剪贴板';
+                        copyBtn.innerHTML = '<i class="fas fa-check"></i> 已复制';
                         copyBtn.style.background = 'linear-gradient(to right, #059669, #047857)';
                         
                         // 2秒后恢复原状
@@ -711,7 +708,7 @@
                             const successful = document.execCommand('copy');
                             if (successful) {
                                 const originalText = copyBtn.innerHTML;
-                                copyBtn.innerHTML = '<i class="fas fa-check"></i> 已复制到剪贴板';
+                                copyBtn.innerHTML = '<i class="fas fa-check"></i> 已复制';
                                 copyBtn.style.background = 'linear-gradient(to right, #059669, #047857)';
                                 
                                 setTimeout(() => {
