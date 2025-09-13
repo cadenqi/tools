@@ -18,7 +18,7 @@
             --background: #f7fafc;
             --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             --header-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            --nav-height: 60px;
+            --nav-height: 56px;
         }
         
         * {
@@ -41,39 +41,6 @@
             max-width: 100%;
             margin: 0 auto;
             padding-bottom: var(--nav-height);
-        }
-        
-        /* 头部样式 */
-        .app-header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 12px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: var(--header-shadow);
-        }
-        
-        .header-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 15px;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-        }
-        
-        .logo i {
-            font-size: 1.6rem;
-            margin-right: 8px;
-        }
-        
-        .logo h1 {
-            font-size: 1.2rem;
-            font-weight: 700;
         }
         
         /* 页面容器 */
@@ -102,7 +69,7 @@
             background: white;
             display: flex;
             justify-content: space-around;
-            padding: 8px 0 5px;
+            padding: 6px 0;
             box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
             z-index: 1000;
             height: var(--nav-height);
@@ -114,10 +81,11 @@
             align-items: center;
             text-decoration: none;
             color: #718096;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             padding: 4px 0;
             flex: 1;
             max-width: 33.33%;
+            transition: all 0.2s;
         }
         
         .nav-item.active {
@@ -125,15 +93,15 @@
         }
         
         .nav-icon {
-            font-size: 1.1rem;
-            margin-bottom: 3px;
+            font-size: 1rem;
+            margin-bottom: 2px;
         }
         
         /* 工具页面样式 */
         .category-nav {
             display: flex;
             overflow-x: auto;
-            margin: 15px 0;
+            margin: 0 0 15px 0;
             gap: 8px;
             padding-bottom: 5px;
             -webkit-overflow-scrolling: touch;
@@ -161,7 +129,6 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 12px;
-            margin-bottom: 20px;
         }
         
         .tool-card {
@@ -170,10 +137,19 @@
             overflow: hidden;
             transition: all 0.3s;
             box-shadow: var(--card-shadow);
+            cursor: pointer;
+            height: 180px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
         }
         
         .tool-image {
-            height: 100px;
+            height: 110px;
             overflow: hidden;
             display: flex;
             align-items: center;
@@ -185,37 +161,38 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.3s;
+        }
+        
+        .tool-card:hover .tool-image img {
+            transform: scale(1.05);
         }
         
         .tool-content {
             padding: 12px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         
         .tool-title {
             font-size: 0.9rem;
             font-weight: 600;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             color: var(--primary);
-        }
-        
-        .tool-link {
-            display: block;
-            width: 100%;
-            padding: 8px;
-            background: var(--secondary);
-            color: white;
             text-align: center;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.8rem;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s;
         }
         
-        .tool-link:hover {
-            background: var(--primary);
+        .tool-desc {
+            font-size: 0.75rem;
+            color: #718096;
+            text-align: center;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
         
         /* 工具展示区 */
@@ -231,39 +208,11 @@
             flex-direction: column;
         }
         
-        .tool-display-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 15px;
-            background: var(--primary);
-            color: white;
-            height: 60px;
-        }
-        
-        .tool-display-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-        
-        .close-tool {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            border-radius: 50%;
-            width: 35px;
-            height: 35px;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
         .tool-display-content {
             flex: 1;
             width: 100%;
             border: none;
-            height: calc(100% - 60px);
+            height: 100%;
         }
         
         /* 选型表页面样式 */
@@ -385,43 +334,27 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: var(--card-shadow);
-            display: flex;
-            flex-direction: column;
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 15px;
         }
         
-        .knowledge-content {
-            padding: 15px;
-            flex: 1;
+        .knowledge-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
         }
         
         .knowledge-title {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: var(--primary);
         }
         
         .knowledge-desc {
             color: #718096;
-            margin-bottom: 15px;
             line-height: 1.5;
-            font-size: 0.9rem;
-        }
-        
-        .knowledge-link {
-            display: inline-block;
-            padding: 8px 15px;
-            background: var(--secondary);
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: 600;
             font-size: 0.85rem;
-            transition: all 0.2s;
-        }
-        
-        .knowledge-link:hover {
-            background: var(--primary);
         }
         
         /* 响应式设计 */
@@ -452,23 +385,26 @@
             color: #718096;
         }
         
-        /* 隐藏头部类 */
-        .header-hidden {
-            display: none !important;
+        /* 关闭按钮 */
+        .close-button {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            color: white;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
         }
     </style>
 </head>
 <body>
-    <!-- 头部 -->
-    <div class="app-header" id="appHeader">
-        <div class="header-content">
-            <div class="logo">
-                <i class="fas fa-bicycle"></i>
-                <h1>自行车工程工具集</h1>
-            </div>
-        </div>
-    </div>
-    
     <div class="app-container">
         <!-- 工具页面 -->
         <div id="toolsPage" class="page active">
@@ -545,14 +481,13 @@
     
     <!-- 工具展示容器 -->
     <div class="tool-display-container" id="toolDisplay">
-        <div class="tool-display-header">
-            <div class="tool-display-title" id="toolDisplayTitle">工具名称</div>
-            <button class="close-tool" id="closeTool">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
         <iframe class="tool-display-content" id="toolFrame" src="about:blank"></iframe>
     </div>
+    
+    <!-- 关闭按钮 -->
+    <button class="close-button" id="closeTool">
+        <i class="fas fa-times"></i>
+    </button>
     
     <!-- 底部导航 -->
     <div class="bottom-nav">
@@ -580,7 +515,7 @@
                 category: "performance",
                 description: "估算不同设计条件下的空气阻力与性能影响",
                 image: "https://placehold.co/600x400/3498db/white?text=空气动力学",
-                link: "https://cadenqi.github.io/tools/1",
+                link: "aero.html",
                 uses: 678
             },
             {
@@ -589,7 +524,7 @@
                 category: "material",
                 description: "分析自行车各部件的重量分布，优化平衡性",
                 image: "https://placehold.co/600x400/1abc9c/white?text=重量分析",
-                link: "https://cadenqi.github.io/tools/2",
+                link: "weight.html",
                 uses: 432
             },
             {
@@ -598,7 +533,7 @@
                 category: "performance",
                 description: "模拟自行车在不同条件下的性能表现，预测速度与功率",
                 image: "https://placehold.co/600x400/e74c3c/white?text=性能模拟",
-                link: "https://cadenqi.github.io/tools/3",
+                link: "performance.html",
                 uses: 945
             },
             {
@@ -607,7 +542,7 @@
                 category: "material",
                 description: "计算车架和零部件的应力分布与安全系数",
                 image: "https://placehold.co/600x400/f39c12/white?text=材料强度",
-                link: "https://cadenqi.github.io/tools/4",
+                link: "material.html",
                 uses: 723
             },
             {
@@ -615,7 +550,7 @@
                 title: "HTD同步带计算",
                 category: "mechanical",
                 description: "计算同步皮带长度和齿数，确定合适的皮带规格",
-                image: "https://cadenqi.github.io/tools/1",
+                image: "https://placehold.co/600x400/9b59b6/white?text=同步带计算",
                 link: "htd-belt.html",
                 uses: 567
             },
@@ -678,17 +613,17 @@
             {
                 title: "自行车车架几何指南",
                 description: "深入了解自行车车架几何参数的含义及其对骑行体验的影响",
-                link: "https://cadenqi.github.io/tools/1"
+                link: "https://example.com/frame-geometry"
             },
             {
                 title: "传动系统维护技巧",
                 description: "学习如何正确维护和调整自行车的传动系统，延长使用寿命",
-                link: "WWW.BAIDU.COM"
+                link: "https://example.com/drivetrain-maintenance"
             },
             {
                 title: "材料科学与自行车设计",
                 description: "探索不同材料在自行车制造中的应用及其特性比较",
-                link: "TAOBAO.COM"
+                link: "https://example.com/materials-science"
             },
             {
                 title: "空气动力学原理",
@@ -721,8 +656,8 @@
             // 底部导航切换
             const navItems = document.querySelectorAll('.nav-item');
             const pages = document.querySelectorAll('.page');
-            const appHeader = document.getElementById('appHeader');
             const toolDisplay = document.getElementById('toolDisplay');
+            const closeTool = document.getElementById('closeTool');
             
             // 页面切换函数
             function switchPage(pageId) {
@@ -735,13 +670,6 @@
                         }, 50);
                     }
                 });
-                
-                // 选型表和知识库页面隐藏顶部标题
-                if (pageId === 'specsPage' || pageId === 'knowledgePage') {
-                    appHeader.classList.add('header-hidden');
-                } else {
-                    appHeader.classList.remove('header-hidden');
-                }
                 
                 // 更新导航项状态
                 navItems.forEach(item => {
@@ -853,25 +781,25 @@
             
             // 工具展示功能
             const toolFrame = document.getElementById('toolFrame');
-            const toolDisplayTitle = document.getElementById('toolDisplayTitle');
-            const closeTool = document.getElementById('closeTool');
             
-            // 打开工具
+            // 工具卡片点击事件
             document.addEventListener('click', function(e) {
-                if (e.target.classList.contains('tool-link')) {
-                    const toolUrl = e.target.getAttribute('data-tool');
-                    const toolTitle = e.target.getAttribute('data-title');
+                // 工具卡片点击
+                if (e.target.closest('.tool-card')) {
+                    const card = e.target.closest('.tool-card');
+                    const toolLink = card.getAttribute('data-link');
+                    const toolTitle = card.getAttribute('data-title');
                     
-                    openToolDisplay(toolUrl, toolTitle);
+                    openToolDisplay(toolLink, toolTitle);
                 }
                 
-                // 知识库链接点击
-                if (e.target.classList.contains('knowledge-link')) {
-                    e.preventDefault();
-                    const knowledgeUrl = e.target.getAttribute('data-link');
-                    const knowledgeTitle = e.target.getAttribute('data-title');
+                // 知识卡片点击
+                if (e.target.closest('.knowledge-card')) {
+                    const card = e.target.closest('.knowledge-card');
+                    const knowledgeLink = card.getAttribute('data-link');
+                    const knowledgeTitle = card.getAttribute('data-title');
                     
-                    openToolDisplay(knowledgeUrl, knowledgeTitle);
+                    openToolDisplay(knowledgeLink, knowledgeTitle);
                 }
             });
             
@@ -886,15 +814,18 @@
             });
             
             function openToolDisplay(url, title) {
-                toolDisplayTitle.textContent = title;
+                document.title = title; // 修改页面标题
                 toolFrame.src = url;
                 toolDisplay.style.display = 'flex';
+                closeTool.style.display = 'flex';
                 document.body.style.overflow = 'hidden';
             }
             
             function closeToolDisplay() {
                 toolDisplay.style.display = 'none';
                 toolFrame.src = 'about:blank';
+                closeTool.style.display = 'none';
+                document.title = "自行车工程工具集"; // 恢复页面标题
                 document.body.style.overflow = 'auto';
             }
         });
@@ -918,6 +849,8 @@
             const card = document.createElement('div');
             card.className = 'tool-card';
             card.setAttribute('data-category', tool.category);
+            card.setAttribute('data-link', tool.link);
+            card.setAttribute('data-title', tool.title);
             
             card.innerHTML = `
                 <div class="tool-image">
@@ -925,7 +858,7 @@
                 </div>
                 <div class="tool-content">
                     <h3 class="tool-title">${tool.title}</h3>
-                    <button class="tool-link" data-tool="${tool.link}" data-title="${tool.title}">使用工具</button>
+                    <p class="tool-desc">${tool.description}</p>
                 </div>
             `;
             
@@ -938,7 +871,7 @@
             
             toolCards.forEach(card => {
                 if (category === 'all' || card.getAttribute('data-category') === category) {
-                    card.style.display = 'block';
+                    card.style.display = 'flex';
                 } else {
                     card.style.display = 'none';
                 }
@@ -981,13 +914,12 @@
         function createKnowledgeCard(knowledge) {
             const card = document.createElement('div');
             card.className = 'knowledge-card';
+            card.setAttribute('data-link', knowledge.link);
+            card.setAttribute('data-title', knowledge.title);
             
             card.innerHTML = `
-                <div class="knowledge-content">
-                    <h3 class="knowledge-title">${knowledge.title}</h3>
-                    <p class="knowledge-desc">${knowledge.description}</p>
-                    <a href="${knowledge.link}" class="knowledge-link" data-link="${knowledge.link}" data-title="${knowledge.title}">阅读更多</a>
-                </div>
+                <h3 class="knowledge-title">${knowledge.title}</h3>
+                <p class="knowledge-desc">${knowledge.description}</p>
             `;
             
             return card;
