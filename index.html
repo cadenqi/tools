@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>自行车工程工具集 - 专业设计计算平台</title>
+    <title>自行车工程工具集</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         /* 基础样式设置 */
         :root {
@@ -18,6 +18,7 @@
             --background: #f7fafc;
             --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             --header-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            --nav-height: 60px;
         }
         
         * {
@@ -28,7 +29,7 @@
         }
         
         body {
-            font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Noto Sans SC', 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: var(--text);
             background-color: var(--background);
@@ -39,14 +40,14 @@
         .app-container {
             max-width: 100%;
             margin: 0 auto;
-            padding-bottom: 70px; /* 为底部导航留出空间 */
+            padding-bottom: var(--nav-height);
         }
         
         /* 头部样式 */
         .app-header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
-            padding: 15px 0;
+            padding: 12px 0;
             position: sticky;
             top: 0;
             z-index: 100;
@@ -66,12 +67,12 @@
         }
         
         .logo i {
-            font-size: 1.8rem;
-            margin-right: 10px;
+            font-size: 1.6rem;
+            margin-right: 8px;
         }
         
         .logo h1 {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             font-weight: 700;
         }
         
@@ -79,11 +80,12 @@
         .page {
             display: none;
             padding: 15px;
-            animation: fadeIn 0.3s ease;
+            min-height: calc(100vh - var(--nav-height));
         }
         
         .page.active {
             display: block;
+            animation: fadeIn 0.3s ease;
         }
         
         @keyframes fadeIn {
@@ -100,9 +102,10 @@
             background: white;
             display: flex;
             justify-content: space-around;
-            padding: 10px 0;
+            padding: 8px 0 5px;
             box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
             z-index: 1000;
+            height: var(--nav-height);
         }
         
         .nav-item {
@@ -111,8 +114,10 @@
             align-items: center;
             text-decoration: none;
             color: #718096;
-            font-size: 0.8rem;
-            padding: 5px 10px;
+            font-size: 0.7rem;
+            padding: 4px 0;
+            flex: 1;
+            max-width: 33.33%;
         }
         
         .nav-item.active {
@@ -120,8 +125,8 @@
         }
         
         .nav-icon {
-            font-size: 1.4rem;
-            margin-bottom: 4px;
+            font-size: 1.1rem;
+            margin-bottom: 3px;
         }
         
         /* 工具页面样式 */
@@ -129,21 +134,22 @@
             display: flex;
             overflow-x: auto;
             margin: 15px 0;
-            gap: 10px;
+            gap: 8px;
             padding-bottom: 5px;
             -webkit-overflow-scrolling: touch;
         }
         
         .category-btn {
-            padding: 10px 15px;
+            padding: 8px 12px;
             background: white;
             border: none;
-            border-radius: 20px;
+            border-radius: 18px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             cursor: pointer;
             white-space: nowrap;
             box-shadow: var(--card-shadow);
+            transition: all 0.2s;
         }
         
         .category-btn.active {
@@ -154,7 +160,7 @@
         .tool-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
+            gap: 12px;
             margin-bottom: 20px;
         }
         
@@ -205,6 +211,11 @@
             font-size: 0.8rem;
             border: none;
             cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .tool-link:hover {
+            background: var(--primary);
         }
         
         /* 工具展示区 */
@@ -224,7 +235,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px;
+            padding: 12px 15px;
             background: var(--primary);
             color: white;
             height: 60px;
@@ -278,7 +289,7 @@
             padding: 12px 15px;
             border: 1px solid #e2e8f0;
             border-radius: 25px;
-            font-size: 1rem;
+            font-size: 0.95rem;
         }
         
         .specs-search button {
@@ -308,6 +319,7 @@
             font-weight: 600;
             color: #718096;
             position: relative;
+            font-size: 0.9rem;
         }
         
         .specs-tab.active {
@@ -331,6 +343,7 @@
             border-radius: 10px;
             overflow: hidden;
             box-shadow: var(--card-shadow);
+            font-size: 0.9rem;
         }
         
         .specs-table th, .specs-table td {
@@ -349,6 +362,18 @@
         }
         
         /* 知识库页面样式 */
+        .knowledge-ad {
+            width: 100%;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .knowledge-ad img {
+            width: 100%;
+            height: auto;
+        }
+        
         .knowledge-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -360,21 +385,13 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: var(--card-shadow);
-        }
-        
-        .knowledge-image {
-            height: 150px;
-            overflow: hidden;
-        }
-        
-        .knowledge-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            display: flex;
+            flex-direction: column;
         }
         
         .knowledge-content {
             padding: 15px;
+            flex: 1;
         }
         
         .knowledge-title {
@@ -388,6 +405,7 @@
             color: #718096;
             margin-bottom: 15px;
             line-height: 1.5;
+            font-size: 0.9rem;
         }
         
         .knowledge-link {
@@ -398,7 +416,12 @@
             text-decoration: none;
             border-radius: 6px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        
+        .knowledge-link:hover {
+            background: var(--primary);
         }
         
         /* 响应式设计 */
@@ -421,11 +444,23 @@
                 grid-template-columns: repeat(3, 1fr);
             }
         }
+        
+        /* 搜索结果显示 */
+        .search-result {
+            text-align: center;
+            padding: 20px;
+            color: #718096;
+        }
+        
+        /* 隐藏头部类 */
+        .header-hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
     <!-- 头部 -->
-    <div class="app-header">
+    <div class="app-header" id="appHeader">
         <div class="header-content">
             <div class="logo">
                 <i class="fas fa-bicycle"></i>
@@ -442,16 +477,16 @@
                     <i class="fas fa-th"></i> 所有工具
                 </button>
                 <button class="category-btn" data-category="design">
-                    <i class="fas fa-pencil-ruler"></i> 设计与几何
+                    <i class="fas fa-pencil-ruler"></i> 设计
                 </button>
                 <button class="category-btn" data-category="mechanical">
-                    <i class="fas fa-cogs"></i> 机械计算
+                    <i class="fas fa-cogs"></i> 机械
                 </button>
                 <button class="category-btn" data-category="material">
-                    <i class="fas fa-weight-hanging"></i> 材料分析
+                    <i class="fas fa-weight-hanging"></i> 材料
                 </button>
                 <button class="category-btn" data-category="performance">
-                    <i class="fas fa-tachometer-alt"></i> 性能模拟
+                    <i class="fas fa-tachometer-alt"></i> 性能
                 </button>
             </div>
             
@@ -497,6 +532,11 @@
         
         <!-- 知识库页面 -->
         <div id="knowledgePage" class="page">
+            <div class="knowledge-ad">
+                <!-- 广告图片，可以替换 -->
+                <img src="https://placehold.co/600x200/9b59b6/white?text=知识库广告位" alt="知识库广告">
+            </div>
+            
             <div class="knowledge-grid" id="knowledgeGrid">
                 <!-- 知识卡片将在这里动态生成 -->
             </div>
@@ -532,68 +572,16 @@
 
     <script>
         // ==================== 工具数据配置 ====================
+        // 按照ID从大到小排序，ID越大显示越靠前
         const toolsData = [
             {
-                id: 1,
-                title: "车架几何计算器",
-                category: "design",
-                description: "计算自行车车架的关键几何参数，如Stack、Reach、轴距等",
-                image: "https://i2.hdslb.com/bfs/archive/5768269c5535c2fa8e722729e9ed19d3f414d782.jpg",
-                link: "https://cadenqi.github.io/tools/1",
-                uses: 1243,
-                featured: true,
-                badge: "热门"
-            },
-            {
-                id: 2,
-                title: "传动比分析器",
-                category: "mechanical",
-                description: "计算不同齿比下的速度、踏频关系，优化传动系统设计",
-                image: "https://placehold.co/600x400/2ecc71/white?text=传动计算",
-                link: "https://cadenqi.github.io/tools/2",
-                uses: 892,
-                featured: true,
-                badge: "新品"
-            },
-            {
-                id: 3,
-                title: "3D自行车配置器",
-                category: "design",
-                description: "可视化组装和调整自行车设计，实时查看更改效果",
-                image: "https://placehold.co/600x400/e74c3c/white?text=3D配置器",
-                link: "https://cadenqi.github.io/tools/3",
-                uses: 856,
-                featured: false
-            },
-            {
-                id: 4,
-                title: "HTD同步带计算",
-                category: "mechanical",
-                description: "计算同步皮带长度和齿数，确定合适的皮带规格",
-                image: "https://placehold.co/600x400/9b59b6/white?text=同步带计算",
-                link: "https://cadenqi.github.io/tools/4",
-                uses: 567,
-                featured: false
-            },
-            {
-                id: 5,
-                title: "材料强度计算器",
-                category: "material",
-                description: "计算车架和零部件的应力分布与安全系数",
-                image: "https://placehold.co/600x400/f39c12/white?text=材料强度",
-                link: "https://cadenqi.github.io/tools/5",
-                uses: 723,
-                featured: false
-            },
-            {
-                id: 6,
-                title: "性能模拟器",
+                id: 8,
+                title: "空气动力学分析",
                 category: "performance",
-                description: "模拟自行车在不同条件下的性能表现，预测速度与功率",
-                image: "https://placehold.co/600x400/e74c3c/white?text=性能模拟",
-                link: "https://cadenqi.github.io/tools/6",
-                uses: 945,
-                featured: false
+                description: "估算不同设计条件下的空气阻力与性能影响",
+                image: "https://placehold.co/600x400/3498db/white?text=空气动力学",
+                link: "https://cadenqi.github.io/tools/1",
+                uses: 678
             },
             {
                 id: 7,
@@ -601,19 +589,62 @@
                 category: "material",
                 description: "分析自行车各部件的重量分布，优化平衡性",
                 image: "https://placehold.co/600x400/1abc9c/white?text=重量分析",
-                link: "weight.html",
-                uses: 432,
-                featured: false
+                link: "https://cadenqi.github.io/tools/2",
+                uses: 432
             },
             {
-                id: 8,
-                title: "空气动力学分析",
+                id: 6,
+                title: "性能模拟器",
                 category: "performance",
-                description: "估算不同设计条件下的空气阻力与性能影响",
-                image: "https://placehold.co/600x400/3498db/white?text=空气动力学",
-                link: "aero.html",
-                uses: 678,
-                featured: false
+                description: "模拟自行车在不同条件下的性能表现，预测速度与功率",
+                image: "https://placehold.co/600x400/e74c3c/white?text=性能模拟",
+                link: "https://cadenqi.github.io/tools/3",
+                uses: 945
+            },
+            {
+                id: 5,
+                title: "材料强度计算器",
+                category: "material",
+                description: "计算车架和零部件的应力分布与安全系数",
+                image: "https://placehold.co/600x400/f39c12/white?text=材料强度",
+                link: "https://cadenqi.github.io/tools/4",
+                uses: 723
+            },
+            {
+                id: 4,
+                title: "HTD同步带计算",
+                category: "mechanical",
+                description: "计算同步皮带长度和齿数，确定合适的皮带规格",
+                image: "https://cadenqi.github.io/tools/1",
+                link: "htd-belt.html",
+                uses: 567
+            },
+            {
+                id: 3,
+                title: "3D自行车配置器",
+                category: "design",
+                description: "可视化组装和调整自行车设计，实时查看更改效果",
+                image: "https://placehold.co/600x400/e74c3c/white?text=3D配置器",
+                link: "configurator.html",
+                uses: 856
+            },
+            {
+                id: 2,
+                title: "传动比分析器",
+                category: "mechanical",
+                description: "计算不同齿比下的速度、踏频关系，优化传动系统设计",
+                image: "https://placehold.co/600x400/2ecc71/white?text=传动计算",
+                link: "gearing.html",
+                uses: 892
+            },
+            {
+                id: 1,
+                title: "车架几何计算器",
+                category: "design",
+                description: "计算自行车车架的关键几何参数，如Stack、Reach、轴距等",
+                image: "https://placehold.co/600x400/3498db/white?text=几何计算",
+                link: "geometry.html",
+                uses: 1243
             }
         ];
 
@@ -647,37 +678,31 @@
             {
                 title: "自行车车架几何指南",
                 description: "深入了解自行车车架几何参数的含义及其对骑行体验的影响",
-                image: "https://placehold.co/600x400/3498db/white?text=车架几何",
-                link: "https://example.com/frame-geometry"
+                link: "https://cadenqi.github.io/tools/1"
             },
             {
                 title: "传动系统维护技巧",
                 description: "学习如何正确维护和调整自行车的传动系统，延长使用寿命",
-                image: "https://placehold.co/600x400/2ecc71/white?text=传动维护",
-                link: "https://example.com/drivetrain-maintenance"
+                link: "WWW.BAIDU.COM"
             },
             {
                 title: "材料科学与自行车设计",
                 description: "探索不同材料在自行车制造中的应用及其特性比较",
-                image: "https://placehold.co/600x400/e74c3c/white?text=材料科学",
-                link: "https://example.com/materials-science"
+                link: "TAOBAO.COM"
             },
             {
                 title: "空气动力学原理",
                 description: "了解空气动力学如何影响自行车性能及降低风阻的方法",
-                image: "https://placehold.co/600x400/9b59b6/white?text=空气动力学",
                 link: "https://example.com/aerodynamics"
             },
             {
                 title: "自行车fitting指南",
                 description: "如何正确调整自行车以适应个人身体尺寸，提升舒适度和效率",
-                image: "https://placehold.co/600x400/f39c12/white?text=Bike+Fitting",
                 link: "https://example.com/bike-fitting"
             },
             {
                 title: "轮胎选择与维护",
                 description: "根据骑行条件选择合适的轮胎并学习正确的维护方法",
-                image: "https://placehold.co/600x400/1abc9c/white?text=轮胎知识",
                 link: "https://example.com/tire-selection"
             }
         ];
@@ -696,19 +721,53 @@
             // 底部导航切换
             const navItems = document.querySelectorAll('.nav-item');
             const pages = document.querySelectorAll('.page');
+            const appHeader = document.getElementById('appHeader');
+            const toolDisplay = document.getElementById('toolDisplay');
+            
+            // 页面切换函数
+            function switchPage(pageId) {
+                pages.forEach(page => {
+                    page.classList.remove('active');
+                    if (page.id === pageId) {
+                        // 添加延迟以解决闪屏问题
+                        setTimeout(() => {
+                            page.classList.add('active');
+                        }, 50);
+                    }
+                });
+                
+                // 选型表和知识库页面隐藏顶部标题
+                if (pageId === 'specsPage' || pageId === 'knowledgePage') {
+                    appHeader.classList.add('header-hidden');
+                } else {
+                    appHeader.classList.remove('header-hidden');
+                }
+                
+                // 更新导航项状态
+                navItems.forEach(item => {
+                    if (item.getAttribute('data-page') === pageId) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+            }
             
             navItems.forEach(item => {
                 item.addEventListener('click', function(e) {
                     e.preventDefault();
                     
-                    // 更新导航项状态
-                    navItems.forEach(nav => nav.classList.remove('active'));
-                    this.classList.add('active');
+                    const targetPage = this.getAttribute('data-page');
                     
-                    // 显示对应页面
-                    const pageId = this.getAttribute('data-page');
-                    pages.forEach(page => page.classList.remove('active'));
-                    document.getElementById(pageId).classList.add('active');
+                    // 如果工具页面打开，先关闭工具
+                    if (toolDisplay.style.display === 'flex') {
+                        closeToolDisplay();
+                        // 使用setTimeout确保关闭完成后再切换页面
+                        setTimeout(() => switchPage(targetPage), 100);
+                    } else {
+                        // 直接切换页面
+                        switchPage(targetPage);
+                    }
                 });
             });
             
@@ -788,12 +847,11 @@
                 // 显示搜索结果提示
                 if (!found) {
                     const tbody = document.querySelector('#specsTable tbody');
-                    tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 20px;">未找到匹配的规格</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="4" class="search-result">未找到匹配的规格</td></tr>`;
                 }
             }
             
             // 工具展示功能
-            const toolDisplay = document.getElementById('toolDisplay');
             const toolFrame = document.getElementById('toolFrame');
             const toolDisplayTitle = document.getElementById('toolDisplayTitle');
             const closeTool = document.getElementById('closeTool');
@@ -804,10 +862,7 @@
                     const toolUrl = e.target.getAttribute('data-tool');
                     const toolTitle = e.target.getAttribute('data-title');
                     
-                    toolDisplayTitle.textContent = toolTitle;
-                    toolFrame.src = toolUrl;
-                    toolDisplay.style.display = 'flex';
-                    document.body.style.overflow = 'hidden';
+                    openToolDisplay(toolUrl, toolTitle);
                 }
                 
                 // 知识库链接点击
@@ -816,28 +871,32 @@
                     const knowledgeUrl = e.target.getAttribute('data-link');
                     const knowledgeTitle = e.target.getAttribute('data-title');
                     
-                    toolDisplayTitle.textContent = knowledgeTitle;
-                    toolFrame.src = knowledgeUrl;
-                    toolDisplay.style.display = 'flex';
-                    document.body.style.overflow = 'hidden';
+                    openToolDisplay(knowledgeUrl, knowledgeTitle);
                 }
             });
             
             // 关闭工具
-            closeTool.addEventListener('click', function() {
-                toolDisplay.style.display = 'none';
-                toolFrame.src = 'about:blank';
-                document.body.style.overflow = 'auto';
-            });
+            closeTool.addEventListener('click', closeToolDisplay);
             
             // ESC键关闭工具
             document.addEventListener('keydown', function(event) {
                 if (event.key === 'Escape' && toolDisplay.style.display === 'flex') {
-                    toolDisplay.style.display = 'none';
-                    toolFrame.src = 'about:blank';
-                    document.body.style.overflow = 'auto';
+                    closeToolDisplay();
                 }
             });
+            
+            function openToolDisplay(url, title) {
+                toolDisplayTitle.textContent = title;
+                toolFrame.src = url;
+                toolDisplay.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeToolDisplay() {
+                toolDisplay.style.display = 'none';
+                toolFrame.src = 'about:blank';
+                document.body.style.overflow = 'auto';
+            }
         });
 
         // ==================== 功能函数 ====================
@@ -846,7 +905,10 @@
             const toolGrid = document.getElementById('toolGrid');
             toolGrid.innerHTML = '';
             
-            toolsData.forEach(tool => {
+            // 按照ID从大到小排序
+            const sortedTools = [...toolsData].sort((a, b) => b.id - a.id);
+            
+            sortedTools.forEach(tool => {
                 toolGrid.appendChild(createToolCard(tool));
             });
         }
@@ -857,13 +919,7 @@
             card.className = 'tool-card';
             card.setAttribute('data-category', tool.category);
             
-            let badgeHtml = '';
-            if (tool.badge) {
-                badgeHtml = `<div class="tool-badge">${tool.badge}</div>`;
-            }
-            
             card.innerHTML = `
-                ${badgeHtml}
                 <div class="tool-image">
                     <img src="${tool.image}" alt="${tool.title}">
                 </div>
@@ -927,13 +983,10 @@
             card.className = 'knowledge-card';
             
             card.innerHTML = `
-                <div class="knowledge-image">
-                    <img src="${knowledge.image}" alt="${knowledge.title}">
-                </div>
                 <div class="knowledge-content">
                     <h3 class="knowledge-title">${knowledge.title}</h3>
                     <p class="knowledge-desc">${knowledge.description}</p>
-                    <a href="${knowledge.link}" class="knowledge-link" data-link="${knowledge.link}" data-title="${knowledge.title}" target="_blank">阅读更多</a>
+                    <a href="${knowledge.link}" class="knowledge-link" data-link="${knowledge.link}" data-title="${knowledge.title}">阅读更多</a>
                 </div>
             `;
             
