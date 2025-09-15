@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>自行车工程工具集</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== 基础样式设置 ===== */
+        :root {
+            --primary: #1a365d;
+            --secondary: #2a69ac;
+            --accent: #38b2ac;
+            --light: #f8fafc;
+            --dark: #2d3748;
+            --text: #2d3748;
+            --background: #f7fafc;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --header-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            --nav-height: 56px;
+            --sticky-header-height: 180px; /* 工具页面固定区域高度 */
+            --sticky-specs-height: 140px; /* 选型表页面固定区域高度 */
+            --sticky-knowledge-height: 70px; /* 知识库页面固定区域高度 */
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--background);
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        .app-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding-bottom: var(--nav-height);
+        }
+        
+        /* ===== 页面容器 ===== */
+        .page {
+            display: none;
+            min-height: calc(100vh - var(--nav-height));
+        }
+        
+        .page.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* ===== 底部导航 ===== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 6px 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            height: var(--nav-height);
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #718096;
+            font-size: 0.65rem;
+            padding: 4px 0;
+            flex: 1;
+            max-width: 33.33%;
+            transition: all 0.2s;
+        }
+        
+        .nav-item.active {
+            color: var(--secondary);
+        }
+        
+        .nav-icon {
+            font-size: 1rem;
+            margin-bottom: 2px;
+        }
+        
+        /* ===== 工具页面样式 ===== */
+        #toolsPage {
+            padding-top: var(--sticky-header-height); /* 为固定区域留出空间 */
+        }
+        
+        .tools-sticky-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--sticky-header-height);
+            z-index: 100;
+            background: var(--background); /* 与页面背景一致，避免滑动时看到背后内容 */
+        }
+        
+        /* 轮播图样式 */
+        .carousel {
+            width: 100%;
+            height: 120px; /* 轮播图高度 */
+            position: relative;
+            overflow: hidden;
+            border-radius: 0 0 10px 10px;
+        }
+        
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.5s ease;
+            height: 100%;
+        }
+        
+        .carousel-item {
+            min-width: 100%;
+            height: 100%;
+        }
+        
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .carousel-indicators {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .carousel-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+        }
+        
+        .carousel-indicator.active {
+            background: white;
+        }
+        
+        /* 分类导航 */
+        .category-nav {
+            display: flex;
+            overflow-x: auto;
+            margin: 0;
+            gap: 8px;
+            padding: 10px 15px;
+            -webkit-overflow-scrolling: touch;
+            background: var(--background); /* 与页面背景一致 */
+        }
+        
+        .category-btn {
+            padding: 8px 12px;
+            background: white;
+            border: none;
+            border-radius: 18px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            white-space: nowrap;
+            box-shadow: var(--card-shadow);
+            transition: all 0.2s;
+        }
+        
+        .category-btn.active {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        /* 工具内容区域 */
+        .tools-content {
+            padding: 15px;
+            height: calc(100vh - var(--nav-height) - var(--sticky-header-height));
+            overflow-y: auto;
+        }
+        
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+        }
+        
+        .tool-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: var(--card-shadow);
+            cursor: pointer;
+            height: 180px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .tool-image {
+            height: 110px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f0f4f8;
+        }
+        
+        .tool-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        
+        .tool-card:hover .tool-image img {
+            transform: scale(1.05);
+        }
+        
+        .tool-content {
+            padding: 12px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .tool-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--primary);
+            text-align: center;
+        }
+        
+        .tool-desc {
+            font-size: 0.75rem;
+            color: #718096;
+            text-align: center;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        /* ===== 选型表页面样式 ===== */
+        #specsPage {
+            padding-top: var(--sticky-specs-height); /* 为固定区域留出空间 */
+        }
+        
+        .specs-sticky-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--sticky-specs-height);
+            z-index: 100;
+            background: var(--background); /* 与页面背景一致 */
+            padding: 15px 15px 0;
+        }
+        
+        .specs-ad {
+            width: 100%;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .specs-ad img {
+            width: 100%;
+            height: auto;
+        }
+        
+        .specs-search {
+            position: relative;
+            margin-bottom: 10px;
+        }
+        
+        .specs-search input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 25px;
+            font-size: 0.95rem;
+        }
+        
+        .specs-search button {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            background: var(--accent);
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .specs-tabs {
+            display: flex;
+            margin-bottom: 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .specs-tab {
+            padding: 10px 15px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #718096;
+            position: relative;
+            font-size: 0.9rem;
+        }
+        
+        .specs-tab.active {
+            color: var(--secondary);
+        }
+        
+        .specs-tab.active::after {
+            content: "";
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--secondary);
+        }
+        
+        /* 选型表内容区域 */
+        .specs-content {
+            padding: 15px;
+            height: calc(100vh - var(--nav-height) - var(--sticky-specs-height));
+            overflow-y: auto;
+        }
+        
+        .specs-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            font-size: 0.9rem;
+        }
+        
+        .specs-table th, .specs-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .specs-table th {
+            background: #f7fafc;
+            font-weight: 600;
+        }
+        
+        .specs-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        /* ===== 知识库页面样式 ===== */
+        #knowledgePage {
+            padding-top: var(--sticky-knowledge-height); /* 为固定区域留出空间 */
+        }
+        
+        .knowledge-sticky-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--sticky-knowledge-height);
+            z-index: 100;
+            background: var(--background); /* 与页面背景一致 */
+            padding: 15px 15px 0;
+        }
+        
+        .knowledge-ad {
+            width: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .knowledge-ad img {
+            width: 100%;
+            height: auto;
+        }
+        
+        /* 知识库内容区域 */
+        .knowledge-content {
+            padding: 15px;
+            min-height: calc(100vh - var(--nav-height) - var(--sticky-knowledge-height));
+        }
+        
+        .knowledge-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+        
+        .knowledge-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 15px;
+        }
+        
+        .knowledge-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .knowledge-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+        
+        .knowledge-desc {
+            color: #718096;
+            line-height: 1.5;
+            font-size: 0.85rem;
+        }
+        
+        /* ===== 工具展示区 ===== */
+        .tool-display-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+        }
+        
+        .tool-display-content {
+            flex: 1;
+            width: 100%;
+            border: none;
+            height: 100%;
+        }
+        
+        /* ===== 关闭按钮 ===== */
+        .close-button {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            color: white;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+        }
+        
+        /* ===== 响应式设计 ===== */
+        @media (min-width: 768px) {
+            .tool-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .knowledge-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .tool-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+            
+            .knowledge-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        /* ===== 搜索结果显示 ===== */
+        .search-result {
+            text-align: center;
+            padding: 20px;
+            color: #718096;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- ===== 工具页面 ===== -->
+        <div id="toolsPage" class="page active">
+            <!-- 固定顶部区域：轮播图 + 分类导航 -->
+            <div class="tools-sticky-header">
+                <!-- 轮播图 -->
+                <div class="carousel" id="carousel">
+                    <div class="carousel-inner" id="carouselInner">
+                        <div class="carousel-item">
+                            <img src="https://placehold.co/600x300/3498db/white?text=自行车工具推荐" alt="轮播图1">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://placehold.co/600x300/2ecc71/white?text=专业设计工具" alt="轮播图2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://placehold.co/600x300/e74c3c/white?text=工程计算平台" alt="轮播图3">
+                        </div>
+                    </div>
+                    <div class="carousel-indicators" id="carouselIndicators">
+                        <div class="carousel-indicator active" data-index="0"></div>
+                        <div class="carousel-indicator" data-index="1"></div>
+                        <div class="carousel-indicator" data-index="2"></div>
+                    </div>
+                </div>
+                
+                <!-- 分类导航 -->
+                <div class="category-nav">
+                    <button class="category-btn active" data-category="all">
+                        <i class="fas fa-th"></i> 所有工具
+                    </button>
+                    <button class="category-btn" data-category="design">
+                        <i class="fas fa-pencil-ruler"></i> 设计
+                    </button>
+                    <button class="category-btn" data-category="mechanical">
+                        <i class="fas fa-cogs"></i> 机械
+                    </button>
+                    <button class="category-btn" data-category="material">
+                        <i class="fas fa-weight-hanging"></i> 材料
+                    </button>
+                    <button class="category-btn" data-category="performance">
+                        <i class="fas fa-tachometer-alt"></i> 性能
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 工具内容区域（可滑动） -->
+            <div class="tools-content">
+                <div class="tool-grid" id="toolGrid">
+                    <!-- 工具卡片将在这里动态生成 -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- ===== 选型表页面 ===== -->
+        <div id="specsPage" class="page">
+            <!-- 固定顶部区域：广告 + 搜索 + 标签 -->
+            <div class="specs-sticky-header">
+                <div class="specs-ad">
+                    <!-- 广告图片，可以替换 -->
+                    <img src="https://placehold.co/600x200/38b2ac/white?text=广告位+支持动态图片" alt="赞助商广告">
+                </div>
+                
+                <div class="specs-search">
+                    <input type="text" placeholder="搜索规格..." id="specSearchInput">
+                    <button id="specSearchBtn"><i class="fas fa-search"></i></button>
+                </div>
+                
+                <div class="specs-tabs">
+                    <button class="specs-tab active" data-spec="11M">11M规格</button>
+                    <button class="specs-tab" data-spec="10M">10M规格</button>
+                    <button class="specs-tab" data-spec="8M">8M规格</button>
+                </div>
+            </div>
+            
+            <!-- 选型表内容区域（可滑动） -->
+            <div class="specs-content">
+                <table class="specs-table" id="specsTable">
+                    <thead>
+                        <tr>
+                            <th>型号</th>
+                            <th>规格</th>
+                            <th>材质</th>
+                            <th>适用车型</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- 规格数据将在这里动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- ===== 知识库页面 ===== -->
+        <div id="knowledgePage" class="page">
+            <!-- 固定顶部区域：广告 -->
+            <div class="knowledge-sticky-header">
+                <div class="knowledge-ad">
+                    <!-- 广告图片，可以替换 -->
+                    <img src="https://placehold.co/600x200/9b59b6/white?text=知识库广告位" alt="知识库广告">
+                </div>
+            </div>
+            
+            <!-- 知识库内容区域（可滑动） -->
+            <div class="knowledge-content">
+                <div class="knowledge-grid" id="knowledgeGrid">
+                    <!-- 知识卡片将在这里动态生成 -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ===== 工具展示容器 ===== -->
+    <div class="tool-display-container" id="toolDisplay">
+        <iframe class="tool-display-content" id="toolFrame" src="about:blank"></iframe>
+    </div>
+    
+    <!-- ===== 关闭按钮 ===== -->
+    <button class="close-button" id="closeTool">
+        <i class="fas fa-times"></i>
+    </button>
+    
+    <!-- ===== 底部导航 ===== -->
+    <div class="bottom-nav">
+        <a href="#" class="nav-item active" data-page="toolsPage">
+            <div class="nav-icon"><i class="fas fa-tools"></i></div>
+            <div>工具</div>
+        </a>
+        <a href="#" class="nav-item" data-page="specsPage">
+            <div class="nav-icon"><i class="fas fa-table"></i></div>
+            <div>选型表</div>
+        </a>
+        <a href="#" class="nav-item" data-page="knowledgePage">
+            <div class="nav-icon"><i class="fas fa-book"></i></div>
+            <div>知识库</div>
+        </a>
+    </div>
+
+    <script>
+        // ==================== 工具数据配置 ====================
+        // 按照ID从大到小排序，ID越大显示越靠前
+        const toolsData = [
+            {
+                id: 8,
+                title: "空气动力学分析",
+                category: "performance",
+                description: "估算不同设计条件下的空气阻力与性能影响",
+                image: "https://placehold.co/600x400/3498db/white?text=空气动力学",
+                link: "aero.html",
+                uses: 678
+            },
+            {
+                id: 7,
+                title: "重量分布分析",
+                category: "material",
+                description: "分析自行车各部件的重量分布，优化平衡性",
+                image: "https://placehold.co/600x400/1abc9c/white?text=重量分析",
+                link: "weight.html",
+                uses: 432
+            },
+            {
+                id: 6,
+                title: "性能模拟器",
+                category: "performance",
+                description: "模拟自行车在不同条件下的性能表现，预测速度与功率",
+                image: "https://placehold.co/600x400/e74c3c/white?text=性能模拟",
+                link: "performance.html",
+                uses: 945
+            },
+            {
+                id: 5,
+                title: "材料强度计算器",
+                category: "material",
+                description: "计算车架和零部件的应力分布与安全系数",
+                image: "https://placehold.co/600x400/f39c12/white?text=材料强度",
+                link: "material.html",
+                uses: 723
+            },
+            {
+                id: 4,
+                title: "HTD同步带计算",
+                category: "mechanical",
+                description: "计算同步皮带长度和齿数，确定合适的皮带规格",
+                image: "https://placehold.co/600x400/9b59b6/white?text=同步带计算",
+                link: "htd-belt.html",
+                uses: 567
+            },
+            {
+                id: 3,
+                title: "3D自行车配置器",
+                category: "design",
+                description: "可视化组装和调整自行车设计，实时查看更改效果",
+                image: "https://placehold.co/600x400/e74c3c/white?text=3D配置器",
+                link: "configurator.html",
+                uses: 856
+            },
+            {
+                id: 2,
+                title: "传动比分析器",
+                category: "mechanical",
+                description: "计算不同齿比下的速度、踏频关系，优化传动系统设计",
+                image: "https://placehold.co/600x400/2ecc71/white?text=传动计算",
+                link: "gearing.html",
+                uses: 892
+            },
+            {
+                id: 1,
+                title: "车架几何计算器",
+                category: "design",
+                description: "计算自行车车架的关键几何参数，如Stack、Reach、轴距等",
+                image: "https://placehold.co/600x400/3498db/white?text=几何计算",
+                link: "geometry.html",
+                uses: 1243
+            }
+        ];
+
+        // ==================== 规格数据配置 ====================
+        const specsData = {
+            "11M": [
+                { model: "XC-11M-001", spec: "11速", material: "碳纤维", applicable: "公路车" },
+                { model: "XC-11M-002", spec: "11速", material: "铝合金", applicable: "山地车" },
+                { model: "XC-11M-003", spec: "11速", material: "钛合金", applicable: "旅行车" },
+                { model: "XC-11M-004", spec: "11速", material: "钢", applicable: "城市通勤车" },
+                { model: "XC-11M-005", spec: "11速", material: "碳纤维", applicable: "竞赛公路车" }
+            ],
+            "10M": [
+                { model: "XC-10M-001", spec: "10速", material: "铝合金", applicable: "山地车" },
+                { model: "XC-10M-002", spec: "10速", material: "钢", applicable: "旅行车" },
+                { model: "XC-10M-003", spec: "10速", material: "碳纤维", applicable: "公路车" },
+                { model: "XC-10M-004", spec: "10速", material: "钛合金", applicable: "城市通勤车" },
+                { model: "XC-10M-005", spec: "10速", material: "铝合金", applicable: "折叠车" }
+            ],
+            "8M": [
+                { model: "XC-8M-001", spec: "8速", material: "钢", applicable: "城市通勤车" },
+                { model: "XC-8M-002", spec: "8速", material: "铝合金", applicable: "折叠车" },
+                { model: "XC-8M-003", spec: "8速", material: "碳纤维", applicable: "旅行车" },
+                { model: "XC-8M-004", spec: "8速", material: "钛合金", applicable: "山地车" },
+                { model: "XC-8M-005", spec: "8速", material: "铝合金", applicable: "儿童自行车" }
+            ]
+        };
+
+        // ==================== 知识库数据配置 ====================
+        const knowledgeData = [
+            {
+                title: "自行车车架几何指南",
+                description: "深入了解自行车车架几何参数的含义及其对骑行体验的影响",
+                link: "https://example.com/frame-geometry"
+            },
+            {
+                title: "传动系统维护技巧",
+                description: "学习如何正确维护和调整自行车的传动系统，延长使用寿命",
+                link: "https://example.com/drivetrain-maintenance"
+            },
+            {
+                title: "材料科学与自行车设计",
+                description: "探索不同材料在自行车制造中的应用及其特性比较",
+                link: "https://example.com/materials-science"
+            },
+            {
+                title: "空气动力学原理",
+                description: "了解空气动力学如何影响自行车性能及降低风阻的方法",
+                link: "https://example.com/aerodynamics"
+            },
+            {
+                title: "自行车fitting指南",
+                description: "如何正确调整自行车以适应个人身体尺寸，提升舒适度和效率",
+                link: "https://example.com/bike-fitting"
+            },
+            {
+                title: "轮胎选择与维护",
+                description: "根据骑行条件选择合适的轮胎并学习正确的维护方法",
+                link: "https://example.com/tire-selection"
+            }
+        ];
+
+        // ==================== 初始化 ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化轮播图
+            initCarousel();
+            
+            // 渲染工具卡片
+            renderTools();
+            
+            // 渲染规格表
+            renderSpecs('11M');
+            
+            // 渲染知识库
+            renderKnowledge();
+            
+            // 底部导航切换
+            const navItems = document.querySelectorAll('.nav-item');
+            const pages = document.querySelectorAll('.page');
+            const toolDisplay = document.getElementById('toolDisplay');
+            const closeTool = document.getElementById('closeTool');
+            
+            // 页面切换函数
+            function switchPage(pageId) {
+                pages.forEach(page => {
+                    page.classList.remove('active');
+                    if (page.id === pageId) {
+                        // 添加延迟以解决闪屏问题
+                        setTimeout(() => {
+                            page.classList.add('active');
+                        }, 50);
+                    }
+                });
+                
+                // 更新导航项状态
+                navItems.forEach(item => {
+                    if (item.getAttribute('data-page') === pageId) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+            }
+            
+            navItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetPage = this.getAttribute('data-page');
+                    
+                    // 如果工具页面打开，先关闭工具
+                    if (toolDisplay.style.display === 'flex') {
+                        closeToolDisplay();
+                        // 使用setTimeout确保关闭完成后再切换页面
+                        setTimeout(() => switchPage(targetPage), 100);
+                    } else {
+                        // 直接切换页面
+                        switchPage(targetPage);
+                    }
+                });
+            });
+            
+            // 工具分类过滤
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 移除所有按钮的active类
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    // 为当前点击的按钮添加active类
+                    this.classList.add('active');
+                    
+                    const category = this.getAttribute('data-category');
+                    
+                    // 显示或隐藏工具卡片
+                    filterToolsByCategory(category);
+                });
+            });
+            
+            // 规格表切换
+            const specsTabs = document.querySelectorAll('.specs-tab');
+            
+            specsTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // 移除所有标签的active类
+                    specsTabs.forEach(t => t.classList.remove('active'));
+                    // 为当前点击的标签添加active类
+                    this.classList.add('active');
+                    
+                    const specType = this.getAttribute('data-spec');
+                    
+                    // 渲染对应规格表
+                    renderSpecs(specType);
+                });
+            });
+            
+            // 规格搜索功能
+            const specSearchBtn = document.getElementById('specSearchBtn');
+            const specSearchInput = document.getElementById('specSearchInput');
+            
+            specSearchBtn.addEventListener('click', performSpecSearch);
+            specSearchInput.addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    performSpecSearch();
+                }
+            });
+            
+            function performSpecSearch() {
+                const searchTerm = specSearchInput.value.trim().toLowerCase();
+                const activeTab = document.querySelector('.specs-tab.active').getAttribute('data-spec');
+                const tableRows = document.querySelectorAll('#specsTable tbody tr');
+                
+                if (searchTerm === '') {
+                    // 如果搜索为空，重新渲染当前规格表
+                    renderSpecs(activeTab);
+                    return;
+                }
+                
+                let found = false;
+                
+                tableRows.forEach(row => {
+                    const model = row.cells[0].textContent.toLowerCase();
+                    const spec = row.cells[1].textContent.toLowerCase();
+                    const material = row.cells[2].textContent.toLowerCase();
+                    const applicable = row.cells[3].textContent.toLowerCase();
+                    
+                    if (model.includes(searchTerm) || spec.includes(searchTerm) || 
+                        material.includes(searchTerm) || applicable.includes(searchTerm)) {
+                        row.style.display = '';
+                        found = true;
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+                
+                // 显示搜索结果提示
+                if (!found) {
+                    const tbody = document.querySelector('#specsTable tbody');
+                    tbody.innerHTML = `<tr><td colspan="4" class="search-result">未找到匹配的规格</td></tr>`;
+                }
+            }
+            
+            // 工具展示功能
+            const toolFrame = document.getElementById('toolFrame');
+            
+            // 工具卡片点击事件
+            document.addEventListener('click', function(e) {
+                // 工具卡片点击
+                if (e.target.closest('.tool-card')) {
+                    const card = e.target.closest('.tool-card');
+                    const toolLink = card.getAttribute('data-link');
+                    const toolTitle = card.getAttribute('data-title');
+                    
+                    openToolDisplay(toolLink, toolTitle);
+                }
+                
+                // 知识卡片点击
+                if (e.target.closest('.knowledge-card')) {
+                    const card = e.target.closest('.knowledge-card');
+                    const knowledgeLink = card.getAttribute('data-link');
+                    const knowledgeTitle = card.getAttribute('data-title');
+                    
+                    openToolDisplay(knowledgeLink, knowledgeTitle);
+                }
+            });
+            
+            // 关闭工具
+            closeTool.addEventListener('click', closeToolDisplay);
+            
+            // ESC键关闭工具
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape' && toolDisplay.style.display === 'flex') {
+                    closeToolDisplay();
+                }
+            });
+            
+            function openToolDisplay(url, title) {
+                document.title = title; // 修改页面标题
+                toolFrame.src = url;
+                toolDisplay.style.display = 'flex';
+                closeTool.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeToolDisplay() {
+                toolDisplay.style.display = 'none';
+                toolFrame.src = 'about:blank';
+                closeTool.style.display = 'none';
+                document.title = "自行车工程工具集"; // 恢复页面标题
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // ==================== 功能函数 ====================
+        // 初始化轮播图
+        function initCarousel() {
+            const carouselInner = document.getElementById('carouselInner');
+            const indicators = document.querySelectorAll('.carousel-indicator');
+            let currentIndex = 0;
+            
+            // 自动轮播
+            setInterval(() => {
+                currentIndex = (currentIndex + 1) % 3;
+                carouselInner.style.transform = `translateX(-${currentIndex * 100}%)`;
+                
+                // 更新指示器
+                indicators.forEach((indicator, index) => {
+                    if (index === currentIndex) {
+                        indicator.classList.add('active');
+                    } else {
+                        indicator.classList.remove('active');
+                    }
+                });
+            }, 3000);
+            
+            // 点击指示器切换
+            indicators.forEach(indicator => {
+                indicator.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    currentIndex = index;
+                    carouselInner.style.transform = `translateX(-${currentIndex * 100}%)`;
+                    
+                    // 更新指示器
+                    indicators.forEach((ind, i) => {
+                        if (i === currentIndex) {
+                            ind.classList.add('active');
+                        } else {
+                            ind.classList.remove('active');
+                        }
+                    });
+                });
+            });
+        }
+        
+        // 渲染工具卡片
+        function renderTools() {
+            const toolGrid = document.getElementById('toolGrid');
+            toolGrid.innerHTML = '';
+            
+            // 按照ID从大到小排序
+            const sortedTools = [...toolsData].sort((a, b) => b.id - a.id);
+            
+            sortedTools.forEach(tool => {
+                toolGrid.appendChild(createToolCard(tool));
+            });
+        }
+        
+        // 创建工具卡片
+        function createToolCard(tool) {
+            const card = document.createElement('div');
+            card.className = 'tool-card';
+            card.setAttribute('data-category', tool.category);
+            card.setAttribute('data-link', tool.link);
+            card.setAttribute('data-title', tool.title);
+            
+            card.innerHTML = `
+                <div class="tool-image">
+                    <img src="${tool.image}" alt="${tool.title}">
+                </div>
+                <div class="tool-content">
+                    <h3 class="tool-title">${tool.title}</h3>
+                    <p class="tool-desc">${tool.description}</p>
+                </div>
+            `;
+            
+            return card;
+        }
+        
+        // 按分类过滤工具
+        function filterToolsByCategory(category) {
+            const toolCards = document.querySelectorAll('.tool-card');
+            
+            toolCards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        
+        // 渲染规格表
+        function renderSpecs(specType) {
+            const tbody = document.querySelector('#specsTable tbody');
+            tbody.innerHTML = '';
+            
+            const specs = specsData[specType] || [];
+            
+            specs.forEach(spec => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${spec.model}</td>
+                    <td>${spec.spec}</td>
+                    <td>${spec.material}</td>
+                    <td>${spec.applicable}</td>
+                `;
+                tbody.appendChild(row);
+            });
+            
+            // 清空搜索框
+            document.getElementById('specSearchInput').value = '';
+        }
+        
+        // 渲染知识库
+        function renderKnowledge() {
+            const knowledgeGrid = document.getElementById('knowledgeGrid');
+            knowledgeGrid.innerHTML = '';
+            
+            knowledgeData.forEach(knowledge => {
+                knowledgeGrid.appendChild(createKnowledgeCard(knowledge));
+            });
+        }
+        
+        // 创建知识卡片
+        function createKnowledgeCard(knowledge) {
+            const card = document.createElement('div');
+            card.className = 'knowledge-card';
+            card.setAttribute('data-link', knowledge.link);
+            card.setAttribute('data-title', knowledge.title);
+            
+            card.innerHTML = `
+                <h3 class="knowledge-title">${knowledge.title}</h3>
+                <p class="knowledge-desc">${knowledge.description}</p>
+            `;
+            
+            return card;
+        }
+    </script>
+</body>
+</html>
