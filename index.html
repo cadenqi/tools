@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* 基础样式设置 */
+        /* ===== 基础样式设置 ===== */
         :root {
             --primary: #1a365d;
             --secondary: #2a69ac;
@@ -19,6 +19,9 @@
             --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             --header-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             --nav-height: 56px;
+            --sticky-header-height: 180px; /* 工具页面固定区域高度 */
+            --sticky-specs-height: 190px; /* 选型表页面固定区域高度 */
+            --sticky-knowledge-height: 70px; /* 知识库页面固定区域高度 */
         }
         
         * {
@@ -43,10 +46,9 @@
             padding-bottom: var(--nav-height);
         }
         
-        /* 页面容器 */
+        /* ===== 页面容器 ===== */
         .page {
             display: none;
-            padding: 15px;
             min-height: calc(100vh - var(--nav-height));
         }
         
@@ -60,7 +62,7 @@
             to { opacity: 1; }
         }
         
-        /* 底部导航 */
+        /* ===== 底部导航 ===== */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -97,14 +99,78 @@
             margin-bottom: 2px;
         }
         
-        /* 工具页面样式 */
+        /* ===== 工具页面样式 ===== */
+        #toolsPage {
+            padding-top: var(--sticky-header-height); /* 为固定区域留出空间 */
+        }
+        
+        .tools-sticky-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--sticky-header-height);
+            z-index: 100;
+            background: var(--background); /* 与页面背景一致，避免滑动时看到背后内容 */
+        }
+        
+        /* 轮播图样式 */
+        .carousel {
+            width: 100%;
+            height: 120px; /* 轮播图高度 */
+            position: relative;
+            overflow: hidden;
+            border-radius: 0 0 10px 10px;
+        }
+        
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.5s ease;
+            height: 100%;
+        }
+        
+        .carousel-item {
+            min-width: 100%;
+            height: 100%;
+        }
+        
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .carousel-indicators {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .carousel-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+        }
+        
+        .carousel-indicator.active {
+            background: white;
+        }
+        
+        /* 分类导航 */
         .category-nav {
             display: flex;
             overflow-x: auto;
-            margin: 0 0 15px 0;
+            margin: 0;
             gap: 8px;
-            padding-bottom: 5px;
+            padding: 10px 15px;
             -webkit-overflow-scrolling: touch;
+            background: var(--background); /* 与页面背景一致 */
         }
         
         .category-btn {
@@ -123,6 +189,14 @@
         .category-btn.active {
             background: var(--secondary);
             color: white;
+        }
+        
+        /* 工具内容区域 */
+        .tools-content {
+            padding: 15px;
+            height: calc(100vh - var(--nav-height) - var(--sticky-header-height));
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
         
         .tool-grid {
@@ -186,7 +260,7 @@
         
         .tool-desc {
             font-size: 0.75rem;
-            color: #718096;
+            color: 718096;
             text-align: center;
             line-height: 1.4;
             display: -webkit-box;
@@ -195,30 +269,26 @@
             overflow: hidden;
         }
         
-        /* 工具展示区 */
-        .tool-display-container {
+        /* ===== 选型表页面样式 ===== */
+        #specsPage {
+            padding-top: var(--sticky-specs-height); /* 为固定区域留出空间 */
+        }
+        
+        .specs-sticky-header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            background: white;
-            z-index: 1000;
-            display: none;
-            flex-direction: column;
+            height: var(--sticky-specs-height);
+            z-index: 100;
+            background: var(--background); /* 与页面背景一致 */
+            padding: 15px 15px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
         
-        .tool-display-content {
-            flex: 1;
-            width: 100%;
-            border: none;
-            height: 100%;
-        }
-        
-        /* 选型表页面样式 */
         .specs-ad {
             width: 100%;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             border-radius: 10px;
             overflow: hidden;
         }
@@ -226,11 +296,13 @@
         .specs-ad img {
             width: 100%;
             height: auto;
+            max-height: 80px;
+            object-fit: cover;
         }
         
         .specs-search {
             position: relative;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
         
         .specs-search input {
@@ -256,8 +328,10 @@
         
         .specs-tabs {
             display: flex;
-            margin-bottom: 15px;
+            margin-bottom: 0;
             border-bottom: 1px solid #e2e8f0;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
         
         .specs-tab {
@@ -269,6 +343,8 @@
             color: #718096;
             position: relative;
             font-size: 0.9rem;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
         
         .specs-tab.active {
@@ -285,14 +361,27 @@
             background: var(--secondary);
         }
         
+        /* 选型表内容区域 */
+        .specs-content {
+            padding: 15px;
+            height: calc(100vh - var(--nav-height) - var(--sticky-specs-height));
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .specs-table-container {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+            background: white;
+        }
+        
         .specs-table {
             width: 100%;
             border-collapse: collapse;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: var(--card-shadow);
             font-size: 0.9rem;
+            min-width: 500px;
         }
         
         .specs-table th, .specs-table td {
@@ -304,16 +393,33 @@
         .specs-table th {
             background: #f7fafc;
             font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
         
         .specs-table tr:last-child td {
             border-bottom: none;
         }
         
-        /* 知识库页面样式 */
+        /* ===== 知识库页面样式 ===== */
+        #knowledgePage {
+            padding-top: var(--sticky-knowledge-height); /* 为固定区域留出空间 */
+        }
+        
+        .knowledge-sticky-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--sticky-knowledge-height);
+            z-index: 100;
+            background: var(--background); /* 与页面背景一致 */
+            padding: 15px 15px 0;
+        }
+        
         .knowledge-ad {
             width: 100%;
-            margin-bottom: 15px;
             border-radius: 10px;
             overflow: hidden;
         }
@@ -321,6 +427,16 @@
         .knowledge-ad img {
             width: 100%;
             height: auto;
+            max-height: 60px;
+            object-fit: cover;
+        }
+        
+        /* 知识库内容区域 */
+        .knowledge-content {
+            padding: 15px;
+            min-height: calc(100vh - var(--nav-height) - var(--sticky-knowledge-height));
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
         
         .knowledge-grid {
@@ -357,35 +473,27 @@
             font-size: 0.85rem;
         }
         
-        /* 响应式设计 */
-        @media (min-width: 768px) {
-            .tool-grid {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            }
-            
-            .knowledge-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        /* ===== 工具展示区 ===== */
+        .tool-display-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
         }
         
-        @media (min-width: 1024px) {
-            .tool-grid {
-                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            }
-            
-            .knowledge-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
+        .tool-display-content {
+            flex: 1;
+            width: 100%;
+            border: none;
+            height: 100%;
         }
         
-        /* 搜索结果显示 */
-        .search-result {
-            text-align: center;
-            padding: 20px;
-            color: #718096;
-        }
-        
-        /* 关闭按钮 */
+        /* ===== 关闭按钮 ===== */
         .close-button {
             position: fixed;
             top: 15px;
@@ -402,94 +510,205 @@
             justify-content: center;
             z-index: 1001;
         }
+        
+        /* ===== 响应式设计 ===== */
+        @media (min-width: 768px) {
+            .tool-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .knowledge-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .specs-table {
+                min-width: auto;
+            }
+            
+            /* 电脑端调整固定区域高度 */
+            :root {
+                --sticky-specs-height: 160px;
+                --sticky-knowledge-height: 90px;
+            }
+            
+            .specs-ad img {
+                max-height: 70px;
+            }
+            
+            .knowledge-ad img {
+                max-height: 70px;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .tool-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+            
+            .knowledge-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .app-container {
+                max-width: 1200px;
+            }
+            
+            /* 电脑端调整固定区域高度 */
+            :root {
+                --sticky-specs-height: 150px;
+                --sticky-knowledge-height: 80px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            /* 手机端调整固定区域高度 */
+            :root {
+                --sticky-specs-height: 200px;
+            }
+            
+            .specs-tab {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+            
+            .specs-table th, .specs-table td {
+                padding: 10px 12px;
+            }
+        }
+        
+        /* ===== 搜索结果显示 ===== */
+        .search-result {
+            text-align: center;
+            padding: 20px;
+            color: #718096;
+        }
     </style>
 </head>
 <body>
     <div class="app-container">
-        <!-- 工具页面 -->
+        <!-- ===== 工具页面 ===== -->
         <div id="toolsPage" class="page active">
-            <div class="category-nav">
-                <button class="category-btn active" data-category="all">
-                    <i class="fas fa-th"></i> 所有工具
-                </button>
-                <button class="category-btn" data-category="design">
-                    <i class="fas fa-pencil-ruler"></i> 设计
-                </button>
-                <button class="category-btn" data-category="mechanical">
-                    <i class="fas fa-cogs"></i> 机械
-                </button>
-                <button class="category-btn" data-category="material">
-                    <i class="fas fa-weight-hanging"></i> 材料
-                </button>
-                <button class="category-btn" data-category="performance">
-                    <i class="fas fa-tachometer-alt"></i> 性能
-                </button>
+            <!-- 固定顶部区域：轮播图 + 分类导航 -->
+            <div class="tools-sticky-header">
+                <!-- 轮播图 -->
+                <div class="carousel" id="carousel">
+                    <div class="carousel-inner" id="carouselInner">
+                        <div class="carousel-item">
+                            <img src="https://placehold.co/600x300/3498db/white?text=自行车工具推荐" alt="轮播图1">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://placehold.co/600x300/2ecc71/white?text=专业设计工具" alt="轮播图2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://placehold.co/600x300/e74c3c/white?text=工程计算平台" alt="轮播图3">
+                        </div>
+                    </div>
+                    <div class="carousel-indicators" id="carouselIndicators">
+                        <div class="carousel-indicator active" data-index="0"></div>
+                        <div class="carousel-indicator" data-index="1"></div>
+                        <div class="carousel-indicator" data-index="2"></div>
+                    </div>
+                </div>
+                
+                <!-- 分类导航 -->
+                <div class="category-nav">
+                    <button class="category-btn active" data-category="all">
+                        <i class="fas fa-th"></i> 所有工具
+                    </button>
+                    <button class="category-btn" data-category="design">
+                        <i class="fas fa-pencil-ruler"></i> 设计
+                    </button>
+                    <button class="category-btn" data-category="mechanical">
+                        <i class="fas fa-cogs"></i> 机械
+                    </button>
+                    <button class="category-btn" data-category="material">
+                        <i class="fas fa-weight-hanging"></i> 材料
+                    </button>
+                    <button class="category-btn" data-category="performance">
+                        <i class="fas fa-tachometer-alt"></i> 性能
+                    </button>
+                </div>
             </div>
             
-            <div class="tool-grid" id="toolGrid">
-                <!-- 工具卡片将在这里动态生成 -->
+            <!-- 工具内容区域（可滑动） -->
+            <div class="tools-content">
+                <div class="tool-grid" id="toolGrid">
+                    <!-- 工具卡片将在这里动态生成 -->
+                </div>
             </div>
         </div>
         
-        <!-- 选型表页面 -->
+        <!-- ===== 选型表页面 ===== -->
         <div id="specsPage" class="page">
-            <div class="specs-ad">
-                <!-- 广告图片，可以替换 -->
-                <img src="https://placehold.co/600x200/38b2ac/white?text=广告位+支持动态图片" alt="赞助商广告">
+            <!-- 固定顶部区域：广告 + 搜索 + 标签 -->
+            <div class="specs-sticky-header">
+                <div class="specs-ad">
+                    <!-- 广告图片，可以替换 -->
+                    <img src="https://placehold.co/600x200/38b2ac/white?text=广告位+支持动态图片" alt="赞助商广告">
+                </div>
+                
+                <div class="specs-search">
+                    <input type="text" placeholder="搜索规格..." id="specSearchInput">
+                    <button id="specSearchBtn"><i class="fas fa-search"></i></button>
+                </div>
+                
+                <div class="specs-tabs">
+                    <button class="specs-tab active" data-spec="11M">11M规格</button>
+                    <button class="specs-tab" data-spec="10M">10M规格</button>
+                    <button class="specs-tab" data-spec="8M">8M规格</button>
+                </div>
             </div>
             
-            <div class="specs-search">
-                <input type="text" placeholder="搜索规格..." id="specSearchInput">
-                <button id="specSearchBtn"><i class="fas fa-search"></i></button>
-            </div>
-            
-            <div class="specs-tabs">
-                <button class="specs-tab active" data-spec="11M">11M规格</button>
-                <button class="specs-tab" data-spec="10M">10M规格</button>
-                <button class="specs-tab" data-spec="8M">8M规格</button>
-            </div>
-            
-            <div class="specs-table-container">
-                <table class="specs-table" id="specsTable">
-                    <thead>
-                        <tr>
-                            <th>型号</th>
-                            <th>规格</th>
-                            <th>材质</th>
-                            <th>适用车型</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- 规格数据将在这里动态生成 -->
-                    </tbody>
-                </table>
+            <!-- 选型表内容区域（可滑动） -->
+            <div class="specs-content">
+                <div class="specs-table-container">
+                    <table class="specs-table" id="specsTable">
+                        <thead>
+                            <tr>
+                                <th>型号</th>
+                                <th>规格</th>
+                                <th>材质</th>
+                                <th>适用车型</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- 规格数据将在这里动态生成 -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
         
-        <!-- 知识库页面 -->
+        <!-- ===== 知识库页面 ===== -->
         <div id="knowledgePage" class="page">
-            <div class="knowledge-ad">
-                <!-- 广告图片，可以替换 -->
-                <img src="https://placehold.co/600x200/9b59b6/white?text=知识库广告位" alt="知识库广告">
+            <!-- 固定顶部区域：广告 -->
+            <div class="knowledge-sticky-header">
+                <div class="knowledge-ad">
+                    <!-- 广告图片，可以替换 -->
+                    <img src="https://placehold.co/600x200/9b59b6/white?text=知识库广告位" alt="知识库广告">
+                </div>
             </div>
             
-            <div class="knowledge-grid" id="knowledgeGrid">
-                <!-- 知识卡片将在这里动态生成 -->
+            <!-- 知识库内容区域（可滑动） -->
+            <div class="knowledge-content">
+                <div class="knowledge-grid" id="knowledgeGrid">
+                    <!-- 知识卡片将在这里动态生成 -->
+                </div>
             </div>
         </div>
     </div>
     
-    <!-- 工具展示容器 -->
+    <!-- ===== 工具展示容器 ===== -->
     <div class="tool-display-container" id="toolDisplay">
         <iframe class="tool-display-content" id="toolFrame" src="about:blank"></iframe>
     </div>
     
-    <!-- 关闭按钮 -->
+    <!-- ===== 关闭按钮 ===== -->
     <button class="close-button" id="closeTool">
         <i class="fas fa-times"></i>
     </button>
     
-    <!-- 底部导航 -->
+    <!-- ===== 底部导航 ===== -->
     <div class="bottom-nav">
         <a href="#" class="nav-item active" data-page="toolsPage">
             <div class="nav-icon"><i class="fas fa-tools"></i></div>
@@ -515,7 +734,7 @@
                 category: "performance",
                 description: "估算不同设计条件下的空气阻力与性能影响",
                 image: "https://placehold.co/600x400/3498db/white?text=空气动力学",
-                link: "https://cadenqi.github.io/tools/1",
+                link: "aero.html",
                 uses: 678
             },
             {
@@ -524,7 +743,7 @@
                 category: "material",
                 description: "分析自行车各部件的重量分布，优化平衡性",
                 image: "https://placehold.co/600x400/1abc9c/white?text=重量分析",
-                link: "https://cadenqi.github.io/tools/2",
+                link: "weight.html",
                 uses: 432
             },
             {
@@ -533,7 +752,7 @@
                 category: "performance",
                 description: "模拟自行车在不同条件下的性能表现，预测速度与功率",
                 image: "https://placehold.co/600x400/e74c3c/white?text=性能模拟",
-                link: "https://cadenqi.github.io/tools/3",
+                link: "performance.html",
                 uses: 945
             },
             {
@@ -542,7 +761,7 @@
                 category: "material",
                 description: "计算车架和零部件的应力分布与安全系数",
                 image: "https://placehold.co/600x400/f39c12/white?text=材料强度",
-                link: "https://cadenqi.github.io/tools/4",
+                link: "material.html",
                 uses: 723
             },
             {
@@ -551,7 +770,7 @@
                 category: "mechanical",
                 description: "计算同步皮带长度和齿数，确定合适的皮带规格",
                 image: "https://placehold.co/600x400/9b59b6/white?text=同步带计算",
-                link: "https://cadenqi.github.io/tools/5",
+                link: "htd-belt.html",
                 uses: 567
             },
             {
@@ -560,7 +779,7 @@
                 category: "design",
                 description: "可视化组装和调整自行车设计，实时查看更改效果",
                 image: "https://placehold.co/600x400/e74c3c/white?text=3D配置器",
-                link: "https://cadenqi.github.io/tools/6",
+                link: "configurator.html",
                 uses: 856
             },
             {
@@ -569,7 +788,7 @@
                 category: "mechanical",
                 description: "计算不同齿比下的速度、踏频关系，优化传动系统设计",
                 image: "https://placehold.co/600x400/2ecc71/white?text=传动计算",
-                link: "https://cadenqi.github.io/tools/7",
+                link: "gearing.html",
                 uses: 892
             },
             {
@@ -578,7 +797,7 @@
                 category: "design",
                 description: "计算自行车车架的关键几何参数，如Stack、Reach、轴距等",
                 image: "https://placehold.co/600x400/3498db/white?text=几何计算",
-                link: "https://cadenqi.github.io/tools/8",
+                link: "geometry.html",
                 uses: 1243
             }
         ];
@@ -613,37 +832,40 @@
             {
                 title: "自行车车架几何指南",
                 description: "深入了解自行车车架几何参数的含义及其对骑行体验的影响",
-                link: "https://cadenqi.github.io/tools/1"
+                link: "https://example.com/frame-geometry"
             },
             {
                 title: "传动系统维护技巧",
                 description: "学习如何正确维护和调整自行车的传动系统，延长使用寿命",
-                link: "https://cadenqi.github.io/tools/2"
+                link: "https://example.com/drivetrain-maintenance"
             },
             {
                 title: "材料科学与自行车设计",
                 description: "探索不同材料在自行车制造中的应用及其特性比较",
-                link: "https://cadenqi.github.io/tools/3"
+                link: "https://example.com/materials-science"
             },
             {
                 title: "空气动力学原理",
                 description: "了解空气动力学如何影响自行车性能及降低风阻的方法",
-                link: "https://cadenqi.github.io/tools/4"
+                link: "https://example.com/aerodynamics"
             },
             {
                 title: "自行车fitting指南",
                 description: "如何正确调整自行车以适应个人身体尺寸，提升舒适度和效率",
-                link: "https://cadenqi.github.io/tools/5"
+                link: "https://example.com/bike-fitting"
             },
             {
                 title: "轮胎选择与维护",
                 description: "根据骑行条件选择合适的轮胎并学习正确的维护方法",
-                link: "https://cadenqi.github.io/tools/6"
+                link: "https://example.com/tire-selection"
             }
         ];
 
         // ==================== 初始化 ====================
         document.addEventListener('DOMContentLoaded', function() {
+            // 初始化轮播图
+            initCarousel();
+            
             // 渲染工具卡片
             renderTools();
             
@@ -831,6 +1053,46 @@
         });
 
         // ==================== 功能函数 ====================
+        // 初始化轮播图
+        function initCarousel() {
+            const carouselInner = document.getElementById('carouselInner');
+            const indicators = document.querySelectorAll('.carousel-indicator');
+            let currentIndex = 0;
+            
+            // 自动轮播
+            setInterval(() => {
+                currentIndex = (currentIndex + 1) % 3;
+                carouselInner.style.transform = `translateX(-${currentIndex * 100}%)`;
+                
+                // 更新指示器
+                indicators.forEach((indicator, index) => {
+                    if (index === currentIndex) {
+                        indicator.classList.add('active');
+                    } else {
+                        indicator.classList.remove('active');
+                    }
+                });
+            }, 3000);
+            
+            // 点击指示器切换
+            indicators.forEach(indicator => {
+                indicator.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    currentIndex = index;
+                    carouselInner.style.transform = `translateX(-${currentIndex * 100}%)`;
+                    
+                    // 更新指示器
+                    indicators.forEach((ind, i) => {
+                        if (i === currentIndex) {
+                            ind.classList.add('active');
+                        } else {
+                            ind.classList.remove('active');
+                        }
+                    });
+                });
+            });
+        }
+        
         // 渲染工具卡片
         function renderTools() {
             const toolGrid = document.getElementById('toolGrid');
