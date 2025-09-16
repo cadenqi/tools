@@ -271,37 +271,6 @@
             margin: 0;
         }
         
-        /* 添加自定义的数值调整按钮 */
-        .number-controls {
-            position: absolute;
-            right: 10px;
-            top: 38px;
-            display: flex;
-            flex-direction: column;
-            height: calc(100% - 10px);
-            justify-content: space-between;
-            padding: 4px 0;
-        }
-        
-        .number-btn {
-            background: #f0f4f8;
-            border: none;
-            width: 24px;
-            height: 18px;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 12px;
-            color: var(--dark);
-        }
-        
-        .number-btn:active {
-            background: var(--primary-light);
-            color: white;
-        }
-        
         .input-group input:focus {
             border-color: var(--primary);
             outline: none;
@@ -540,7 +509,7 @@
          顶部导航栏
          ============================================================================= -->
     <header class="app-header">
-        <div class="app-title">皮带轮与齿盘换算工具</div>
+        <div class="app-title">皮带轮与齿盘换算计算器</div>
     </header>
     
     <!-- =============================================================================
@@ -575,13 +544,13 @@
                         <div class="series-selector">
                             <div class="selector-title">选择系列</div>
                             <div class="series-buttons">
-                                <div class="series-btn" data-pitch="11">
+                                <div class="series-btn active" data-pitch="11">
                                     <span>11M</span>
                                 </div>
                                 <div class="series-btn" data-pitch="10">
                                     <span>10M</span>
                                 </div>
-                                <div class="series-btn active" data-pitch="8">
+                                <div class="series-btn" data-pitch="8">
                                     <span>8M</span>
                                 </div>
                             </div>
@@ -605,10 +574,6 @@
                     <div class="input-group">
                         <label id="inputLabel">齿盘齿数 (T)</label>
                         <input type="number" id="inputTeeth" placeholder="输入齿数" min="1" max="1000" value="50">
-                        <div class="number-controls">
-                            <button class="number-btn" id="increaseBtn">+</button>
-                            <button class="number-btn" id="decreaseBtn">-</button>
-                        </div>
                     </div>
                     
                     <button class="calculate-btn" id="calculateBtn">
@@ -688,7 +653,7 @@
                 
                 <div class="instruction-item">
                     <h3><i class="fas fa-3"></i> 输入齿数</h3>
-                    <p>在输入框中输入齿盘或皮带轮的齿数（根据您选择的方向）。可以使用输入框旁边的+/-按钮调整数值。</p>
+                    <p>在输入框中输入齿盘或皮带轮的齿数（根据您选择的方向）。可以使用输入框自带的上下箭头调整数值。</p>
                 </div>
                 
                 <div class="instruction-item">
@@ -741,8 +706,6 @@
             const clearHistoryBtn = document.getElementById('clearHistory');
             const navItems = document.querySelectorAll('.nav-item');
             const pages = document.querySelectorAll('.page');
-            const increaseBtn = document.getElementById('increaseBtn');
-            const decreaseBtn = document.getElementById('decreaseBtn');
             const copyNotification = document.getElementById('copyNotification');
             
             // 当前选择的参数
@@ -822,19 +785,6 @@
                 }
             }
             
-            // 数值调整按钮事件
-            increaseBtn.addEventListener('click', function() {
-                let value = parseInt(inputTeeth.value) || 0;
-                inputTeeth.value = value + 1;
-            });
-            
-            decreaseBtn.addEventListener('click', function() {
-                let value = parseInt(inputTeeth.value) || 0;
-                if (value > 1) {
-                    inputTeeth.value = value - 1;
-                }
-            });
-            
             // =============================================================================
             // 计算模块
             // =============================================================================
@@ -850,7 +800,7 @@
                 return pcd + 2 * 2.925;
             }
             
-            // 计算皮带轮外径
+            // 计算皮带轮外径 - 修正为减法
             function calculatePulleyOD(pcd, pitch) {
                 // 皮带轮外径 = 节圆直径 - (2 * 0.1 * 节距)
                 return pcd - (2 * 0.1 * pitch);
@@ -890,7 +840,7 @@
                     // 计算皮带轮节圆直径
                     pcd = calculatePCD(result, pulleyPitch);
                     
-                    // 计算皮带轮外径
+                    // 计算皮带轮外径 - 使用修正后的公式
                     diameter = calculatePulleyOD(pcd, pulleyPitch);
                     
                     // 计算挡边外径
