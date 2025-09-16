@@ -746,7 +746,7 @@
             const copyNotification = document.getElementById('copyNotification');
             
             // 当前选择的参数
-            let currentPitch = 8; // 默认选择8M
+            let currentPitch = 11; // 默认选择11M
             let isSprocketToPulley = true; // 默认计算方向：齿盘转皮带轮
             let calculationHistory = []; // 存储计算历史
             let currentResult = null; // 存储当前计算结果
@@ -852,8 +852,8 @@
             
             // 计算皮带轮外径
             function calculatePulleyOD(pcd, pitch) {
-                // 皮带轮外径 = 节圆直径 + (2 * 0.1 * 节距)
-                return pcd + (2 * 0.1 * pitch);
+                // 皮带轮外径 = 节圆直径 - (2 * 0.1 * 节距)
+                return pcd - (2 * 0.1 * pitch);
             }
             
             // 计算挡边外径
