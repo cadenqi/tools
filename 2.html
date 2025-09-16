@@ -3,898 +3,1114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>自行车骑行时速计算工具</title>
+    <title>皮带轮与齿盘换算工具</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* =============================================================================
+           变量定义
+           ============================================================================= */
         :root {
-            --primary: #3498db;
-            --primary-dark: #2980b9;
-            --secondary: #2c3e50;
-            --light: #ecf0f1;
-            --dark: #2c3e50;
-            --gray: #7f8c8d;
-            --light-gray: #f5f7f9;
-            --white: #ffffff;
-            --success: #27ae60;
-            --warning: #f39c12;
-            --border-radius: 8px;
+            --primary: #4361ee;
+            --primary-light: #4895ef;
+            --secondary: #f72585;
+            --accent: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #2b2d42;
+            --success: #4caf50;
+            --card-bg: #ffffff;
             --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --transition: all 0.3s ease;
+            --gradient: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            --bg-color: #f0f4f8;
         }
         
+        /* =============================================================================
+           基础样式
+           ============================================================================= */
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
         }
         
         body {
-            background-color: var(--light-gray);
+            background-color: var(--bg-color);
             color: var(--dark);
-            line-height: 1.6;
-            padding: 20px;
             min-height: 100vh;
+            overflow-x: hidden;
         }
         
-        .container {
+        /* =============================================================================
+           顶部导航栏
+           ============================================================================= */
+        .app-header {
+            background: var(--gradient);
+            color: white;
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .app-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        /* =============================================================================
+           顶部导航菜单
+           ============================================================================= */
+        .top-nav {
+            display: flex;
+            justify-content: space-around;
+            background: white;
+            padding: 12px 0;
+            position: sticky;
+            top: 62px; /* 标题栏高度 */
+            width: 100%;
+            border-bottom: 1px solid #eaeef2;
+            z-index: 90;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 8px 15px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .nav-item.active {
+            background: rgba(67, 97, 238, 0.1);
+        }
+        
+        .nav-icon {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+            color: #5a6a7e;
+        }
+        
+        .nav-item.active .nav-icon {
+            color: var(--primary);
+        }
+        
+        .nav-text {
+            font-size: 0.8rem;
+            color: #5a6a7e;
+        }
+        
+        .nav-item.active .nav-text {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        /* =============================================================================
+           内容区域
+           ============================================================================= */
+        .app-content {
+            padding: 20px;
             max-width: 1200px;
             margin: 0 auto;
+            padding-top: 20px; /* 为顶部导航留出空间 */
         }
         
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 30px 20px;
-            background: var(--white);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
+        /* =============================================================================
+           页面内容
+           ============================================================================= */
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease-out;
         }
         
-        h1 {
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: var(--secondary);
-            font-size: 2.2rem;
+        .page.active {
+            display: block;
         }
         
-        .header-icon {
-            color: var(--primary);
-            margin-right: 12px;
+        /* =============================================================================
+           计算器页面
+           ============================================================================= */
+        .calculator-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
         
-        .subtitle {
-            color: var(--gray);
-            font-size: 1.1rem;
-        }
-        
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-        
-        @media (max-width: 900px) {
-            .main-content {
-                grid-template-columns: 1fr;
+        @media (min-width: 768px) {
+            .calculator-container {
+                flex-direction: row;
             }
         }
         
-        .card {
-            background: var(--white);
-            border-radius: var(--border-radius);
+        .input-panel, .result-panel {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
             box-shadow: var(--shadow);
-            padding: 30px;
-            transition: var(--transition);
-        }
-        
-        .card:hover {
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
-        }
-        
-        .card-title {
-            font-size: 1.4rem;
-            margin-bottom: 25px;
-            color: var(--secondary);
-            display: flex;
-            align-items: center;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--light);
-        }
-        
-        .card-title i {
-            margin-right: 12px;
-            color: var(--primary);
-        }
-        
-        .form-group {
-            margin-bottom: 22px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--secondary);
-            display: flex;
-            align-items: center;
-        }
-        
-        label i {
-            margin-right: 10px;
-            width: 20px;
-            color: var(--primary);
-        }
-        
-        input, select {
-            width: 100%;
-            padding: 14px 16px;
-            border: 1px solid #e1e5e9;
-            border-radius: var(--border-radius);
-            font-size: 16px;
-            transition: var(--transition);
-            color: var(--dark);
-        }
-        
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
-        }
-        
-        .input-row {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .input-row .form-group {
             flex: 1;
         }
         
-        .info-tip {
-            font-size: 0.85rem;
-            color: var(--gray);
-            margin-top: 6px;
-            padding: 8px 12px;
-            background: var(--light-gray);
-            border-radius: var(--border-radius);
-            line-height: 1.4;
-        }
-        
-        .reference-link {
-            color: var(--primary);
-            text-decoration: none;
-            font-size: 0.9rem;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            margin-top: 5px;
-        }
-        
-        .reference-link:hover {
-            text-decoration: underline;
-        }
-        
-        .optional-section {
-            background: var(--light-gray);
-            padding: 20px;
-            border-radius: var(--border-radius);
-            margin-top: 25px;
-            border-left: 3px solid var(--primary);
-        }
-        
-        .optional-title {
-            color: var(--primary);
-            margin-bottom: 18px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-        }
-        
-        .optional-title i {
-            margin-right: 10px;
-        }
-        
-        button {
-            background: var(--primary);
-            color: var(--white);
-            border: none;
-            padding: 16px 24px;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 500;
-            width: 100%;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 10px;
-        }
-        
-        button i {
-            margin-right: 10px;
-        }
-        
-        button:hover {
-            background: var(--primary-dark);
-        }
-        
-        .result-box {
-            text-align: center;
-            padding: 35px 25px;
-            background: var(--light);
-            border-radius: var(--border-radius);
-            margin-bottom: 25px;
-        }
-        
-        .speed-label {
-            font-size: 1.1rem;
-            color: var(--gray);
-            margin-bottom: 10px;
-        }
-        
-        .speed-value {
-            font-size: 3.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin: 15px 0;
-            line-height: 1.1;
-        }
-        
-        .unit {
-            font-size: 1.2rem;
-            color: var(--gray);
-            font-weight: 500;
-        }
-        
-        .result-details {
-            margin-bottom: 25px;
-        }
-        
-        .detail-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid #e1e5e9;
-        }
-        
-        .detail-value {
-            font-weight: 600;
-            color: var(--secondary);
-        }
-        
-        .note {
-            background: #fff8e6;
-            padding: 15px;
-            border-radius: var(--border-radius);
-            font-size: 0.95rem;
-            color: #8a6d3b;
-            border-left: 3px solid #ffc107;
-            margin-top: 20px;
-        }
-        
-        .copy-btn {
-            background: var(--secondary);
-            margin-top: 20px;
-        }
-        
-        .copy-btn:hover {
-            background: #1a252f;
-        }
-        
-        .copy-success {
-            background: var(--success);
-        }
-        
-        .ad-container {
-            margin-bottom: 40px;
-            text-align: center;
-        }
-        
-        .ad-space {
-            height: 120px; /* 优化后的广告高度 */
-            background: var(--white);
-            border-radius: var(--border-radius);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--gray);
-            font-size: 1.1rem;
-            transition: var(--transition);
-            max-width: 100%;
-            margin: 0 auto;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-        }
-        
-        .ad-space img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .ad-space:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            color: var(--gray);
-            font-size: 0.95rem;
-            padding: 20px;
-        }
-        
-        /* 弹窗样式 */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .modal-content {
-            background-color: var(--white);
-            padding: 30px;
-            border-radius: var(--border-radius);
-            width: 90%;
-            max-width: 600px;
-            max-height: 80vh;
-            overflow-y: auto;
-            box-shadow: var(--shadow);
-        }
-        
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .control-section {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
             margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #e1e5e9;
         }
         
-        .modal-title {
-            font-size: 1.5rem;
-            color: var(--secondary);
+        @media (min-width: 480px) {
+            .control-section {
+                grid-template-columns: 1fr 1fr;
+            }
         }
         
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: var(--gray);
+        .series-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .selector-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 5px;
+            font-size: 0.95rem;
+        }
+        
+        .series-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .series-btn {
+            flex: 1;
+            background: white;
+            border: 2px solid #e0e6ed;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
             cursor: pointer;
-            width: auto;
-            padding: 0;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 0.9rem;
         }
         
-        .close-btn:hover {
+        .series-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .direction-toggle {
+            display: flex;
+            background: #f0f4f8;
+            border-radius: 8px;
+            padding: 4px;
+            width: 100%;
+        }
+        
+        .toggle-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 6px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .toggle-btn.active {
+            color: white;
+        }
+        
+        #sprocketToPulleyBtn.active {
+            background: var(--primary);
+        }
+        
+        #pulleyToSprocketBtn.active {
+            background: var(--secondary);
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #e0e6ed;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            -webkit-appearance: none;
+            -moz-appearance: textfield;
+        }
+        
+        /* 移除数字输入框的上下箭头 */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        /* 添加自定义的数值调整按钮 */
+        .number-controls {
+            position: absolute;
+            right: 10px;
+            top: 38px;
+            display: flex;
+            flex-direction: column;
+            height: calc(100% - 10px);
+            justify-content: space-between;
+            padding: 4px 0;
+        }
+        
+        .number-btn {
+            background: #f0f4f8;
+            border: none;
+            width: 24px;
+            height: 18px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
             color: var(--dark);
         }
         
-        .reference-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0;
-        }
-        
-        .reference-table th, .reference-table td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #e1e5e9;
-        }
-        
-        .reference-table th {
-            background-color: var(--light-gray);
-            font-weight: 600;
-        }
-        
-        .reference-table tr:hover {
-            background-color: #f9f9f9;
-        }
-        
-        .tooltip {
-            position: relative;
-            display: inline-block;
-            margin-left: 8px;
-        }
-        
-        .tooltip .tooltiptext {
-            visibility: hidden;
-            width: 250px;
-            background-color: var(--dark);
+        .number-btn:active {
+            background: var(--primary-light);
             color: white;
-            text-align: left;
-            border-radius: var(--border-radius);
-            padding: 12px;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0;
-            transition: opacity 0.3s;
-            font-size: 0.85rem;
-            font-weight: normal;
-            line-height: 1.5;
         }
         
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
+        .input-group input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+        }
+        
+        .calculate-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            width: 100%;
+            background: var(--primary);
+            color: white;
+        }
+        
+        .calculate-btn:hover {
+            background: var(--primary-light);
+        }
+        
+        .result-title {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .result-box {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 16px;
+            border: 1px solid #eaeef2;
+        }
+        
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+        
+        @media (min-width: 480px) {
+            .result-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .result-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .result-label {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+        
+        .result-value {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1rem;
+        }
+        
+        .note {
+            grid-column: 1 / -1;
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: #5a6a7e;
+            background: #fffaf0;
+            padding: 10px 12px;
+            border-radius: 6px;
+            border-left: 3px solid var(--secondary);
+        }
+        
+        .copy-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            width: 100%;
+            background: var(--success);
+            color: white;
+            margin-top: 15px;
+        }
+        
+        /* =============================================================================
+           历史记录页面
+           ============================================================================= */
+        .history-container {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+        
+        .history-title {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .history-list {
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        
+        .history-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eaeef2;
+            font-size: 0.9rem;
+        }
+        
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        
+        .clear-history {
+            display: block;
+            text-align: right;
+            margin-top: 10px;
+            color: var(--primary);
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        
+        /* =============================================================================
+           使用说明页面
+           ============================================================================= */
+        .instructions-container {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+        
+        .instructions-title {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .instruction-item {
+            margin-bottom: 20px;
+        }
+        
+        .instruction-item h3 {
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .instruction-item p {
+            color: #5a6a7e;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            padding-left: 28px;
+        }
+        
+        /* =============================================================================
+           动画效果
+           ============================================================================= */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* =============================================================================
+           复制成功提示 - 优化版
+           ============================================================================= */
+        .copy-notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--success);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease-out;
+        }
+        
+        .copy-notification.show {
             opacity: 1;
+        }
+        
+        /* =============================================================================
+           空状态提示
+           ============================================================================= */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #5a6a7e;
+        }
+        
+        .empty-state i {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #e0e6ed;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1><i class="fas fa-bicycle header-icon"></i>自行车骑行时速计算</h1>
-            <p class="subtitle">精准计算您的骑行速度，优化骑行体验</p>
-        </header>
-        
-        <div class="main-content">
-            <section class="card">
-                <h2 class="card-title"><i class="fas fa-sliders-h"></i>参数设置</h2>
-                
-                <div class="form-group">
-                    <label for="cadence"><i class="fas fa-tachometer-alt"></i>踏频 (RPM)</label>
-                    <input type="number" id="cadence" min="0" max="200" value="90" placeholder="每分钟踩踏圈数">
-                    <div class="info-tip">
-                        <i class="fas fa-info-circle"></i> 建议踏频范围：70-100 RPM。业余骑手通常70-90 RPM，职业选手平路85-100 RPM，爬坡60-80 RPM。
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="wheelSize"><i class="fas fa-circle"></i>轮圈尺寸</label>
-                    <select id="wheelSize">
-                        <option value="12">12英寸 (儿童车)</option>
-                        <option value="14">14英寸 (儿童车)</option>
-                        <option value="16">16英寸 (折叠车)</option>
-                        <option value="20">20英寸 (BMX/折叠车)</option>
-                        <option value="24">24英寸 (青少年车)</option>
-                        <option value="26" selected>26英寸 (山地车)</option>
-                        <option value="27.5">27.5英寸 (山地车)</option>
-                        <option value="29">29英寸 (山地车)</option>
-                        <option value="28">28英寸 (老式通勤车)</option>
-                        <option value="622">700C (公路车 - 622mm)</option>
-                        <option value="custom">自定义尺寸</option>
-                    </select>
-                </div>
-                
-                <div class="form-group" id="customWheelSizeGroup" style="display: none;">
-                    <label for="customWheelSize"><i class="fas fa-ruler"></i>自定义轮圈尺寸 (毫米)</label>
-                    <input type="number" id="customWheelSize" min="200" max="1000" value="559" placeholder="输入自定义轮圈尺寸(mm)">
-                </div>
-                
-                <div class="form-group">
-                    <label for="tireWidth"><i class="fas fa-arrows-alt-h"></i>外胎宽度</label>
-                    <div class="input-row">
-                        <input type="number" id="tireWidth" min="10" max="100" value="40" placeholder="外胎宽度">
-                        <select id="tireWidthUnit">
-                            <option value="mm">毫米 (mm)</option>
-                            <option value="inch">英寸</option>
-                        </select>
-                    </div>
-                    <a class="reference-link" id="showTireReference">
-                        <i class="fas fa-book"></i> 查看常见外胎宽度参考
-                    </a>
-                </div>
-                
-                <div class="form-group">
-                    <label for="actualWheelDiameter"><i class="fas fa-circle-notch"></i>实际轮径 (毫米)</label>
-                    <input type="number" id="actualWheelDiameter" placeholder="自动计算或手动输入">
-                    <div class="info-tip">
-                        <i class="fas fa-info-circle"></i> 此值根据轮圈尺寸和外胎宽度自动计算，如有误差可手动修正
-                    </div>
-                </div>
-                
-                <div class="input-row">
-                    <div class="form-group">
-                        <label for="chainring"><i class="fas fa-cog"></i>前齿盘齿数</label>
-                        <input type="number" id="chainring" min="20" max="60" value="42" placeholder="前齿盘齿数">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="cog"><i class="fas fa-cog"></i>后飞轮齿数</label>
-                        <input type="number" id="cog" min="10" max="50" value="16" placeholder="后飞轮齿数">
-                    </div>
-                </div>
-                
-                <div class="optional-section">
-                    <h3 class="optional-title"><i class="fas fa-plus-circle"></i>可选参数</h3>
-                    
-                    <div class="form-group">
-                        <label for="internalGear">
-                            <i class="fas fa-exchange-alt"></i>内变速比
-                            <span class="tooltip">
-                                <i class="fas fa-question-circle" style="color: var(--gray);"></i>
-                                <span class="tooltiptext">
-                                    常见内变速比参考：<br>
-                                    - 禧玛诺3速: 0.733, 1, 1.364<br>
-                                    - 禧玛诺7速: 0.632, 0.741, 0.843, 1, 1.223, 1.419, 1.615<br>
-                                    - 日驰3速: 0.75, 1, 1.33
-                                </span>
-                            </span>
-                        </label>
-                        <input type="number" id="internalGear" step="0.001" min="0.1" max="3" value="1" placeholder="输入内变速比 (默认1)">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="midDrive">
-                            <i class="fas fa-cogs"></i>中置变速齿比
-                            <span class="tooltip">
-                                <i class="fas fa-question-circle" style="color: var(--gray);"></i>
-                                <span class="tooltiptext">
-                                    中置电机变速比参考：<br>
-                                    - Shimano Steps: 通常2.0-2.5<br>
-                                    - Bosch Performance: 通常2.2-2.8<br>
-                                    - Yamaha PW: 通常2.0-2.4<br>
-                                    无中置电机请设置为1
-                                </span>
-                            </span>
-                        </label>
-                        <input type="number" id="midDrive" step="0.1" min="0.1" max="5" value="1" placeholder="输入中置变速齿比 (默认1)">
-                    </div>
-                </div>
-                
-                <button id="calculateBtn"><i class="fas fa-calculator"></i>计算速度</button>
-            </section>
-            
-            <section class="card">
-                <h2 class="card-title"><i class="fas fa-tachometer-alt"></i>计算结果</h2>
-                
-                <div class="result-box">
-                    <div class="speed-label">预计骑行时速</div>
-                    <div class="speed-value" id="speedResult">0.00</div>
-                    <div class="unit">公里/小时 (km/h)</div>
-                </div>
-                
-                <div class="result-details">
-                    <div class="detail-item">
-                        <span>实际轮径:</span>
-                        <span class="detail-value" id="actualWheelSize">0.00 毫米</span>
-                    </div>
-                    <div class="detail-item">
-                        <span>轮周长:</span>
-                        <span class="detail-value" id="wheelCircumference">0.00 米</span>
-                    </div>
-                    <div class="detail-item">
-                        <span>总齿比:</span>
-                        <span class="detail-value" id="totalGearRatio">0.00</span>
-                    </div>
-                    <div class="detail-item">
-                        <span>每秒行进距离:</span>
-                        <span class="detail-value" id="distancePerSecond">0.00 米/秒</span>
-                    </div>
-                </div>
-                
-                <button id="copyBtn" class="copy-btn"><i class="fas fa-copy"></i>复制计算结果</button>
-                
-                <div class="note">
-                    <i class="fas fa-info-circle"></i> 请注意：此结果为理论计算值，实际骑行速度会受到路况、风向、坡度、体重、胎压等多种因素影响。
-                </div>
-            </section>
+    <!-- =============================================================================
+         顶部导航栏
+         ============================================================================= -->
+    <header class="app-header">
+        <div class="app-title">皮带轮与齿盘换算工具</div>
+    </header>
+    
+    <!-- =============================================================================
+         顶部导航菜单
+         ============================================================================= -->
+    <nav class="top-nav">
+        <div class="nav-item active" data-page="calculatorPage">
+            <i class="fas fa-calculator nav-icon"></i>
+            <span class="nav-text">计算器</span>
         </div>
-        
-        <div class="ad-container">
-            <!-- 广告位 - 可以替换图片和链接 -->
-            <a href="https://example.com" target="_blank" rel="noopener noreferrer" id="adLink">
-                <div class="ad-space" id="adSpace">
-                    <img src="https://via.placeholder.com/1000x120?text=广告位（可替换图片）" alt="广告" id="adImage">
-                </div>
-            </a>
+        <div class="nav-item" data-page="historyPage">
+            <i class="fas fa-history nav-icon"></i>
+            <span class="nav-text">计算记录</span>
         </div>
+        <div class="nav-item" data-page="instructionsPage">
+            <i class="fas fa-info-circle nav-icon"></i>
+            <span class="nav-text">使用说明</span>
+        </div>
+    </nav>
+    
+    <!-- =============================================================================
+         内容区域
+         ============================================================================= -->
+    <main class="app-content">
+        <!-- =============================================================================
+             计算器页面
+             ============================================================================= -->
+        <section id="calculatorPage" class="page active">
+            <div class="calculator-container">
+                <div class="input-panel">
+                    <div class="control-section">
+                        <div class="series-selector">
+                            <div class="selector-title">选择系列</div>
+                            <div class="series-buttons">
+                                <div class="series-btn" data-pitch="11">
+                                    <span>11M</span>
+                                </div>
+                                <div class="series-btn" data-pitch="10">
+                                    <span>10M</span>
+                                </div>
+                                <div class="series-btn active" data-pitch="8">
+                                    <span>8M</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="direction-selector">
+                            <div class="selector-title">计算方向</div>
+                            <div class="direction-toggle">
+                                <button class="toggle-btn active" id="sprocketToPulleyBtn">
+                                    <i class="fas fa-exchange-alt"></i>
+                                    <span>齿盘转皮带轮</span>
+                                </button>
+                                <button class="toggle-btn" id="pulleyToSprocketBtn">
+                                    <i class="fas fa-exchange-alt"></i>
+                                    <span>皮带轮转齿盘</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label id="inputLabel">齿盘齿数 (T)</label>
+                        <input type="number" id="inputTeeth" placeholder="输入齿数" min="1" max="1000" value="50">
+                        <div class="number-controls">
+                            <button class="number-btn" id="increaseBtn">+</button>
+                            <button class="number-btn" id="decreaseBtn">-</button>
+                        </div>
+                    </div>
+                    
+                    <button class="calculate-btn" id="calculateBtn">
+                        <i class="fas fa-calculator"></i>
+                        计算
+                    </button>
+                </div>
+                
+                <div class="result-panel">
+                    <h3 class="result-title"><i class="fas fa-chart-line"></i> 计算结果</h3>
+                    
+                    <div class="result-box">
+                        <div class="result-grid">
+                            <div class="result-item">
+                                <span class="result-label" id="outputLabel">皮带轮齿数:</span>
+                                <span class="result-value" id="outputTeeth">--</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">节圆直径≈</span>
+                                <span class="result-value" id="outputPCD">--</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label" id="diameterLabel">皮带轮外径≈</span>
+                                <span class="result-value" id="outputDiameter">--</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">挡边外径≈</span>
+                                <span class="result-value" id="outputFlangeDiameter">--</span>
+                            </div>
+                        </div>
+                        
+                        <div class="note" id="outputNote">
+                            输入齿数后点击计算按钮
+                        </div>
+                        
+                        <button class="copy-btn" id="copyBtn">
+                            <i class="fas fa-copy"></i>
+                            复制计算结果
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
         
-        <footer>
-            <p>自行车骑行时速计算工具 &copy; 2023 | 精确计算您的骑行速度</p>
-        </footer>
-    </div>
+        <!-- =============================================================================
+             历史记录页面
+             ============================================================================= -->
+        <section id="historyPage" class="page">
+            <div class="history-container">
+                <h3 class="history-title"><i class="fas fa-history"></i> 计算历史</h3>
+                <div class="history-list" id="historyList">
+                    <div class="empty-state">
+                        <i class="fas fa-history"></i>
+                        <p>暂无计算历史</p>
+                    </div>
+                </div>
+                <span class="clear-history" id="clearHistory">清除历史</span>
+            </div>
+        </section>
+        
+        <!-- =============================================================================
+             使用说明页面
+             ============================================================================= -->
+        <section id="instructionsPage" class="page">
+            <div class="instructions-container">
+                <h3 class="instructions-title"><i class="fas fa-info-circle"></i> 使用说明</h3>
+                
+                <div class="instruction-item">
+                    <h3><i class="fas fa-1"></i> 选择系列</h3>
+                    <p>根据您的需求选择适当的系列：11M、10M或8M。每个系列对应不同的节距。</p>
+                </div>
+                
+                <div class="instruction-item">
+                    <h3><i class="fas fa-2"></i> 选择计算方向</h3>
+                    <p>选择"齿盘转皮带轮"或"皮带轮转齿盘"来确定计算方向。</p>
+                </div>
+                
+                <div class="instruction-item">
+                    <h3><i class="fas fa-3"></i> 输入齿数</h3>
+                    <p>在输入框中输入齿盘或皮带轮的齿数（根据您选择的方向）。可以使用输入框旁边的+/-按钮调整数值。</p>
+                </div>
+                
+                <div class="instruction-item">
+                    <h3><i class="fas fa-4"></i> 计算结果</h3>
+                    <p>点击"计算"按钮获取换算结果，包括齿数、节圆直径、外径和挡边外径。</p>
+                </div>
+                
+                <div class="instruction-item">
+                    <h3><i class="fas fa-5"></i> 复制结果</h3>
+                    <p>点击"复制计算结果"按钮将格式化的结果复制到剪贴板。</p>
+                </div>
+                
+                <div class="instruction-item">
+                    <h3><i class="fas fa-6"></i> 查看历史</h3>
+                    <p>在"计算记录"页面查看您的计算历史记录。</p>
+                </div>
+            </div>
+        </section>
+    </main>
 
-    <!-- 外胎参考弹窗 -->
-    <div class="modal" id="tireReferenceModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">常见外胎宽度参考</h3>
-                <button class="close-btn">&times;</button>
-            </div>
-            <table class="reference-table">
-                <thead>
-                    <tr>
-                        <th>车型</th>
-                        <th>常见胎宽范围</th>
-                        <th>示例规格</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>山地车</td>
-                        <td>1.9~2.5英寸</td>
-                        <td>26×1.95、27.5×2.1</td>
-                    </tr>
-                    <tr>
-                        <td>公路车</td>
-                        <td>23~32毫米</td>
-                        <td>700×25C、700×28C</td>
-                    </tr>
-                    <tr>
-                        <td>混合路面车</td>
-                        <td>28~47毫米</td>
-                        <td>700×35C、650B×42</td>
-                    </tr>
-                    <tr>
-                        <td>儿童/通勤车</td>
-                        <td>1.5~1.75英寸</td>
-                        <td>20×1.5、24×1.75</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="info-tip">
-                <i class="fas fa-info-circle"></i> 提示：实际轮径 = 轮圈直径 + 2 × 轮胎厚度（轮胎厚度约等于外胎宽度）
-            </div>
-        </div>
+    <!-- 复制成功提示 -->
+    <div class="copy-notification" id="copyNotification">
+        <i class="fas fa-check-circle"></i>
+        <span>已复制到剪贴板</span>
     </div>
 
     <script>
-        // 获取页面元素
-        const cadenceInput = document.getElementById('cadence');
-        const wheelSizeSelect = document.getElementById('wheelSize');
-        const customWheelSizeGroup = document.getElementById('customWheelSizeGroup');
-        const customWheelSizeInput = document.getElementById('customWheelSize');
-        const tireWidthInput = document.getElementById('tireWidth');
-        const tireWidthUnitSelect = document.getElementById('tireWidthUnit');
-        const actualWheelDiameterInput = document.getElementById('actualWheelDiameter');
-        const chainringInput = document.getElementById('chainring');
-        const cogInput = document.getElementById('cog');
-        const internalGearInput = document.getElementById('internalGear');
-        const midDriveInput = document.getElementById('midDrive');
-        const calculateBtn = document.getElementById('calculateBtn');
-        const copyBtn = document.getElementById('copyBtn');
-        const speedResult = document.getElementById('speedResult');
-        const wheelCircumference = document.getElementById('wheelCircumference');
-        const totalGearRatio = document.getElementById('totalGearRatio');
-        const distancePerSecond = document.getElementById('distancePerSecond');
-        const actualWheelSize = document.getElementById('actualWheelSize');
-        const showTireReference = document.getElementById('showTireReference');
-        const tireReferenceModal = document.getElementById('tireReferenceModal');
-        const closeModalBtn = document.querySelector('.close-btn');
-        const adLink = document.getElementById('adLink');
-        const adImage = document.getElementById('adImage');
+        // =============================================================================
+        // 初始化代码模块
+        // =============================================================================
         
-        // 是否手动修改了实际轮径
-        let isManualWheelDiameter = false;
-        
-        // 轮圈尺寸选择变化事件
-        wheelSizeSelect.addEventListener('change', function() {
-            if (this.value === 'custom') {
-                customWheelSizeGroup.style.display = 'block';
-            } else {
-                customWheelSizeGroup.style.display = 'none';
-            }
-            if (!isManualWheelDiameter) {
-                calculateActualWheelDiameter();
-            }
-            calculateSpeed();
-        });
-        
-        // 计算实际轮径函数
-        function calculateActualWheelDiameter() {
-            let rimDiameterMm = 0;
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取页面元素
+            const seriesButtons = document.querySelectorAll('.series-btn');
+            const sprocketToPulleyBtn = document.getElementById('sprocketToPulleyBtn');
+            const pulleyToSprocketBtn = document.getElementById('pulleyToSprocketBtn');
+            const inputLabel = document.getElementById('inputLabel');
+            const outputLabel = document.getElementById('outputLabel');
+            const diameterLabel = document.getElementById('diameterLabel');
+            const inputTeeth = document.getElementById('inputTeeth');
+            const outputTeeth = document.getElementById('outputTeeth');
+            const outputPCD = document.getElementById('outputPCD');
+            const outputDiameter = document.getElementById('outputDiameter');
+            const outputFlangeDiameter = document.getElementById('outputFlangeDiameter');
+            const outputNote = document.getElementById('outputNote');
+            const calculateBtn = document.getElementById('calculateBtn');
+            const copyBtn = document.getElementById('copyBtn');
+            const historyList = document.getElementById('historyList');
+            const clearHistoryBtn = document.getElementById('clearHistory');
+            const navItems = document.querySelectorAll('.nav-item');
+            const pages = document.querySelectorAll('.page');
+            const increaseBtn = document.getElementById('increaseBtn');
+            const decreaseBtn = document.getElementById('decreaseBtn');
+            const copyNotification = document.getElementById('copyNotification');
             
-            // 获取轮圈直径（毫米）
-            if (wheelSizeSelect.value === 'custom') {
-                rimDiameterMm = parseFloat(customWheelSizeInput.value) || 559;
-            } else if (wheelSizeSelect.value === '622') {
-                // 700C特殊处理
-                rimDiameterMm = 622;
-            } else {
-                // 其他尺寸：英寸转换为毫米
-                rimDiameterMm = parseFloat(wheelSizeSelect.value) * 25.4;
-            }
+            // 当前选择的参数
+            let currentPitch = 8; // 默认选择8M
+            let isSprocketToPulley = true; // 默认计算方向：齿盘转皮带轮
+            let calculationHistory = []; // 存储计算历史
+            let currentResult = null; // 存储当前计算结果
             
-            // 获取外胎宽度并转换为毫米
-            const tireWidth = parseFloat(tireWidthInput.value) || 40;
-            const tireWidthUnit = tireWidthUnitSelect.value;
-            let tireWidthMm = tireWidth;
+            // =============================================================================
+            // 导航模块
+            // =============================================================================
             
-            if (tireWidthUnit === 'inch') {
-                tireWidthMm = tireWidth * 25.4;
-            }
-            
-            // 计算实际轮径（毫米）= 轮圈直径 + 2 × 轮胎厚度（轮胎厚度约等于外胎宽度）
-            const actualDiameterMm = rimDiameterMm + (2 * tireWidthMm);
-            
-            // 更新实际轮径输入框
-            actualWheelDiameterInput.value = Math.round(actualDiameterMm);
-            
-            return actualDiameterMm;
-        }
-        
-        // 实际轮径输入框手动修正
-        actualWheelDiameterInput.addEventListener('input', function() {
-            isManualWheelDiameter = true;
-            calculateSpeed();
-        });
-        
-        // 显示外胎参考弹窗
-        showTireReference.addEventListener('click', function() {
-            tireReferenceModal.style.display = 'flex';
-        });
-        
-        // 关闭弹窗
-        closeModalBtn.addEventListener('click', function() {
-            tireReferenceModal.style.display = 'none';
-        });
-        
-        // 点击弹窗外部关闭
-        window.addEventListener('click', function(event) {
-            if (event.target === tireReferenceModal) {
-                tireReferenceModal.style.display = 'none';
-            }
-        });
-        
-        // 计算按钮点击事件
-        calculateBtn.addEventListener('click', calculateSpeed);
-        
-        // 复制按钮点击事件
-        copyBtn.addEventListener('click', copyResults);
-        
-        // 初始计算一次
-        calculateActualWheelDiameter();
-        calculateSpeed();
-        
-        // 计算速度函数
-        function calculateSpeed() {
-            // 获取输入值
-            const cadence = parseFloat(cadenceInput.value) || 90;
-            const chainring = parseFloat(chainringInput.value) || 42;
-            const cog = parseFloat(cogInput.value) || 16;
-            const internalGear = parseFloat(internalGearInput.value) || 1;
-            const midDrive = parseFloat(midDriveInput.value) || 1;
-            
-            // 获取实际轮径（毫米）并转换为米
-            let actualDiameterMm = parseFloat(actualWheelDiameterInput.value);
-            if (isNaN(actualDiameterMm) || actualDiameterMm <= 0) {
-                actualDiameterMm = calculateActualWheelDiameter();
-            }
-            const wheelDiameterM = actualDiameterMm / 1000;
-            
-            // 计算轮周长（米）
-            const circumference = Math.PI * wheelDiameterM;
-            
-            // 计算总齿比
-            const gearRatio = (chainring / cog) * internalGear * midDrive;
-            
-            // 计算速度（km/h）
-            const speed = (cadence * 60 * circumference * gearRatio) / 1000;
-            
-            // 显示结果
-            speedResult.textContent = speed.toFixed(2);
-            wheelCircumference.textContent = circumference.toFixed(2) + " 米";
-            totalGearRatio.textContent = gearRatio.toFixed(3);
-            distancePerSecond.textContent = ((cadence * circumference * gearRatio) / 60).toFixed(2) + " 米/秒";
-            actualWheelSize.textContent = actualDiameterMm.toFixed(0) + " 毫米";
-        }
-        
-        // 复制结果函数
-        function copyResults() {
-            // 获取所有输入值
-            const cadence = parseFloat(cadenceInput.value) || 90;
-            let wheelSizeText = "";
-            
-            if (wheelSizeSelect.value === 'custom') {
-                wheelSizeText = `${customWheelSizeInput.value}mm(自定义)`;
-            } else if (wheelSizeSelect.value === '622') {
-                wheelSizeText = "700C (622mm)";
-            } else {
-                wheelSizeText = `${wheelSizeSelect.value}英寸`;
-            }
-            
-            const tireWidth = parseFloat(tireWidthInput.value) || 40;
-            const tireWidthUnit = tireWidthUnitSelect.value;
-            const chainring = parseFloat(chainringInput.value) || 42;
-            const cog = parseFloat(cogInput.value) || 16;
-            const internalGear = parseFloat(internalGearInput.value) || 1;
-            const midDrive = parseFloat(midDriveInput.value) || 1;
-            const speed = speedResult.textContent;
-            const actualSize = actualWheelSize.textContent;
-            
-            // 创建要复制的文本
-            const textToCopy = `自行车骑行时速计算结果：
-
-轮圈尺寸: ${wheelSizeText}
-外胎宽度: ${tireWidth} ${tireWidthUnit}
-实际轮径: ${actualSize}
-踏频: ${cadence} RPM
-齿比: 前${chainring}T / 后${cog}T = ${(chainring/cog).toFixed(2)}
-内变速比: ${internalGear}
-中置变速齿比: ${midDrive}
-总齿比: ${totalGearRatio.textContent}
-
-理论骑行时速: ${speed} km/h
-
-注: 此为理论计算值，实际速度受路况、风向、坡度、体重、胎压等多种因素影响。`;
-            
-            // 使用Clipboard API复制文本
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(textToCopy).then(() => {
-                    copySuccess();
-                }).catch(err => {
-                    fallbackCopyText(textToCopy);
+            // 导航切换
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const targetPage = this.getAttribute('data-page');
+                    
+                    // 更新导航状态
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 更新页面显示
+                    pages.forEach(page => page.classList.remove('active'));
+                    document.getElementById(targetPage).classList.add('active');
                 });
-            } else {
-                fallbackCopyText(textToCopy);
-            }
-        }
-        
-        // 回退复制方法
-        function fallbackCopyText(text) {
-            const textArea = document.createElement("textarea");
-            textArea.value = text;
-            textArea.style.position = "fixed";
-            textArea.style.opacity = 0;
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
+            });
             
-            try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                    copySuccess();
+            // =============================================================================
+            // 控制模块
+            // =============================================================================
+            
+            // 系列选择按钮点击事件
+            seriesButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    seriesButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentPitch = parseInt(this.getAttribute('data-pitch'));
+                });
+            });
+            
+            // 切换计算方向按钮点击事件
+            sprocketToPulleyBtn.addEventListener('click', function() {
+                isSprocketToPulley = true;
+                updateToggleButtons();
+                updateUI();
+            });
+            
+            pulleyToSprocketBtn.addEventListener('click', function() {
+                isSprocketToPulley = false;
+                updateToggleButtons();
+                updateUI();
+            });
+            
+            // 更新切换按钮状态
+            function updateToggleButtons() {
+                if (isSprocketToPulley) {
+                    sprocketToPulleyBtn.classList.add('active');
+                    pulleyToSprocketBtn.classList.remove('active');
                 } else {
-                    alert("复制失败，请手动复制结果");
+                    sprocketToPulleyBtn.classList.remove('active');
+                    pulleyToSprocketBtn.classList.add('active');
                 }
-            } catch (err) {
-                alert("复制失败，请手动复制结果");
             }
             
-            document.body.removeChild(textArea);
-        }
-        
-        // 复制成功提示
-        function copySuccess() {
-            const originalText = copyBtn.innerHTML;
-            copyBtn.innerHTML = '<i class="fas fa-check"></i>已复制到剪贴板';
-            copyBtn.classList.add('copy-success');
+            // 更新UI显示
+            function updateUI() {
+                if (isSprocketToPulley) {
+                    inputLabel.textContent = '齿盘齿数 (T)';
+                    outputLabel.textContent = '皮带轮齿数:';
+                    diameterLabel.textContent = '皮带轮外径≈';
+                    inputTeeth.placeholder = '输入齿盘齿数';
+                } else {
+                    inputLabel.textContent = '皮带轮齿数 (T)';
+                    outputLabel.textContent = '齿盘齿数:';
+                    diameterLabel.textContent = '齿盘外径≈';
+                    inputTeeth.placeholder = '输入皮带轮齿数';
+                }
+            }
             
-            // 2秒后恢复原状
-            setTimeout(() => {
-                copyBtn.innerHTML = originalText;
-                copyBtn.classList.remove('copy-success');
-            }, 2000);
-        }
-        
-        // 为所有输入添加自动计算功能
-        const allInputs = document.querySelectorAll('input, select');
-        allInputs.forEach(input => {
-            if (input !== actualWheelDiameterInput) {
-                input.addEventListener('input', function() {
-                    if (!isManualWheelDiameter) {
-                        calculateActualWheelDiameter();
+            // 数值调整按钮事件
+            increaseBtn.addEventListener('click', function() {
+                let value = parseInt(inputTeeth.value) || 0;
+                inputTeeth.value = value + 1;
+            });
+            
+            decreaseBtn.addEventListener('click', function() {
+                let value = parseInt(inputTeeth.value) || 0;
+                if (value > 1) {
+                    inputTeeth.value = value - 1;
+                }
+            });
+            
+            // =============================================================================
+            // 计算模块
+            // =============================================================================
+            
+            // 计算节圆直径
+            function calculatePCD(teeth, pitch) {
+                return pitch / Math.sin(Math.PI / teeth);
+            }
+            
+            // 计算齿盘外径
+            function calculateSprocketOD(pcd) {
+                // 节顶距 = 6.8 - 3.875 = 2.925mm
+                return pcd + 2 * 2.925;
+            }
+            
+            // 计算皮带轮外径
+            function calculatePulleyOD(pcd, pitch) {
+                // 皮带轮外径 = 节圆直径 + (2 * 0.1 * 节距)
+                return pcd + (2 * 0.1 * pitch);
+            }
+            
+            // 计算挡边外径
+            function calculateFlangeDiameter(pcd, pitch) {
+                // 8M加6mm，10-11M加7mm
+                return pcd + (pitch === 8 ? 6 : 7);
+            }
+            
+            // 计算函数
+            function calculate() {
+                const teeth = parseInt(inputTeeth.value);
+                
+                // 验证输入是否有效
+                if (isNaN(teeth) || teeth <= 0) {
+                    outputTeeth.textContent = '--';
+                    outputPCD.textContent = '--';
+                    outputDiameter.textContent = '--';
+                    outputFlangeDiameter.textContent = '--';
+                    outputNote.textContent = '请输入有效的齿数';
+                    return;
+                }
+                
+                let result, theoretical, pcd, diameter, flangeDiameter;
+                let sprocketPitch, pulleyPitch;
+                
+                if (isSprocketToPulley) {
+                    // 齿盘转皮带轮
+                    sprocketPitch = 12.7; // 齿盘节距固定为12.7mm
+                    pulleyPitch = currentPitch; // 皮带轮节距根据选择的系列
+                    
+                    theoretical = (sprocketPitch / pulleyPitch) * teeth;
+                    result = Math.round(theoretical);
+                    
+                    // 计算皮带轮节圆直径
+                    pcd = calculatePCD(result, pulleyPitch);
+                    
+                    // 计算皮带轮外径
+                    diameter = calculatePulleyOD(pcd, pulleyPitch);
+                    
+                    // 计算挡边外径
+                    flangeDiameter = calculateFlangeDiameter(pcd, pulleyPitch);
+                    
+                    // 存储结果用于复制和历史记录
+                    currentResult = {
+                        sprocketTeeth: teeth,
+                        pulleyTeeth: result,
+                        pcd: pcd,
+                        diameter: diameter,
+                        flangeDiameter: flangeDiameter,
+                        direction: 'sprocketToPulley',
+                        pitch: currentPitch
+                    };
+                } else {
+                    // 皮带轮转齿盘
+                    sprocketPitch = 12.7; // 齿盘节距固定为12.7mm
+                    pulleyPitch = currentPitch; // 皮带轮节距根据选择的系列
+                    
+                    theoretical = (pulleyPitch / sprocketPitch) * teeth;
+                    result = Math.round(theoretical);
+                    
+                    // 计算齿盘节圆直径
+                    pcd = calculatePCD(result, sprocketPitch);
+                    
+                    // 计算齿盘外径
+                    diameter = calculateSprocketOD(pcd);
+                    
+                    // 计算皮带轮节圆直径和挡边外径（用于复制）
+                    const pulleyPCD = calculatePCD(teeth, pulleyPitch);
+                    flangeDiameter = calculateFlangeDiameter(pulleyPCD, pulleyPitch);
+                    
+                    // 存储结果用于复制和历史记录
+                    currentResult = {
+                        sprocketTeeth: result,
+                        pulleyTeeth: teeth,
+                        pcd: pulleyPCD,
+                        diameter: diameter,
+                        flangeDiameter: flangeDiameter,
+                        direction: 'pulleyToSprocket',
+                        pitch: currentPitch
+                    };
+                }
+                
+                // 更新UI显示结果
+                outputTeeth.textContent = `${result}T`;
+                outputPCD.textContent = `${pcd.toFixed(2)}mm`;
+                outputDiameter.textContent = `${diameter.toFixed(2)}mm`;
+                
+                if (isSprocketToPulley) {
+                    outputFlangeDiameter.textContent = `${flangeDiameter.toFixed(2)}mm`;
+                    outputFlangeDiameter.parentElement.style.display = 'flex';
+                } else {
+                    outputFlangeDiameter.parentElement.style.display = 'none';
+                }
+                
+                outputNote.textContent = `理论值: ${theoretical.toFixed(2)}T (四舍五入)`;
+                
+                // 添加到历史记录
+                addToHistory(currentResult);
+            }
+            
+            // =============================================================================
+            // 历史记录模块
+            // =============================================================================
+            
+            // 添加到历史记录
+            function addToHistory(result) {
+                // 创建历史记录项
+                const historyItem = {
+                    timestamp: new Date(),
+                    data: result
+                };
+                
+                // 添加到历史记录数组
+                calculationHistory.unshift(historyItem);
+                
+                // 限制历史记录数量
+                if (calculationHistory.length > 10) {
+                    calculationHistory = calculationHistory.slice(0, 10);
+                }
+                
+                // 更新历史记录显示
+                updateHistoryDisplay();
+            }
+            
+            // 更新历史记录显示
+            function updateHistoryDisplay() {
+                if (calculationHistory.length === 0) {
+                    historyList.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-history"></i>
+                            <p>暂无计算历史</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                historyList.innerHTML = '';
+                
+                calculationHistory.forEach(item => {
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'history-item';
+                    
+                    if (item.data.direction === 'sprocketToPulley') {
+                        historyItem.textContent = `${item.data.sprocketTeeth}T齿盘 ≈ ${item.data.pitch}M皮带轮${item.data.pulleyTeeth}T，外径≈${item.data.diameter.toFixed(2)}mm`;
+                    } else {
+                        historyItem.textContent = `${item.data.pitch}M${item.data.pulleyTeeth}T ≈ ${item.data.sprocketTeeth}T齿盘，外径≈${item.data.diameter.toFixed(2)}mm`;
                     }
-                    calculateSpeed();
+                    
+                    historyList.appendChild(historyItem);
                 });
             }
+            
+            // 清除历史记录
+            clearHistoryBtn.addEventListener('click', function() {
+                calculationHistory = [];
+                updateHistoryDisplay();
+            });
+            
+            // =============================================================================
+            // 复制模块
+            // =============================================================================
+            
+            // 复制计算结果
+            copyBtn.addEventListener('click', function() {
+                if (!currentResult) {
+                    showCopyError('请先进行计算');
+                    return;
+                }
+                
+                let copyText = '';
+                
+                // 根据计算方向生成不同的复制文本
+                if (isSprocketToPulley) {
+                    copyText = `${currentResult.sprocketTeeth}T齿盘 ≈ ${currentResult.pitch}M皮带轮${currentResult.pulleyTeeth}T，外径≈${currentResult.diameter.toFixed(2)}mm（含挡边${currentResult.flangeDiameter.toFixed(2)}mm）`;
+                } else {
+                    copyText = `${currentResult.pitch}M${currentResult.pulleyTeeth}T ≈ ${currentResult.sprocketTeeth}T齿盘，外径≈${currentResult.diameter.toFixed(2)}mm`;
+                }
+                
+                // 兼容手机端的复制方法
+                const textArea = document.createElement('textarea');
+                textArea.value = copyText;
+                textArea.style.position = 'fixed';
+                textArea.style.top = 0;
+                textArea.style.left = 0;
+                textArea.style.width = '2em';
+                textArea.style.height = '2em';
+                textArea.style.padding = 0;
+                textArea.style.border = 'none';
+                textArea.style.outline = 'none';
+                textArea.style.boxShadow = 'none';
+                textArea.style.background = 'transparent';
+                
+                document.body.appendChild(textArea);
+                textArea.select();
+                
+                try {
+                    const successful = document.execCommand('copy');
+                    if (successful) {
+                        showCopySuccess();
+                    } else {
+                        showCopyError('复制失败，请手动复制结果');
+                    }
+                } catch (err) {
+                    showCopyError('复制失败，请手动复制结果');
+                }
+                
+                document.body.removeChild(textArea);
+            });
+            
+            // 显示复制成功提示
+            function showCopySuccess() {
+                copyNotification.innerHTML = '<i class="fas fa-check-circle"></i> 已复制到剪贴板';
+                copyNotification.style.background = 'var(--success)';
+                copyNotification.classList.add('show');
+                
+                setTimeout(function() {
+                    copyNotification.classList.remove('show');
+                }, 2000);
+            }
+            
+            // 显示复制错误提示
+            function showCopyError(message) {
+                copyNotification.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+                copyNotification.style.background = '#f44336';
+                copyNotification.classList.add('show');
+                
+                setTimeout(function() {
+                    copyNotification.classList.remove('show');
+                }, 2000);
+            }
+            
+            // =============================================================================
+            // 事件绑定模块
+            // =============================================================================
+            
+            // 绑定计算按钮事件
+            calculateBtn.addEventListener('click', calculate);
+            
+            // 输入框回车键计算
+            inputTeeth.addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    calculate();
+                }
+            });
+            
+            // =============================================================================
+            // 初始化模块
+            // =============================================================================
+            
+            // 初始化UI
+            updateToggleButtons();
+            updateUI();
+            updateHistoryDisplay();
+            
+            // 初始计算一次
+            calculate();
         });
-        
-        // 广告位设置
-        // 如果没有链接，移除a标签
-        // 可以在这里设置广告图片和链接
-        // 示例：
-        // adImage.src = "您的图片URL";
-        // adLink.href = "您的链接URL";
-        // 如果没有链接，使用以下代码：
-        // adLink.removeAttribute("href");
-        // adLink.style.cursor = "default";
-        // adLink.onclick = function(e) { e.preventDefault(); };
     </script>
 </body>
 </html>
