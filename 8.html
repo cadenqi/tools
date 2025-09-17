@@ -7,15 +7,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #FF7F50; /* 珊瑚色，温暖自信 */
-            --secondary-color: #2C3E50; /* 深蓝色，稳重 */
-            --accent-color: #3498DB; /* 亮蓝色，活力 */
-            --light-color: #F9F9F9; /* 浅灰色背景 */
-            --dark-color: #333333; /* 深色文字 */
-            --success-color: #27AE60; /* 成功绿色 */
-            --warning-color: #E67E22; /* 橙色 */
-            --border-radius: 10px;
-            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --primary-color: #FF6B6B; /* 温暖红色 */
+            --secondary-color: #4ECDC4; /* 清新蓝绿色 */
+            --accent-color: #FFD166; /* 活力黄色 */
+            --dark-color: #2F4858; /* 深蓝色 */
+            --light-color: #F7F9FC; /* 浅灰色背景 */
+            --text-color: #333333; /* 主要文字颜色 */
+            --success-color: #06D6A0; /* 成功绿色 */
+            --border-radius: 8px;
+            --box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
             --transition: all 0.3s ease;
         }
 
@@ -28,7 +28,7 @@
 
         body {
             background-color: var(--light-color);
-            color: var(--dark-color);
+            color: var(--text-color);
             line-height: 1.6;
             padding: 0;
             margin: 0;
@@ -42,22 +42,22 @@
         }
 
         header {
-            background: linear-gradient(135deg, var(--primary-color), #FF6347);
+            background: linear-gradient(135deg, var(--primary-color), #FF8E8E);
             color: white;
             text-align: center;
-            padding: 15px 0;
-            border-bottom: 3px solid var(--secondary-color);
-            margin-bottom: 20px;
+            padding: 12px 0;
+            border-bottom: 3px solid var(--accent-color);
+            margin-bottom: 15px;
             box-shadow: var(--box-shadow);
         }
 
         h1 {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             margin-bottom: 5px;
         }
 
         .app-description {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             opacity: 0.9;
             max-width: 600px;
             margin: 0 auto;
@@ -66,7 +66,7 @@
         .tabs {
             display: flex;
             justify-content: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             flex-wrap: wrap;
             background: white;
             border-radius: var(--border-radius);
@@ -75,15 +75,16 @@
         }
 
         .tab {
-            padding: 12px 20px;
+            padding: 10px 15px;
             background-color: transparent;
             color: var(--dark-color);
             border: none;
             border-radius: var(--border-radius);
-            margin: 0 5px;
+            margin: 0 3px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 600;
             transition: var(--transition);
+            font-size: 0.9rem;
         }
 
         .tab.active {
@@ -92,15 +93,15 @@
         }
 
         .tab:hover {
-            background-color: rgba(255, 127, 80, 0.1);
+            background-color: rgba(255, 107, 107, 0.1);
         }
 
         .content-section {
             display: none;
             background-color: white;
             border-radius: var(--border-radius);
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 18px;
+            margin-bottom: 18px;
             box-shadow: var(--box-shadow);
         }
 
@@ -117,23 +118,24 @@
         .shape-selector {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 18px;
         }
 
         .shape-btn {
-            padding: 15px 10px;
+            padding: 12px 8px;
             background-color: #f8f9fa;
             border: 2px solid #e9ecef;
             border-radius: var(--border-radius);
             text-align: center;
             cursor: pointer;
             transition: var(--transition);
+            font-size: 0.9rem;
         }
 
         .shape-btn.active {
             border-color: var(--primary-color);
-            background-color: rgba(255, 127, 80, 0.1);
+            background-color: rgba(255, 107, 107, 0.1);
             color: var(--primary-color);
         }
 
@@ -142,16 +144,16 @@
         }
 
         .shape-icon {
-            font-size: 24px;
-            margin-bottom: 8px;
+            font-size: 20px;
+            margin-bottom: 6px;
             display: block;
         }
 
         .input-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 12px;
+            margin-bottom: 18px;
         }
 
         .form-group {
@@ -160,68 +162,69 @@
 
         label {
             display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: var(--secondary-color);
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: var(--dark-color);
+            font-size: 0.9rem;
         }
 
         select, input {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             border: 1px solid #ddd;
             border-radius: var(--border-radius);
-            font-size: 16px;
+            font-size: 0.95rem;
             transition: var(--transition);
         }
 
         select:focus, input:focus {
             outline: none;
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.2);
         }
 
         .btn {
-            padding: 12px 24px;
+            padding: 10px 20px;
             background-color: var(--primary-color);
             color: white;
             border: none;
             border-radius: var(--border-radius);
             cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
+            font-size: 0.95rem;
+            font-weight: 600;
             transition: var(--transition);
             display: inline-block;
             text-align: center;
         }
 
         .btn:hover {
-            background-color: #FF6347;
+            background-color: #FF8E8E;
             transform: translateY(-2px);
         }
 
         .btn-calculate {
             background-color: var(--success-color);
             width: 100%;
-            margin-top: 20px;
+            margin-top: 18px;
         }
 
         .btn-calculate:hover {
-            background-color: #219653;
+            background-color: #05C291;
         }
 
         .result-box {
             background-color: #e8f4fc;
-            border-left: 4px solid var(--accent-color);
-            padding: 20px;
+            border-left: 4px solid var(--secondary-color);
+            padding: 18px;
             border-radius: var(--border-radius);
-            margin-top: 20px;
+            margin-top: 18px;
         }
 
         .result-item {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
             border-bottom: 1px dashed #ccc;
         }
 
@@ -233,44 +236,28 @@
 
         .result-value {
             font-weight: bold;
-            color: var(--accent-color);
+            color: var(--secondary-color);
         }
 
         .formula-box {
             background-color: #f9f9f9;
             border-radius: var(--border-radius);
-            padding: 15px;
-            margin-top: 20px;
+            padding: 12px;
+            margin-top: 15px;
             font-family: monospace;
-            font-size: 14px;
-        }
-
-        .history-list {
-            list-style-type: none;
-        }
-
-        .history-item {
-            background-color: #f8f9fa;
-            border-radius: var(--border-radius);
-            padding: 15px;
-            margin-bottom: 15px;
-            border-left: 4px solid var(--primary-color);
-        }
-
-        .history-date {
-            font-size: 0.9rem;
-            color: #777;
-            margin-bottom: 5px;
+            font-size: 0.85rem;
+            line-height: 1.5;
         }
 
         .density-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 18px;
+            font-size: 0.9rem;
         }
 
         .density-table th, .density-table td {
-            padding: 12px;
+            padding: 10px;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
@@ -285,20 +272,43 @@
         }
 
         .copy-btn {
-            background-color: var(--secondary-color);
-            margin-top: 15px;
+            background-color: var(--dark-color);
+            margin-top: 12px;
         }
 
         .copy-btn:hover {
-            background-color: #2C3E50;
+            background-color: #3A5767;
         }
 
         footer {
             text-align: center;
-            padding: 20px;
-            margin-top: 40px;
+            padding: 15px;
+            margin-top: 30px;
             color: #777;
             border-top: 1px solid #ddd;
+            font-size: 0.85rem;
+        }
+
+        .search-box {
+            margin-bottom: 15px;
+        }
+
+        .search-box input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            width: 100%;
+        }
+
+        .material-category {
+            margin-top: 20px;
+        }
+
+        .material-category h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--accent-color);
         }
 
         @media (max-width: 768px) {
@@ -317,6 +327,14 @@
             .tab {
                 margin-bottom: 5px;
                 width: 100%;
+            }
+            
+            .density-table {
+                font-size: 0.8rem;
+            }
+            
+            .density-table th, .density-table td {
+                padding: 8px 5px;
             }
         }
     </style>
@@ -356,6 +374,29 @@
                     <i class="fas fa-cube shape-icon"></i>
                     <span>方管</span>
                 </div>
+            </div>
+
+            <div class="form-group">
+                <label for="material">选择材质</label>
+                <select id="material">
+                    <option value="custom">自定义材质</option>
+                    <optgroup label="黑色金属">
+                        <option value="gray_iron">灰口铸铁 (6.6~7.4 g/cm³)</option>
+                        <option value="white_iron">白口铸铁 (7.4~7.7 g/cm³)</option>
+                        <option value="carbon_steel">普通碳素钢 (7.85 g/cm³)</option>
+                        <option value="stainless_steel">不锈钢 0Cr18Ni9 (7.85 g/cm³)</option>
+                    </optgroup>
+                    <optgroup label="有色金属">
+                        <option value="copper">纯铜 (8.9 g/cm³)</option>
+                        <option value="brass_59">59黄铜 (8.5 g/cm³)</option>
+                        <option value="aluminum">纯铝 (2.7 g/cm³)</option>
+                    </optgroup>
+                    <optgroup label="塑料">
+                        <option value="pvc">PVC (1.38 g/cm³)</option>
+                        <option value="abs">ABS (1.05 g/cm³)</option>
+                        <option value="nylon">尼龙 (1.15 g/cm³)</option>
+                    </optgroup>
+                </select>
             </div>
 
             <h2>输入尺寸参数 (mm)</h2>
@@ -399,6 +440,10 @@
             <div class="result-box" id="resultBox" style="display: none;">
                 <h3>计算结果</h3>
                 <div class="result-item">
+                    <span>材质:</span>
+                    <span class="result-value" id="materialResult">-</span>
+                </div>
+                <div class="result-item">
                     <span>体积:</span>
                     <span class="result-value" id="volumeResult">0 cm³</span>
                 </div>
@@ -421,81 +466,137 @@
 
         <!-- 材质密度部分 -->
         <div id="density" class="content-section">
-            <h2>常用材料密度参考表 (g/cm³)</h2>
+            <h2>材质密度参考表</h2>
             
-            <h3>金属材料</h3>
-            <table class="density-table">
-                <tr>
-                    <th>材料</th>
-                    <th>密度</th>
-                    <th>材料</th>
-                    <th>密度</th>
-                </tr>
-                <tr>
-                    <td>钢</td>
-                    <td>7.85</td>
-                    <td>铝</td>
-                    <td>2.7</td>
-                </tr>
-                <tr>
-                    <td>不锈钢</td>
-                    <td>7.93</td>
-                    <td>铜</td>
-                    <td>8.96</td>
-                </tr>
-                <tr>
-                    <td>黄铜</td>
-                    <td>8.4-8.7</td>
-                    <td>锌</td>
-                    <td>7.14</td>
-                </tr>
-                <tr>
-                    <td>钛</td>
-                    <td>4.51</td>
-                    <td>镍</td>
-                    <td>8.90</td>
-                </tr>
-                <tr>
-                    <td>银</td>
-                    <td>10.49</td>
-                    <td>金</td>
-                    <td>19.32</td>
-                </tr>
-            </table>
+            <div class="search-box">
+                <input type="text" id="densitySearch" placeholder="搜索材质名称...">
+            </div>
             
-            <h3>塑料材料</h3>
-            <table class="density-table">
-                <tr>
-                    <th>材料</th>
-                    <th>密度</th>
-                    <th>材料</th>
-                    <th>密度</th>
-                </tr>
-                <tr>
-                    <td>PVC</td>
-                    <td>1.38</td>
-                    <td>ABS</td>
-                    <td>1.05</td>
-                </tr>
-                <tr>
-                    <td>PC</td>
-                    <td>1.20</td>
-                    <td>PP</td>
-                    <td>0.90</td>
-                </tr>
-                <tr>
-                    <td>PE</td>
-                    <td>0.95</td>
-                    <td>尼龙</td>
-                    <td>1.15</td>
-                </tr>
-                <tr>
-                    <td>POM</td>
-                    <td>1.41</td>
-                    <td>PTFE</td>
-                    <td>2.20</td>
-                </tr>
-            </table>
+            <div class="material-category">
+                <h3>黑色金属</h3>
+                <table class="density-table">
+                    <tr>
+                        <th>材料名称</th>
+                        <th>密度 (g/cm³)</th>
+                    </tr>
+                    <tr>
+                        <td>灰口铸铁</td>
+                        <td>6.6~7.4</td>
+                    </tr>
+                    <tr>
+                        <td>白口铸铁</td>
+                        <td>7.4~7.7</td>
+                    </tr>
+                    <tr>
+                        <td>可锻铸铁</td>
+                        <td>7.2~7.4</td>
+                    </tr>
+                    <tr>
+                        <td>铸钢</td>
+                        <td>7.8</td>
+                    </tr>
+                    <tr>
+                        <td>工业纯铁</td>
+                        <td>7.87</td>
+                    </tr>
+                    <tr>
+                        <td>普通碳素钢</td>
+                        <td>7.85</td>
+                    </tr>
+                    <tr>
+                        <td>优质碳素钢</td>
+                        <td>7.85</td>
+                    </tr>
+                    <tr>
+                        <td>不锈钢 0Cr13、1Cr13、2Cr13、3Cr13、4Cr13</td>
+                        <td>7.75</td>
+                    </tr>
+                    <tr>
+                        <td>不锈钢 0Cr18Ni9、1Cr18Ni9、Cr18Ni9Ti</td>
+                        <td>7.85</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="material-category">
+                <h3>有色金属</h3>
+                <table class="density-table">
+                    <tr>
+                        <th>材料名称</th>
+                        <th>密度 (g/cm³)</th>
+                    </tr>
+                    <tr>
+                        <td>纯铜</td>
+                        <td>8.9</td>
+                    </tr>
+                    <tr>
+                        <td>59、62、65、68黄铜</td>
+                        <td>8.5</td>
+                    </tr>
+                    <tr>
+                        <td>80、85、90黄铜</td>
+                        <td>8.7</td>
+                    </tr>
+                    <tr>
+                        <td>96黄铜</td>
+                        <td>8.8</td>
+                    </tr>
+                    <tr>
+                        <td>纯铝</td>
+                        <td>2.7</td>
+                    </tr>
+                    <tr>
+                        <td>防锈铝 LF2、LF43</td>
+                        <td>2.68</td>
+                    </tr>
+                    <tr>
+                        <td>硬铝 LY1、LY2、LY4、LY6</td>
+                        <td>2.76</td>
+                    </tr>
+                    <tr>
+                        <td>锻铝 LD2、LD30</td>
+                        <td>2.7</td>
+                    </tr>
+                    <tr>
+                        <td>工业纯钛（TA1、TA2、TA3）</td>
+                        <td>4.5</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="material-category">
+                <h3>塑料材料</h3>
+                <table class="density-table">
+                    <tr>
+                        <th>材料名称</th>
+                        <th>密度 (g/cm³)</th>
+                    </tr>
+                    <tr>
+                        <td>PVC</td>
+                        <td>1.38</td>
+                    </tr>
+                    <tr>
+                        <td>ABS</td>
+                        <td>1.05</td>
+                    </tr>
+                    <tr>
+                        <td>PC</td>
+                        <td>1.20</td>
+                    </tr>
+                    <tr>
+                        <td>PP</td>
+                        <td>0.90</td>
+                    </tr>
+                    <tr>
+                        <td>PE</td>
+                        <td>0.95</td>
+                    </tr>
+                    <tr>
+                        <td>尼龙</td>
+                        <td>1.15</td>
+                    </tr>
+                </table>
+            </div>
         </div>
 
         <!-- 使用说明部分 -->
@@ -505,8 +606,9 @@
                 <h3>如何计算材料重量</h3>
                 <ol>
                     <li>选择材料形状（板材、棒材、空心管或方管）</li>
+                    <li>选择材质类型或自定义材质</li>
                     <li>输入相应的尺寸参数（单位：毫米）</li>
-                    <li>输入材料密度（可使用材质密度页面的参考值）</li>
+                    <li>输入材料密度（可选择预设材质自动填充）</li>
                     <li>输入材料单价（元/公斤）</li>
                     <li>输入数量（默认1）</li>
                     <li>点击"计算重量和价格"按钮</li>
@@ -519,13 +621,14 @@
                     <li><strong>棒材</strong>: 体积 = π × (直径/2)² × 长度</li>
                     <li><strong>空心管</strong>: 体积 = π × [(外径/2)² - (内径/2)²] × 长度</li>
                     <li><strong>方管</strong>: 体积 = [外部体积] - [内部体积]</li>
-                    <li><strong>重量</strong>: 重量 = 体积 × 密度</li>
+                    <li><strong>重量</strong>: 重量 = 体积 × 密度 / 1000 (转换为kg)</li>
                     <li><strong>总价</strong>: 总价 = 重量 × 单价 × 数量</li>
                 </ul>
                 
                 <h3>注意事项</h3>
                 <p>1. 所有尺寸单位均为毫米(mm)，密度单位为克/立方厘米(g/cm³)</p>
                 <p>2. 计算结果为理论值，实际重量可能因材料成分和制造工艺有所不同</p>
+                <p>3. 更多材质密度数据可在"材质密度"页面查看</p>
             </div>
         </div>
     </div>
@@ -572,6 +675,45 @@
                 });
             });
             
+            // 材质选择功能
+            const materialSelect = document.getElementById('material');
+            const densityInput = document.getElementById('density');
+            
+            // 材质密度映射
+            const materialDensityMap = {
+                'gray_iron': 7.0,
+                'white_iron': 7.55,
+                'carbon_steel': 7.85,
+                'stainless_steel': 7.85,
+                'copper': 8.9,
+                'brass_59': 8.5,
+                'aluminum': 2.7,
+                'pvc': 1.38,
+                'abs': 1.05,
+                'nylon': 1.15
+            };
+            
+            // 材质名称映射
+            const materialNameMap = {
+                'gray_iron': '灰口铸铁',
+                'white_iron': '白口铸铁',
+                'carbon_steel': '普通碳素钢',
+                'stainless_steel': '不锈钢 0Cr18Ni9',
+                'copper': '纯铜',
+                'brass_59': '59黄铜',
+                'aluminum': '纯铝',
+                'pvc': 'PVC',
+                'abs': 'ABS',
+                'nylon': '尼龙'
+            };
+            
+            materialSelect.addEventListener('change', function() {
+                const selectedMaterial = this.value;
+                if (selectedMaterial !== 'custom' && materialDensityMap[selectedMaterial]) {
+                    densityInput.value = materialDensityMap[selectedMaterial];
+                }
+            });
+            
             // 根据形状更新输入字段
             function updateInputFields(shape) {
                 // 清空现有输入字段
@@ -583,15 +725,15 @@
                         dimensionInputs.innerHTML = `
                             <div class="form-group">
                                 <label for="length">长度</label>
-                                <input type="number" id="length" placeholder="长度">
+                                <input type="number" id="length" placeholder="长度 (mm)">
                             </div>
                             <div class="form-group">
                                 <label for="width">宽度</label>
-                                <input type="number" id="width" placeholder="宽度">
+                                <input type="number" id="width" placeholder="宽度 (mm)">
                             </div>
                             <div class="form-group">
                                 <label for="height">厚度</label>
-                                <input type="number" id="height" placeholder="厚度">
+                                <input type="number" id="height" placeholder="厚度 (mm)">
                             </div>
                         `;
                         break;
@@ -599,11 +741,11 @@
                         dimensionInputs.innerHTML = `
                             <div class="form-group">
                                 <label for="diameter">直径</label>
-                                <input type="number" id="diameter" placeholder="直径">
+                                <input type="number" id="diameter" placeholder="直径 (mm)">
                             </div>
                             <div class="form-group">
                                 <label for="length">长度</label>
-                                <input type="number" id="length" placeholder="长度">
+                                <input type="number" id="length" placeholder="长度 (mm)">
                             </div>
                         `;
                         break;
@@ -611,15 +753,15 @@
                         dimensionInputs.innerHTML = `
                             <div class="form-group">
                                 <label for="outerDiameter">外径</label>
-                                <input type="number" id="outerDiameter" placeholder="外径">
+                                <input type="number" id="outerDiameter" placeholder="外径 (mm)">
                             </div>
                             <div class="form-group">
                                 <label for="innerDiameter">内径</label>
-                                <input type="number" id="innerDiameter" placeholder="内径">
+                                <input type="number" id="innerDiameter" placeholder="内径 (mm)">
                             </div>
                             <div class="form-group">
                                 <label for="length">长度</label>
-                                <input type="number" id="length" placeholder="长度">
+                                <input type="number" id="length" placeholder="长度 (mm)">
                             </div>
                         `;
                         break;
@@ -627,19 +769,19 @@
                         dimensionInputs.innerHTML = `
                             <div class="form-group">
                                 <label for="length">长度</label>
-                                <input type="number" id="length" placeholder="长度">
+                                <input type="number" id="length" placeholder="长度 (mm)">
                             </div>
                             <div class="form-group">
                                 <label for="width">宽度</label>
-                                <input type="number" id="width" placeholder="宽度">
+                                <input type="number" id="width" placeholder="宽度 (mm)">
                             </div>
                             <div class="form-group">
                                 <label for="height">高度</label>
-                                <input type="number" id="height" placeholder="高度">
+                                <input type="number" id="height" placeholder="高度 (mm)">
                             </div>
                             <div class="form-group">
                                 <label for="thickness">厚度</label>
-                                <input type="number" id="thickness" placeholder="厚度">
+                                <input type="number" id="thickness" placeholder="厚度 (mm)">
                             </div>
                         `;
                         break;
@@ -652,6 +794,7 @@
             // 计算按钮功能
             const calculateBtn = document.getElementById('calculateBtn');
             const resultBox = document.getElementById('resultBox');
+            const materialResult = document.getElementById('materialResult');
             const volumeResult = document.getElementById('volumeResult');
             const weightResult = document.getElementById('weightResult');
             const priceResult = document.getElementById('priceResult');
@@ -659,12 +802,22 @@
             
             calculateBtn.addEventListener('click', () => {
                 const shape = document.querySelector('.shape-btn.active').getAttribute('data-shape');
+                const material = document.getElementById('material').value;
                 const density = parseFloat(document.getElementById('density').value);
                 const pricePerKg = parseFloat(document.getElementById('price').value) || 0;
                 const quantity = parseInt(document.getElementById('quantity').value) || 1;
                 
+                // 获取材质名称
+                let materialName = "自定义材质";
+                if (material !== 'custom') {
+                    materialName = materialNameMap[material] || "未知材质";
+                } else {
+                    materialName = `自定义材质 (密度: ${density} g/cm³)`;
+                }
+                
                 let volume = 0;
                 let formulaText = '';
+                let dimensions = [];
                 
                 // 根据形状计算体积
                 switch(shape) {
@@ -674,12 +827,14 @@
                         const height = parseFloat(document.getElementById('height').value);
                         volume = (length * width * height) / 1000; // 转换为cm³
                         formulaText = `体积 = 长度 × 宽度 × 高度 / 1000 = ${length} × ${width} × ${height} / 1000 = ${volume.toFixed(4)} cm³`;
+                        dimensions = [`长度: ${length}mm`, `宽度: ${width}mm`, `厚度: ${height}mm`];
                         break;
                     case 'rod':
                         const diameter = parseFloat(document.getElementById('diameter').value);
                         const rodLength = parseFloat(document.getElementById('length').value);
                         volume = (Math.PI * Math.pow(diameter/2, 2) * rodLength) / 1000;
                         formulaText = `体积 = π × (直径/2)² × 长度 / 1000 = 3.1416 × (${diameter}/2)² × ${rodLength} / 1000 = ${volume.toFixed(4)} cm³`;
+                        dimensions = [`直径: ${diameter}mm`, `长度: ${rodLength}mm`];
                         break;
                     case 'tube':
                         const outerDiameter = parseFloat(document.getElementById('outerDiameter').value);
@@ -687,6 +842,7 @@
                         const tubeLength = parseFloat(document.getElementById('length').value);
                         volume = (Math.PI * (Math.pow(outerDiameter/2, 2) - Math.pow(innerDiameter/2, 2)) * tubeLength) / 1000;
                         formulaText = `体积 = π × [(外径/2)² - (内径/2)²] × 长度 / 1000 = 3.1416 × [(${outerDiameter}/2)² - (${innerDiameter}/2)²] × ${tubeLength} / 1000 = ${volume.toFixed(4)} cm³`;
+                        dimensions = [`外径: ${outerDiameter}mm`, `内径: ${innerDiameter}mm`, `长度: ${tubeLength}mm`];
                         break;
                     case 'box':
                         const boxLength = parseFloat(document.getElementById('length').value);
@@ -698,6 +854,7 @@
                         const innerVolume = (boxLength - 2*thickness) * (boxWidth - 2*thickness) * (boxHeight - 2*thickness);
                         volume = (outerVolume - innerVolume) / 1000;
                         formulaText = `体积 = [外部体积 - 内部体积] / 1000 = [${outerVolume} - ${innerVolume}] / 1000 = ${volume.toFixed(4)} cm³`;
+                        dimensions = [`长度: ${boxLength}mm`, `宽度: ${boxWidth}mm`, `高度: ${boxHeight}mm`, `厚度: ${thickness}mm`];
                         break;
                 }
                 
@@ -710,10 +867,15 @@
                 formulaText += `<br>总价 = 重量 × 单价 × 数量 = ${weight.toFixed(4)} × ${pricePerKg} × ${quantity} = ${totalPrice.toFixed(2)} 元`;
                 
                 // 显示结果
+                materialResult.textContent = materialName;
                 volumeResult.textContent = `${volume.toFixed(4)} cm³`;
                 weightResult.textContent = `${weight.toFixed(4)} kg`;
                 priceResult.textContent = `${totalPrice.toFixed(2)} 元`;
                 formulaBox.innerHTML = formulaText;
+                
+                // 保存用于复制的数据
+                resultBox.setAttribute('data-copy-text', 
+                    `材质: ${materialName}\n尺寸: ${dimensions.join(', ')}\n密度: ${density} g/cm³\n体积: ${volume.toFixed(4)} cm³\n重量: ${weight.toFixed(4)} kg\n总价: ${totalPrice.toFixed(2)} 元`);
                 
                 resultBox.style.display = 'block';
             });
@@ -721,37 +883,9 @@
             // 复制结果功能
             const copyBtn = document.getElementById('copyBtn');
             copyBtn.addEventListener('click', () => {
-                const shape = document.querySelector('.shape-btn.active').getAttribute('data-shape');
-                const density = parseFloat(document.getElementById('density').value);
-                const dimensions = [];
+                const copyText = resultBox.getAttribute('data-copy-text');
                 
-                // 收集尺寸参数
-                switch(shape) {
-                    case 'plate':
-                        dimensions.push(`长度: ${document.getElementById('length').value}mm`);
-                        dimensions.push(`宽度: ${document.getElementById('width').value}mm`);
-                        dimensions.push(`厚度: ${document.getElementById('height').value}mm`);
-                        break;
-                    case 'rod':
-                        dimensions.push(`直径: ${document.getElementById('diameter').value}mm`);
-                        dimensions.push(`长度: ${document.getElementById('length').value}mm`);
-                        break;
-                    case 'tube':
-                        dimensions.push(`外径: ${document.getElementById('outerDiameter').value}mm`);
-                        dimensions.push(`内径: ${document.getElementById('innerDiameter').value}mm`);
-                        dimensions.push(`长度: ${document.getElementById('length').value}mm`);
-                        break;
-                    case 'box':
-                        dimensions.push(`长度: ${document.getElementById('length').value}mm`);
-                        dimensions.push(`宽度: ${document.getElementById('width').value}mm`);
-                        dimensions.push(`高度: ${document.getElementById('height').value}mm`);
-                        dimensions.push(`厚度: ${document.getElementById('thickness').value}mm`);
-                        break;
-                }
-                
-                const resultText = `尺寸: ${dimensions.join(', ')}\n密度: ${density} g/cm³\n重量: ${weightResult.textContent}\n总价: ${priceResult.textContent}`;
-                
-                navigator.clipboard.writeText(resultText)
+                navigator.clipboard.writeText(copyText)
                     .then(() => {
                         copyBtn.innerHTML = '<i class="fas fa-check"></i> 已复制';
                         setTimeout(() => {
@@ -763,6 +897,29 @@
                         alert('复制失败，请手动复制结果');
                     });
             });
+            
+            // 密度表搜索功能
+            const densitySearch = document.getElementById('densitySearch');
+            if (densitySearch) {
+                densitySearch.addEventListener('input', function() {
+                    const searchText = this.value.toLowerCase();
+                    const tables = document.querySelectorAll('.density-table');
+                    
+                    tables.forEach(table => {
+                        const rows = table.querySelectorAll('tr');
+                        // 跳过表头
+                        for (let i = 1; i < rows.length; i++) {
+                            const row = rows[i];
+                            const materialName = row.cells[0].textContent.toLowerCase();
+                            if (materialName.includes(searchText)) {
+                                row.style.display = '';
+                            } else {
+                                row.style.display = 'none';
+                            }
+                        }
+                    });
+                });
+            }
         });
     </script>
 </body>
