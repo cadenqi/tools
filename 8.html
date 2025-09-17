@@ -33,7 +33,8 @@
             padding: 0;
             margin: 0;
             min-height: 100vh;
-            font-size: 15px; /* 统一字体大小 */
+            font-size: 14px; /* 统一字体大小 */
+            padding-top: 110px; /* 为固定导航栏留出空间 */
         }
 
         .container {
@@ -47,14 +48,16 @@
             color: white;
             text-align: center;
             padding: 6px 0;
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
             z-index: 100;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         h1 {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 600;
         }
 
@@ -62,11 +65,16 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 6px;
-            margin-bottom: 12px;
+            margin: 8px 12px 0;
             background: white;
             border-radius: var(--border-radius);
             padding: 4px;
             box-shadow: var(--box-shadow);
+            position: fixed;
+            top: 40px;
+            left: 12px;
+            right: 12px;
+            z-index: 100;
         }
 
         .tab {
@@ -78,7 +86,7 @@
             cursor: pointer;
             font-weight: 500;
             transition: var(--transition);
-            font-size: 14px;
+            font-size: 13px;
             text-align: center;
         }
 
@@ -126,7 +134,7 @@
             text-align: center;
             cursor: pointer;
             transition: var(--transition);
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .shape-btn.active {
@@ -140,7 +148,7 @@
         }
 
         .shape-icon {
-            font-size: 16px;
+            font-size: 14px;
             margin-bottom: 4px;
             display: block;
         }
@@ -161,7 +169,7 @@
             margin-bottom: 4px;
             font-weight: 500;
             color: var(--dark-color);
-            font-size: 14px;
+            font-size: 13px;
         }
 
         select, input {
@@ -169,7 +177,7 @@
             padding: 8px;
             border: 1px solid #ced4da;
             border-radius: var(--border-radius);
-            font-size: 14px;
+            font-size: 13px;
             transition: var(--transition);
         }
 
@@ -186,7 +194,7 @@
             border: none;
             border-radius: var(--border-radius);
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
             transition: var(--transition);
             display: inline-block;
@@ -232,16 +240,6 @@
             color: var(--accent-color);
         }
 
-        .formula-box {
-            background-color: #f9f9f9;
-            border-radius: var(--border-radius);
-            padding: 8px;
-            margin-top: 10px;
-            font-family: monospace;
-            font-size: 13px;
-            line-height: 1.4;
-        }
-
         .density-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -258,7 +256,7 @@
         .density-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .density-table th, .density-table td {
@@ -288,7 +286,7 @@
             margin-top: 20px;
             color: #6c757d;
             border-top: 1px solid #dee2e6;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .search-box {
@@ -302,21 +300,43 @@
             width: 100%;
         }
 
-        .material-category h3 {
+        .instructions {
+            font-size: 13px;
+        }
+
+        .instructions h3 {
             color: var(--primary-color);
-            margin-bottom: 8px;
-            padding-bottom: 4px;
-            border-bottom: 1px solid var(--accent-color);
-            font-size: 15px;
+            margin: 15px 0 8px;
+            font-size: 14px;
+        }
+
+        .instructions ol, .instructions ul {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .instructions li {
+            margin-bottom: 6px;
         }
 
         @media (max-width: 768px) {
+            body {
+                padding-top: 100px;
+                font-size: 13px;
+            }
+            
+            .tabs {
+                top: 35px;
+                left: 8px;
+                right: 8px;
+            }
+            
             .shape-selector {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(4, 1fr);
             }
             
             .input-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
             }
             
             .density-container {
@@ -336,13 +356,13 @@
         </div>
     </header>
 
-    <div class="container">
-        <div class="tabs">
-            <button class="tab active" data-tab="calculator"><i class="fas fa-calculator"></i> 计算器</button>
-            <button class="tab" data-tab="density"><i class="fas fa-weight"></i> 材质密度</button>
-            <button class="tab" data-tab="instructions"><i class="fas fa-info-circle"></i> 使用说明</button>
-        </div>
+    <div class="tabs">
+        <button class="tab active" data-tab="calculator"><i class="fas fa-calculator"></i> 计算器</button>
+        <button class="tab" data-tab="density"><i class="fas fa-weight"></i> 材质密度</button>
+        <button class="tab" data-tab="instructions"><i class="fas fa-info-circle"></i> 使用说明</button>
+    </div>
 
+    <div class="container">
         <!-- 计算器部分 -->
         <div id="calculator" class="content-section active">
             <h2>选择材料形状</h2>
@@ -441,8 +461,6 @@
 
         <!-- 材质密度部分 -->
         <div id="density" class="content-section">
-            <h2>材质密度参考表</h2>
-            
             <div class="search-box">
                 <input type="text" id="densitySearch" placeholder="搜索材质名称...">
             </div>
@@ -554,7 +572,6 @@
 
         <!-- 使用说明部分 -->
         <div id="instructions" class="content-section">
-            <h2>使用说明</h2>
             <div class="instructions">
                 <h3>如何计算材料重量</h3>
                 <ol>
