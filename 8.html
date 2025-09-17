@@ -34,7 +34,7 @@
             margin: 0;
             min-height: 100vh;
             font-size: 14px; /* 统一字体大小 */
-            padding-top: 110px; /* 为固定导航栏留出空间 */
+            padding-top: 120px; /* 为固定导航栏留出空间 */
         }
 
         .container {
@@ -47,13 +47,17 @@
             background: var(--primary-color);
             color: white;
             text-align: center;
-            padding: 6px 0;
+            padding: 10px 0;
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             z-index: 100;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         h1 {
@@ -65,13 +69,13 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 6px;
-            margin: 8px 12px 0;
+            margin: 0 12px;
             background: white;
             border-radius: var(--border-radius);
             padding: 4px;
             box-shadow: var(--box-shadow);
             position: fixed;
-            top: 40px;
+            top: 60px;
             left: 12px;
             right: 12px;
             z-index: 100;
@@ -179,6 +183,10 @@
             border-radius: var(--border-radius);
             font-size: 13px;
             transition: var(--transition);
+        }
+
+        select {
+            font-size: 12px; /* 减小选择框字体大小 */
         }
 
         select:focus, input:focus {
@@ -321,12 +329,12 @@
 
         @media (max-width: 768px) {
             body {
-                padding-top: 100px;
+                padding-top: 110px;
                 font-size: 13px;
             }
             
             .tabs {
-                top: 35px;
+                top: 50px;
                 left: 8px;
                 right: 8px;
             }
@@ -351,9 +359,7 @@
 </head>
 <body>
     <header>
-        <div class="container">
-            <h1>材质重量计算器</h1>
-        </div>
+        <h1>材质重量计算器</h1>
     </header>
 
     <div class="tabs">
@@ -382,6 +388,14 @@
                 <div class="shape-btn" data-shape="box">
                     <i class="fas fa-cube shape-icon"></i>
                     <span>方管</span>
+                </div>
+                <div class="shape-btn" data-shape="angle">
+                    <i class="fas fa-not-equal shape-icon"></i>
+                    <span>角钢</span>
+                </div>
+                <div class="shape-btn" data-shape="channel">
+                    <i class="fas fa-grip-lines shape-icon"></i>
+                    <span>槽钢</span>
                 </div>
             </div>
 
@@ -575,7 +589,7 @@
             <div class="instructions">
                 <h3>如何计算材料重量</h3>
                 <ol>
-                    <li>选择材料形状（板材、棒材、空心管或方管）</li>
+                    <li>选择材料形状（板材、棒材、空心管、方管、角钢或槽钢）</li>
                     <li>选择材质类型或自定义材质</li>
                     <li>输入相应的尺寸参数（单位：毫米）</li>
                     <li>输入材料密度（可选择预设材质自动填充）</li>
@@ -591,6 +605,8 @@
                     <li><strong>棒材</strong>: 体积 = π × (直径/2)² × 长度</li>
                     <li><strong>空心管</strong>: 体积 = π × [(外径/2)² - (内径/2)²] × 长度</li>
                     <li><strong>方管</strong>: 体积 = [外部体积] - [内部体积]</li>
+                    <li><strong>角钢</strong>: 体积 = (边宽1 × 边厚 + 边宽2 × 边厚 - 边厚 × 边厚) × 长度</li>
+                    <li><strong>槽钢</strong>: 体积 = (高度 × 腰厚 + 腿宽 × 腿厚 × 2) × 长度</li>
                     <li><strong>重量</strong>: 重量 = 体积 × 密度 / 1000 (转换为kg)</li>
                     <li><strong>总价</strong>: 总价 = 重量 × 单价 × 数量</li>
                 </ul>
@@ -598,7 +614,8 @@
                 <h3>注意事项</h3>
                 <p>1. 所有尺寸单位均为毫米(mm)，密度单位为克/立方厘米(g/cm³)</p>
                 <p>2. 计算结果为理论值，实际重量可能因材料成分和制造工艺有所不同</p>
-                <p>3. 更多材质密度数据可在"材质密度"页面查看</p>
+                <p>3. 角钢和槽钢的计算公式为简化公式，实际重量可能略有差异</p>
+                <p>4. 更多材质密度数据可在"材质密度"页面查看</p>
             </div>
         </div>
     </div>
@@ -755,6 +772,50 @@
                             </div>
                         `;
                         break;
+                    case 'angle':
+                        dimensionInputs.innerHTML = `
+                            <div class="form-group">
+                                <label for="sideA">边宽A</label>
+                                <input type="number" id="sideA" placeholder="边宽A (mm)">
+                            </div>
+                            <div class="form-group">
+                                <label for="sideB">边宽B</label>
+                                <input type="number" id="sideB" placeholder="边宽B (mm)">
+                            </div>
+                            <div class="form-group">
+                                <label for="thickness">边厚</label>
+                                <input type="number" id="thickness" placeholder="边厚 (mm)">
+                            </div>
+                            <div class="form-group">
+                                <label for="length">长度</label>
+                                <input type="number" id="length" placeholder="长度 (mm)">
+                            </div>
+                        `;
+                        break;
+                    case 'channel':
+                        dimensionInputs.innerHTML = `
+                            <div class="form-group">
+                                <label for="height">高度</label>
+                                <input type="number" id="height" placeholder="高度 (mm)">
+                            </div>
+                            <div class="form-group">
+                                <label for="width">腿宽</label>
+                                <input type="number" id="width" placeholder="腿宽 (mm)">
+                            </div>
+                            <div class="form-group">
+                                <label for="webThickness">腰厚</label>
+                                <input type="number" id="webThickness" placeholder="腰厚 (mm)">
+                            </div>
+                            <div class="form-group">
+                                <label for="flangeThickness">腿厚</label>
+                                <input type="number" id="flangeThickness" placeholder="腿厚 (mm)">
+                            </div>
+                            <div class="form-group">
+                                <label for="length">长度</label>
+                                <input type="number" id="length" placeholder="长度 (mm)">
+                            </div>
+                        `;
+                        break;
                 }
             }
             
@@ -820,6 +881,25 @@
                         const innerVolume = (boxLength - 2*thickness) * (boxWidth - 2*thickness) * (boxHeight - 2*thickness);
                         volume = (outerVolume - innerVolume) / 1000;
                         dimensions = [`长度: ${boxLength}mm`, `宽度: ${boxWidth}mm`, `高度: ${boxHeight}mm`, `厚度: ${thickness}mm`];
+                        break;
+                    case 'angle':
+                        const sideA = parseFloat(document.getElementById('sideA').value);
+                        const sideB = parseFloat(document.getElementById('sideB').value);
+                        const angleThickness = parseFloat(document.getElementById('thickness').value);
+                        const angleLength = parseFloat(document.getElementById('length').value);
+                        // 角钢体积计算简化公式
+                        volume = (sideA * angleThickness + sideB * angleThickness - angleThickness * angleThickness) * angleLength / 1000;
+                        dimensions = [`边宽A: ${sideA}mm`, `边宽B: ${sideB}mm`, `边厚: ${angleThickness}mm`, `长度: ${angleLength}mm`];
+                        break;
+                    case 'channel':
+                        const channelHeight = parseFloat(document.getElementById('height').value);
+                        const channelWidth = parseFloat(document.getElementById('width').value);
+                        const webThickness = parseFloat(document.getElementById('webThickness').value);
+                        const flangeThickness = parseFloat(document.getElementById('flangeThickness').value);
+                        const channelLength = parseFloat(document.getElementById('length').value);
+                        // 槽钢体积计算简化公式
+                        volume = (channelHeight * webThickness + 2 * channelWidth * flangeThickness) * channelLength / 1000;
+                        dimensions = [`高度: ${channelHeight}mm`, `腿宽: ${channelWidth}mm`, `腰厚: ${webThickness}mm`, `腿厚: ${flangeThickness}mm`, `长度: ${channelLength}mm`];
                         break;
                 }
                 
