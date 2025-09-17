@@ -7,15 +7,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #FF6B6B; /* 温暖红色 */
-            --secondary-color: #4ECDC4; /* 清新蓝绿色 */
-            --accent-color: #FFD166; /* 活力黄色 */
-            --dark-color: #2F4858; /* 深蓝色 */
-            --light-color: #F7F9FC; /* 浅灰色背景 */
+            --primary-color: #3a506b; /* 深蓝色 - 稳重专业 */
+            --secondary-color: #5c80bc; /* 中蓝色 - 辅助色 */
+            --accent-color: #4d9de0; /* 亮蓝色 - 重点强调 */
+            --dark-color: #1c2541; /* 深蓝黑色 */
+            --light-color: #f8f9fa; /* 浅灰色背景 */
             --text-color: #333333; /* 主要文字颜色 */
-            --success-color: #06D6A0; /* 成功绿色 */
-            --border-radius: 8px;
-            --box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            --success-color: #4caf50; /* 成功绿色 */
+            --border-radius: 6px;
+            --box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
             --transition: all 0.3s ease;
         }
 
@@ -38,53 +38,40 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 15px;
+            padding: 12px;
         }
 
         header {
-            background: linear-gradient(135deg, var(--primary-color), #FF8E8E);
+            background: var(--primary-color);
             color: white;
             text-align: center;
-            padding: 12px 0;
-            border-bottom: 3px solid var(--accent-color);
+            padding: 8px 0;
             margin-bottom: 15px;
-            box-shadow: var(--box-shadow);
         }
 
         h1 {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-        }
-
-        .app-description {
-            font-size: 0.85rem;
-            opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto;
+            font-size: 1.4rem;
+            font-weight: 600;
         }
 
         .tabs {
-            display: flex;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
             margin-bottom: 15px;
-            flex-wrap: wrap;
-            background: white;
-            border-radius: var(--border-radius);
-            padding: 5px;
-            box-shadow: var(--box-shadow);
         }
 
         .tab {
-            padding: 10px 15px;
-            background-color: transparent;
+            padding: 10px;
+            background-color: #e9ecef;
             color: var(--dark-color);
             border: none;
             border-radius: var(--border-radius);
-            margin: 0 3px;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 500;
             transition: var(--transition);
             font-size: 0.9rem;
+            text-align: center;
         }
 
         .tab.active {
@@ -93,15 +80,16 @@
         }
 
         .tab:hover {
-            background-color: rgba(255, 107, 107, 0.1);
+            background-color: var(--secondary-color);
+            color: white;
         }
 
         .content-section {
             display: none;
             background-color: white;
             border-radius: var(--border-radius);
-            padding: 18px;
-            margin-bottom: 18px;
+            padding: 15px;
+            margin-bottom: 15px;
             box-shadow: var(--box-shadow);
         }
 
@@ -119,23 +107,23 @@
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 8px;
-            margin-bottom: 18px;
+            margin-bottom: 15px;
         }
 
         .shape-btn {
-            padding: 12px 8px;
+            padding: 10px 6px;
             background-color: #f8f9fa;
-            border: 2px solid #e9ecef;
+            border: 1px solid #dee2e6;
             border-radius: var(--border-radius);
             text-align: center;
             cursor: pointer;
             transition: var(--transition);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .shape-btn.active {
             border-color: var(--primary-color);
-            background-color: rgba(255, 107, 107, 0.1);
+            background-color: rgba(58, 80, 107, 0.1);
             color: var(--primary-color);
         }
 
@@ -144,80 +132,79 @@
         }
 
         .shape-icon {
-            font-size: 20px;
-            margin-bottom: 6px;
+            font-size: 18px;
+            margin-bottom: 5px;
             display: block;
         }
 
         .input-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 18px;
+            gap: 10px;
+            margin-bottom: 15px;
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         label {
             display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
+            margin-bottom: 5px;
+            font-weight: 500;
             color: var(--dark-color);
             font-size: 0.9rem;
         }
 
         select, input {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
+            padding: 8px 10px;
+            border: 1px solid #ced4da;
             border-radius: var(--border-radius);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             transition: var(--transition);
         }
 
         select:focus, input:focus {
             outline: none;
-            border-color: var(--secondary-color);
-            box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.2);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(77, 157, 224, 0.15);
         }
 
         .btn {
-            padding: 10px 20px;
+            padding: 8px 16px;
             background-color: var(--primary-color);
             color: white;
             border: none;
             border-radius: var(--border-radius);
             cursor: pointer;
-            font-size: 0.95rem;
-            font-weight: 600;
+            font-size: 0.9rem;
+            font-weight: 500;
             transition: var(--transition);
             display: inline-block;
             text-align: center;
         }
 
         .btn:hover {
-            background-color: #FF8E8E;
-            transform: translateY(-2px);
+            background-color: var(--secondary-color);
         }
 
         .btn-calculate {
             background-color: var(--success-color);
             width: 100%;
-            margin-top: 18px;
+            margin-top: 15px;
         }
 
         .btn-calculate:hover {
-            background-color: #05C291;
+            background-color: #43a047;
         }
 
         .result-box {
-            background-color: #e8f4fc;
-            border-left: 4px solid var(--secondary-color);
-            padding: 18px;
+            background-color: #f1f8ff;
+            border-left: 4px solid var(--accent-color);
+            padding: 15px;
             border-radius: var(--border-radius);
-            margin-top: 18px;
+            margin-top: 15px;
         }
 
         .result-item {
@@ -235,29 +222,29 @@
         }
 
         .result-value {
-            font-weight: bold;
-            color: var(--secondary-color);
+            font-weight: 600;
+            color: var(--accent-color);
         }
 
         .formula-box {
             background-color: #f9f9f9;
             border-radius: var(--border-radius);
-            padding: 12px;
-            margin-top: 15px;
+            padding: 10px;
+            margin-top: 12px;
             font-family: monospace;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             line-height: 1.5;
         }
 
         .density-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 18px;
-            font-size: 0.9rem;
+            margin-top: 15px;
+            font-size: 0.85rem;
         }
 
         .density-table th, .density-table td {
-            padding: 10px;
+            padding: 8px;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
@@ -273,42 +260,44 @@
 
         .copy-btn {
             background-color: var(--dark-color);
-            margin-top: 12px;
+            margin-top: 10px;
+            width: 100%;
         }
 
         .copy-btn:hover {
-            background-color: #3A5767;
+            background-color: #25304d;
         }
 
         footer {
             text-align: center;
-            padding: 15px;
-            margin-top: 30px;
-            color: #777;
-            border-top: 1px solid #ddd;
-            font-size: 0.85rem;
+            padding: 12px;
+            margin-top: 25px;
+            color: #6c757d;
+            border-top: 1px solid #dee2e6;
+            font-size: 0.8rem;
         }
 
         .search-box {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .search-box input {
-            padding: 10px;
-            border: 1px solid #ddd;
+            padding: 8px 10px;
+            border: 1px solid #ced4da;
             border-radius: var(--border-radius);
             width: 100%;
         }
 
         .material-category {
-            margin-top: 20px;
+            margin-top: 18px;
         }
 
         .material-category h3 {
             color: var(--primary-color);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             padding-bottom: 5px;
-            border-bottom: 2px solid var(--accent-color);
+            border-bottom: 1px solid var(--accent-color);
+            font-size: 1rem;
         }
 
         @media (max-width: 768px) {
@@ -320,21 +309,12 @@
                 grid-template-columns: 1fr;
             }
             
-            .tabs {
-                flex-direction: column;
-            }
-            
-            .tab {
-                margin-bottom: 5px;
-                width: 100%;
-            }
-            
             .density-table {
                 font-size: 0.8rem;
             }
             
             .density-table th, .density-table td {
-                padding: 8px 5px;
+                padding: 6px 4px;
             }
         }
     </style>
@@ -343,7 +323,6 @@
     <header>
         <div class="container">
             <h1>材质重量计算器</h1>
-            <p class="app-description">精确计算各种形状材料的重量和价格</p>
         </div>
     </header>
 
@@ -442,6 +421,10 @@
                 <div class="result-item">
                     <span>材质:</span>
                     <span class="result-value" id="materialResult">-</span>
+                </div>
+                <div class="result-item">
+                    <span>密度:</span>
+                    <span class="result-value" id="densityResult">- g/cm³</span>
                 </div>
                 <div class="result-item">
                     <span>体积:</span>
@@ -795,6 +778,7 @@
             const calculateBtn = document.getElementById('calculateBtn');
             const resultBox = document.getElementById('resultBox');
             const materialResult = document.getElementById('materialResult');
+            const densityResult = document.getElementById('densityResult');
             const volumeResult = document.getElementById('volumeResult');
             const weightResult = document.getElementById('weightResult');
             const priceResult = document.getElementById('priceResult');
@@ -812,7 +796,7 @@
                 if (material !== 'custom') {
                     materialName = materialNameMap[material] || "未知材质";
                 } else {
-                    materialName = `自定义材质 (密度: ${density} g/cm³)`;
+                    materialName = `自定义材质`;
                 }
                 
                 let volume = 0;
@@ -868,6 +852,7 @@
                 
                 // 显示结果
                 materialResult.textContent = materialName;
+                densityResult.textContent = `${density} g/cm³`;
                 volumeResult.textContent = `${volume.toFixed(4)} cm³`;
                 weightResult.textContent = `${weight.toFixed(4)} kg`;
                 priceResult.textContent = `${totalPrice.toFixed(2)} 元`;
@@ -875,7 +860,7 @@
                 
                 // 保存用于复制的数据
                 resultBox.setAttribute('data-copy-text', 
-                    `材质: ${materialName}\n尺寸: ${dimensions.join(', ')}\n密度: ${density} g/cm³\n体积: ${volume.toFixed(4)} cm³\n重量: ${weight.toFixed(4)} kg\n总价: ${totalPrice.toFixed(2)} 元`);
+                    `材质: ${materialName}\n密度: ${density} g/cm³\n体积: ${volume.toFixed(4)} cm³\n重量: ${weight.toFixed(4)} kg\n总价: ${totalPrice.toFixed(2)} 元`);
                 
                 resultBox.style.display = 'block';
             });
