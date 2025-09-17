@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>材质重量计算器</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #FF7F50; /* 珊瑚色，温暖自信 */
+            --secondary-color: #2C3E50; /* 深蓝色，稳重 */
+            --accent-color: #3498DB; /* 亮蓝色，活力 */
+            --light-color: #F9F9F9; /* 浅灰色背景 */
+            --dark-color: #333333; /* 深色文字 */
+            --success-color: #27AE60; /* 成功绿色 */
+            --warning-color: #E67E22; /* 橙色 */
+            --border-radius: 10px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), #FF6347);
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            border-bottom: 3px solid var(--secondary-color);
+            margin-bottom: 20px;
+            box-shadow: var(--box-shadow);
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .app-description {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 5px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .tab {
+            padding: 12px 20px;
+            background-color: transparent;
+            color: var(--dark-color);
+            border: none;
+            border-radius: var(--border-radius);
+            margin: 0 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: var(--transition);
+        }
+
+        .tab.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .tab:hover {
+            background-color: rgba(255, 127, 80, 0.1);
+        }
+
+        .content-section {
+            display: none;
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .shape-selector {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .shape-btn {
+            padding: 15px 10px;
+            background-color: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: var(--border-radius);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .shape-btn.active {
+            border-color: var(--primary-color);
+            background-color: rgba(255, 127, 80, 0.1);
+            color: var(--primary-color);
+        }
+
+        .shape-btn:hover {
+            border-color: var(--primary-color);
+        }
+
+        .shape-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: var(--transition);
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: #FF6347;
+            transform: translateY(-2px);
+        }
+
+        .btn-calculate {
+            background-color: var(--success-color);
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn-calculate:hover {
+            background-color: #219653;
+        }
+
+        .result-box {
+            background-color: #e8f4fc;
+            border-left: 4px solid var(--accent-color);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #ccc;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .result-value {
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .formula-box {
+            background-color: #f9f9f9;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-top: 20px;
+            font-family: monospace;
+            font-size: 14px;
+        }
+
+        .history-list {
+            list-style-type: none;
+        }
+
+        .history-item {
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .history-date {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 5px;
+        }
+
+        .density-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .density-table th, .density-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .density-table th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .density-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .copy-btn {
+            background-color: var(--secondary-color);
+            margin-top: 15px;
+        }
+
+        .copy-btn:hover {
+            background-color: #2C3E50;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            color: #777;
+            border-top: 1px solid #ddd;
+        }
+
+        @media (max-width: 768px) {
+            .shape-selector {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                margin-bottom: 5px;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>材质重量计算器</h1>
+            <p class="app-description">精确计算各种形状材料的重量和价格</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="tabs">
+            <button class="tab active" data-tab="calculator"><i class="fas fa-calculator"></i> 计算器</button>
+            <button class="tab" data-tab="density"><i class="fas fa-weight"></i> 材质密度</button>
+            <button class="tab" data-tab="instructions"><i class="fas fa-info-circle"></i> 使用说明</button>
+        </div>
+
+        <!-- 计算器部分 -->
+        <div id="calculator" class="content-section active">
+            <h2>选择材料形状</h2>
+            <div class="shape-selector">
+                <div class="shape-btn active" data-shape="plate">
+                    <i class="fas fa-square shape-icon"></i>
+                    <span>板材</span>
+                </div>
+                <div class="shape-btn" data-shape="rod">
+                    <i class="fas fa-circle shape-icon"></i>
+                    <span>棒材</span>
+                </div>
+                <div class="shape-btn" data-shape="tube">
+                    <i class="fas fa-ring shape-icon"></i>
+                    <span>空心管</span>
+                </div>
+                <div class="shape-btn" data-shape="box">
+                    <i class="fas fa-cube shape-icon"></i>
+                    <span>方管</span>
+                </div>
+            </div>
+
+            <h2>输入尺寸参数 (mm)</h2>
+            <div class="input-grid" id="dimensionInputs">
+                <!-- 动态生成输入字段 -->
+                <div class="form-group">
+                    <label for="length">长度</label>
+                    <input type="number" id="length" placeholder="长度">
+                </div>
+                <div class="form-group">
+                    <label for="width">宽度</label>
+                    <input type="number" id="width" placeholder="宽度">
+                </div>
+                <div class="form-group">
+                    <label for="height">高度/厚度</label>
+                    <input type="number" id="height" placeholder="高度/厚度">
+                </div>
+                <div class="form-group">
+                    <label for="diameter">直径</label>
+                    <input type="number" id="diameter" placeholder="直径">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="density">密度 (g/cm³)</label>
+                <input type="number" id="density" step="0.001" placeholder="输入密度" value="7.85">
+            </div>
+
+            <div class="form-group">
+                <label for="price">单价 (元/公斤)</label>
+                <input type="number" id="price" step="0.01" placeholder="输入单价">
+            </div>
+
+            <div class="form-group">
+                <label for="quantity">数量</label>
+                <input type="number" id="quantity" placeholder="数量" value="1" min="1">
+            </div>
+
+            <button class="btn btn-calculate" id="calculateBtn">计算重量和价格</button>
+
+            <div class="result-box" id="resultBox" style="display: none;">
+                <h3>计算结果</h3>
+                <div class="result-item">
+                    <span>体积:</span>
+                    <span class="result-value" id="volumeResult">0 cm³</span>
+                </div>
+                <div class="result-item">
+                    <span>重量:</span>
+                    <span class="result-value" id="weightResult">0 kg</span>
+                </div>
+                <div class="result-item">
+                    <span>总价:</span>
+                    <span class="result-value" id="priceResult">0 元</span>
+                </div>
+                
+                <div class="formula-box" id="formulaBox">
+                    <!-- 公式将在这里动态显示 -->
+                </div>
+                
+                <button class="btn copy-btn" id="copyBtn"><i class="fas fa-copy"></i> 复制结果</button>
+            </div>
+        </div>
+
+        <!-- 材质密度部分 -->
+        <div id="density" class="content-section">
+            <h2>常用材料密度参考表 (g/cm³)</h2>
+            
+            <h3>金属材料</h3>
+            <table class="density-table">
+                <tr>
+                    <th>材料</th>
+                    <th>密度</th>
+                    <th>材料</th>
+                    <th>密度</th>
+                </tr>
+                <tr>
+                    <td>钢</td>
+                    <td>7.85</td>
+                    <td>铝</td>
+                    <td>2.7</td>
+                </tr>
+                <tr>
+                    <td>不锈钢</td>
+                    <td>7.93</td>
+                    <td>铜</td>
+                    <td>8.96</td>
+                </tr>
+                <tr>
+                    <td>黄铜</td>
+                    <td>8.4-8.7</td>
+                    <td>锌</td>
+                    <td>7.14</td>
+                </tr>
+                <tr>
+                    <td>钛</td>
+                    <td>4.51</td>
+                    <td>镍</td>
+                    <td>8.90</td>
+                </tr>
+                <tr>
+                    <td>银</td>
+                    <td>10.49</td>
+                    <td>金</td>
+                    <td>19.32</td>
+                </tr>
+            </table>
+            
+            <h3>塑料材料</h3>
+            <table class="density-table">
+                <tr>
+                    <th>材料</th>
+                    <th>密度</th>
+                    <th>材料</th>
+                    <th>密度</th>
+                </tr>
+                <tr>
+                    <td>PVC</td>
+                    <td>1.38</td>
+                    <td>ABS</td>
+                    <td>1.05</td>
+                </tr>
+                <tr>
+                    <td>PC</td>
+                    <td>1.20</td>
+                    <td>PP</td>
+                    <td>0.90</td>
+                </tr>
+                <tr>
+                    <td>PE</td>
+                    <td>0.95</td>
+                    <td>尼龙</td>
+                    <td>1.15</td>
+                </tr>
+                <tr>
+                    <td>POM</td>
+                    <td>1.41</td>
+                    <td>PTFE</td>
+                    <td>2.20</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- 使用说明部分 -->
+        <div id="instructions" class="content-section">
+            <h2>使用说明</h2>
+            <div class="instructions">
+                <h3>如何计算材料重量</h3>
+                <ol>
+                    <li>选择材料形状（板材、棒材、空心管或方管）</li>
+                    <li>输入相应的尺寸参数（单位：毫米）</li>
+                    <li>输入材料密度（可使用材质密度页面的参考值）</li>
+                    <li>输入材料单价（元/公斤）</li>
+                    <li>输入数量（默认1）</li>
+                    <li>点击"计算重量和价格"按钮</li>
+                    <li>查看计算结果，并可复制结果</li>
+                </ol>
+
+                <h3>计算公式</h3>
+                <ul>
+                    <li><strong>板材</strong>: 体积 = 长度 × 宽度 × 高度</li>
+                    <li><strong>棒材</strong>: 体积 = π × (直径/2)² × 长度</li>
+                    <li><strong>空心管</strong>: 体积 = π × [(外径/2)² - (内径/2)²] × 长度</li>
+                    <li><strong>方管</strong>: 体积 = [外部体积] - [内部体积]</li>
+                    <li><strong>重量</strong>: 重量 = 体积 × 密度</li>
+                    <li><strong>总价</strong>: 总价 = 重量 × 单价 × 数量</li>
+                </ul>
+                
+                <h3>注意事项</h3>
+                <p>1. 所有尺寸单位均为毫米(mm)，密度单位为克/立方厘米(g/cm³)</p>
+                <p>2. 计算结果为理论值，实际重量可能因材料成分和制造工艺有所不同</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>© 2023 材质重量计算器 | 精确计算各种材料的重量和价格</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 选项卡切换功能
+            const tabs = document.querySelectorAll('.tab');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const targetTab = tab.getAttribute('data-tab');
+                    
+                    // 更新活动选项卡
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    // 显示对应内容区域
+                    contentSections.forEach(section => {
+                        section.classList.remove('active');
+                        if (section.id === targetTab) {
+                            section.classList.add('active');
+                        }
+                    });
+                });
+            });
+
+            // 形状选择功能
+            const shapeBtns = document.querySelectorAll('.shape-btn');
+            const dimensionInputs = document.getElementById('dimensionInputs');
+            
+            shapeBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    shapeBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    updateInputFields(btn.getAttribute('data-shape'));
+                });
+            });
+            
+            // 根据形状更新输入字段
+            function updateInputFields(shape) {
+                // 清空现有输入字段
+                dimensionInputs.innerHTML = '';
+                
+                // 根据形状添加相应的输入字段
+                switch(shape) {
+                    case 'plate':
+                        dimensionInputs.innerHTML = `
+                            <div class="form-group">
+                                <label for="length">长度</label>
+                                <input type="number" id="length" placeholder="长度">
+                            </div>
+                            <div class="form-group">
+                                <label for="width">宽度</label>
+                                <input type="number" id="width" placeholder="宽度">
+                            </div>
+                            <div class="form-group">
+                                <label for="height">厚度</label>
+                                <input type="number" id="height" placeholder="厚度">
+                            </div>
+                        `;
+                        break;
+                    case 'rod':
+                        dimensionInputs.innerHTML = `
+                            <div class="form-group">
+                                <label for="diameter">直径</label>
+                                <input type="number" id="diameter" placeholder="直径">
+                            </div>
+                            <div class="form-group">
+                                <label for="length">长度</label>
+                                <input type="number" id="length" placeholder="长度">
+                            </div>
+                        `;
+                        break;
+                    case 'tube':
+                        dimensionInputs.innerHTML = `
+                            <div class="form-group">
+                                <label for="outerDiameter">外径</label>
+                                <input type="number" id="outerDiameter" placeholder="外径">
+                            </div>
+                            <div class="form-group">
+                                <label for="innerDiameter">内径</label>
+                                <input type="number" id="innerDiameter" placeholder="内径">
+                            </div>
+                            <div class="form-group">
+                                <label for="length">长度</label>
+                                <input type="number" id="length" placeholder="长度">
+                            </div>
+                        `;
+                        break;
+                    case 'box':
+                        dimensionInputs.innerHTML = `
+                            <div class="form-group">
+                                <label for="length">长度</label>
+                                <input type="number" id="length" placeholder="长度">
+                            </div>
+                            <div class="form-group">
+                                <label for="width">宽度</label>
+                                <input type="number" id="width" placeholder="宽度">
+                            </div>
+                            <div class="form-group">
+                                <label for="height">高度</label>
+                                <input type="number" id="height" placeholder="高度">
+                            </div>
+                            <div class="form-group">
+                                <label for="thickness">厚度</label>
+                                <input type="number" id="thickness" placeholder="厚度">
+                            </div>
+                        `;
+                        break;
+                }
+            }
+            
+            // 初始化显示板材的输入字段
+            updateInputFields('plate');
+            
+            // 计算按钮功能
+            const calculateBtn = document.getElementById('calculateBtn');
+            const resultBox = document.getElementById('resultBox');
+            const volumeResult = document.getElementById('volumeResult');
+            const weightResult = document.getElementById('weightResult');
+            const priceResult = document.getElementById('priceResult');
+            const formulaBox = document.getElementById('formulaBox');
+            
+            calculateBtn.addEventListener('click', () => {
+                const shape = document.querySelector('.shape-btn.active').getAttribute('data-shape');
+                const density = parseFloat(document.getElementById('density').value);
+                const pricePerKg = parseFloat(document.getElementById('price').value) || 0;
+                const quantity = parseInt(document.getElementById('quantity').value) || 1;
+                
+                let volume = 0;
+                let formulaText = '';
+                
+                // 根据形状计算体积
+                switch(shape) {
+                    case 'plate':
+                        const length = parseFloat(document.getElementById('length').value);
+                        const width = parseFloat(document.getElementById('width').value);
+                        const height = parseFloat(document.getElementById('height').value);
+                        volume = (length * width * height) / 1000; // 转换为cm³
+                        formulaText = `体积 = 长度 × 宽度 × 高度 / 1000 = ${length} × ${width} × ${height} / 1000 = ${volume.toFixed(4)} cm³`;
+                        break;
+                    case 'rod':
+                        const diameter = parseFloat(document.getElementById('diameter').value);
+                        const rodLength = parseFloat(document.getElementById('length').value);
+                        volume = (Math.PI * Math.pow(diameter/2, 2) * rodLength) / 1000;
+                        formulaText = `体积 = π × (直径/2)² × 长度 / 1000 = 3.1416 × (${diameter}/2)² × ${rodLength} / 1000 = ${volume.toFixed(4)} cm³`;
+                        break;
+                    case 'tube':
+                        const outerDiameter = parseFloat(document.getElementById('outerDiameter').value);
+                        const innerDiameter = parseFloat(document.getElementById('innerDiameter').value);
+                        const tubeLength = parseFloat(document.getElementById('length').value);
+                        volume = (Math.PI * (Math.pow(outerDiameter/2, 2) - Math.pow(innerDiameter/2, 2)) * tubeLength) / 1000;
+                        formulaText = `体积 = π × [(外径/2)² - (内径/2)²] × 长度 / 1000 = 3.1416 × [(${outerDiameter}/2)² - (${innerDiameter}/2)²] × ${tubeLength} / 1000 = ${volume.toFixed(4)} cm³`;
+                        break;
+                    case 'box':
+                        const boxLength = parseFloat(document.getElementById('length').value);
+                        const boxWidth = parseFloat(document.getElementById('width').value);
+                        const boxHeight = parseFloat(document.getElementById('height').value);
+                        const thickness = parseFloat(document.getElementById('thickness').value);
+                        // 简化计算：外体积减去内体积
+                        const outerVolume = boxLength * boxWidth * boxHeight;
+                        const innerVolume = (boxLength - 2*thickness) * (boxWidth - 2*thickness) * (boxHeight - 2*thickness);
+                        volume = (outerVolume - innerVolume) / 1000;
+                        formulaText = `体积 = [外部体积 - 内部体积] / 1000 = [${outerVolume} - ${innerVolume}] / 1000 = ${volume.toFixed(4)} cm³`;
+                        break;
+                }
+                
+                // 计算重量和价格
+                const weight = volume * density / 1000; // 转换为kg
+                const totalPrice = weight * pricePerKg * quantity;
+                
+                // 更新公式文本
+                formulaText += `<br>重量 = 体积 × 密度 / 1000 = ${volume.toFixed(4)} × ${density} / 1000 = ${weight.toFixed(4)} kg`;
+                formulaText += `<br>总价 = 重量 × 单价 × 数量 = ${weight.toFixed(4)} × ${pricePerKg} × ${quantity} = ${totalPrice.toFixed(2)} 元`;
+                
+                // 显示结果
+                volumeResult.textContent = `${volume.toFixed(4)} cm³`;
+                weightResult.textContent = `${weight.toFixed(4)} kg`;
+                priceResult.textContent = `${totalPrice.toFixed(2)} 元`;
+                formulaBox.innerHTML = formulaText;
+                
+                resultBox.style.display = 'block';
+            });
+            
+            // 复制结果功能
+            const copyBtn = document.getElementById('copyBtn');
+            copyBtn.addEventListener('click', () => {
+                const shape = document.querySelector('.shape-btn.active').getAttribute('data-shape');
+                const density = parseFloat(document.getElementById('density').value);
+                const dimensions = [];
+                
+                // 收集尺寸参数
+                switch(shape) {
+                    case 'plate':
+                        dimensions.push(`长度: ${document.getElementById('length').value}mm`);
+                        dimensions.push(`宽度: ${document.getElementById('width').value}mm`);
+                        dimensions.push(`厚度: ${document.getElementById('height').value}mm`);
+                        break;
+                    case 'rod':
+                        dimensions.push(`直径: ${document.getElementById('diameter').value}mm`);
+                        dimensions.push(`长度: ${document.getElementById('length').value}mm`);
+                        break;
+                    case 'tube':
+                        dimensions.push(`外径: ${document.getElementById('outerDiameter').value}mm`);
+                        dimensions.push(`内径: ${document.getElementById('innerDiameter').value}mm`);
+                        dimensions.push(`长度: ${document.getElementById('length').value}mm`);
+                        break;
+                    case 'box':
+                        dimensions.push(`长度: ${document.getElementById('length').value}mm`);
+                        dimensions.push(`宽度: ${document.getElementById('width').value}mm`);
+                        dimensions.push(`高度: ${document.getElementById('height').value}mm`);
+                        dimensions.push(`厚度: ${document.getElementById('thickness').value}mm`);
+                        break;
+                }
+                
+                const resultText = `尺寸: ${dimensions.join(', ')}\n密度: ${density} g/cm³\n重量: ${weightResult.textContent}\n总价: ${priceResult.textContent}`;
+                
+                navigator.clipboard.writeText(resultText)
+                    .then(() => {
+                        copyBtn.innerHTML = '<i class="fas fa-check"></i> 已复制';
+                        setTimeout(() => {
+                            copyBtn.innerHTML = '<i class="fas fa-copy"></i> 复制结果';
+                        }, 2000);
+                    })
+                    .catch(err => {
+                        console.error('复制失败:', err);
+                        alert('复制失败，请手动复制结果');
+                    });
+            });
+        });
+    </script>
+</body>
+</html>
