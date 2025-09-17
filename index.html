@@ -19,9 +19,9 @@
             --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             --header-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             --nav-height: 56px;
-            --sticky-header-height: 180px; /* 工具页面固定区域高度 */
-            --sticky-specs-height: 190px; /* 选型表页面固定区域高度 */
-            --sticky-knowledge-height: 70px; /* 知识库页面固定区域高度 */
+            --sticky-header-height: 180px;
+            --sticky-specs-height: 220px;
+            --sticky-knowledge-height: 70px;
         }
         
         * {
@@ -101,7 +101,7 @@
         
         /* ===== 工具页面样式 ===== */
         #toolsPage {
-            padding-top: var(--sticky-header-height); /* 为固定区域留出空间 */
+            padding-top: var(--sticky-header-height);
         }
         
         .tools-sticky-header {
@@ -111,16 +111,15 @@
             width: 100%;
             height: var(--sticky-header-height);
             z-index: 100;
-            background: var(--background); /* 与页面背景一致，避免滑动时看到背后内容 */
+            background: var(--background);
         }
         
         /* 轮播图样式 */
         .carousel {
             width: 100%;
-            height: 120px; /* 轮播图高度 */
+            height: 130px;
             position: relative;
             overflow: hidden;
-            border-radius: 0 0 10px 10px;
         }
         
         .carousel-inner {
@@ -148,6 +147,7 @@
             display: flex;
             justify-content: center;
             gap: 8px;
+            z-index: 5;
         }
         
         .carousel-indicator {
@@ -170,7 +170,7 @@
             gap: 8px;
             padding: 10px 15px;
             -webkit-overflow-scrolling: touch;
-            background: var(--background); /* 与页面背景一致 */
+            background: var(--background);
         }
         
         .category-btn {
@@ -260,7 +260,7 @@
         
         .tool-desc {
             font-size: 0.75rem;
-            color: 718096;
+            color: #718096;
             text-align: center;
             line-height: 1.4;
             display: -webkit-box;
@@ -271,7 +271,7 @@
         
         /* ===== 选型表页面样式 ===== */
         #specsPage {
-            padding-top: var(--sticky-specs-height); /* 为固定区域留出空间 */
+            padding-top: var(--sticky-specs-height);
         }
         
         .specs-sticky-header {
@@ -281,7 +281,7 @@
             width: 100%;
             height: var(--sticky-specs-height);
             z-index: 100;
-            background: var(--background); /* 与页面背景一致 */
+            background: var(--background);
             padding: 15px 15px 0;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
@@ -289,14 +289,13 @@
         .specs-ad {
             width: 100%;
             margin-bottom: 10px;
-            border-radius: 10px;
             overflow: hidden;
         }
         
         .specs-ad img {
             width: 100%;
             height: auto;
-            max-height: 80px;
+            max-height: 90px;
             object-fit: cover;
         }
         
@@ -371,23 +370,24 @@
         
         .specs-table-container {
             width: 100%;
-            overflow-x: auto;
             border-radius: 10px;
             box-shadow: var(--card-shadow);
             background: white;
+            overflow: hidden;
         }
         
         .specs-table {
             width: 100%;
             border-collapse: collapse;
             font-size: 0.9rem;
-            min-width: 500px;
+            table-layout: fixed;
         }
         
         .specs-table th, .specs-table td {
             padding: 12px 15px;
             text-align: left;
             border-bottom: 1px solid #e2e8f0;
+            word-wrap: break-word;
         }
         
         .specs-table th {
@@ -402,9 +402,27 @@
             border-bottom: none;
         }
         
+        /* 调整表格列宽 */
+        .specs-table th:nth-child(1),
+        .specs-table td:nth-child(1) {
+            width: 40%;
+        }
+        
+        .specs-table th:nth-child(2),
+        .specs-table td:nth-child(2) {
+            width: 30%;
+            text-align: center;
+        }
+        
+        .specs-table th:nth-child(3),
+        .specs-table td:nth-child(3) {
+            width: 30%;
+            text-align: center;
+        }
+        
         /* ===== 知识库页面样式 ===== */
         #knowledgePage {
-            padding-top: var(--sticky-knowledge-height); /* 为固定区域留出空间 */
+            padding-top: var(--sticky-knowledge-height);
         }
         
         .knowledge-sticky-header {
@@ -414,20 +432,19 @@
             width: 100%;
             height: var(--sticky-knowledge-height);
             z-index: 100;
-            background: var(--background); /* 与页面背景一致 */
+            background: var(--background);
             padding: 15px 15px 0;
         }
         
         .knowledge-ad {
             width: 100%;
-            border-radius: 10px;
             overflow: hidden;
         }
         
         .knowledge-ad img {
             width: 100%;
             height: auto;
-            max-height: 60px;
+            max-height: 80px;
             object-fit: cover;
         }
         
@@ -443,6 +460,7 @@
             display: grid;
             grid-template-columns: 1fr;
             gap: 15px;
+            margin-bottom: 30px;
         }
         
         .knowledge-card {
@@ -471,6 +489,88 @@
             color: #718096;
             line-height: 1.5;
             font-size: 0.85rem;
+        }
+        
+        /* 额外信息区域 */
+        .additional-info {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 20px;
+        }
+        
+        .info-section {
+            margin-bottom: 25px;
+        }
+        
+        .info-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .info-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-title i {
+            margin-right: 8px;
+            color: var(--accent);
+        }
+        
+        .info-content {
+            color: #718096;
+            line-height: 1.6;
+        }
+        
+        .contact-list {
+            list-style: none;
+        }
+        
+        .contact-list li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .contact-list i {
+            margin-right: 10px;
+            color: var(--accent);
+            width: 20px;
+        }
+        
+        /* 公众号二维码样式 */
+        .qrcode-container {
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .qrcode {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
+            background-color: #f0f4f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .qrcode img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        .qrcode-text {
+            margin-top: 8px;
+            font-size: 0.9rem;
+            color: var(--secondary);
+            font-weight: 500;
         }
         
         /* ===== 工具展示区 ===== */
@@ -521,22 +621,38 @@
                 grid-template-columns: repeat(2, 1fr);
             }
             
-            .specs-table {
-                min-width: auto;
-            }
-            
-            /* 电脑端调整固定区域高度 */
             :root {
-                --sticky-specs-height: 160px;
+                --sticky-specs-height: 200px;
                 --sticky-knowledge-height: 90px;
             }
             
             .specs-ad img {
-                max-height: 70px;
+                max-height: 80px;
             }
             
             .knowledge-ad img {
-                max-height: 70px;
+                max-height: 80px;
+            }
+            
+            .additional-info {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+            
+            .specs-table th:nth-child(1),
+            .specs-table td:nth-child(1) {
+                width: 35%;
+            }
+            
+            .specs-table th:nth-child(2),
+            .specs-table td:nth-child(2) {
+                width: 25%;
+            }
+            
+            .specs-table th:nth-child(3),
+            .specs-table td:nth-child(3) {
+                width: 40%;
             }
         }
         
@@ -553,17 +669,19 @@
                 max-width: 1200px;
             }
             
-            /* 电脑端调整固定区域高度 */
             :root {
-                --sticky-specs-height: 150px;
-                --sticky-knowledge-height: 80px;
+                --sticky-specs-height: 190px;
+                --sticky-knowledge-height: 85px;
+            }
+            
+            .additional-info {
+                grid-template-columns: repeat(3, 1fr);
             }
         }
         
         @media (max-width: 480px) {
-            /* 手机端调整固定区域高度 */
             :root {
-                --sticky-specs-height: 200px;
+                --sticky-specs-height: 220px;
             }
             
             .specs-tab {
@@ -573,6 +691,22 @@
             
             .specs-table th, .specs-table td {
                 padding: 10px 12px;
+                font-size: 0.85rem;
+            }
+            
+            .specs-table th:nth-child(1),
+            .specs-table td:nth-child(1) {
+                width: 45%;
+            }
+            
+            .specs-table th:nth-child(2),
+            .specs-table td:nth-child(2) {
+                width: 25%;
+            }
+            
+            .specs-table th:nth-child(3),
+            .specs-table td:nth-child(3) {
+                width: 30%;
             }
         }
         
@@ -581,6 +715,27 @@
             text-align: center;
             padding: 20px;
             color: #718096;
+        }
+        
+        /* 加载指示器 */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--secondary);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -633,7 +788,9 @@
             <!-- 工具内容区域（可滑动） -->
             <div class="tools-content">
                 <div class="tool-grid" id="toolGrid">
-                    <!-- 工具卡片将在这里动态生成 -->
+                    <div class="loading">
+                        <div class="spinner"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -643,7 +800,6 @@
             <!-- 固定顶部区域：广告 + 搜索 + 标签 -->
             <div class="specs-sticky-header">
                 <div class="specs-ad">
-                    <!-- 广告图片，可以替换 -->
                     <img src="https://placehold.co/600x200/38b2ac/white?text=广告位+支持动态图片" alt="赞助商广告">
                 </div>
                 
@@ -666,13 +822,18 @@
                         <thead>
                             <tr>
                                 <th>型号</th>
-                                <th>规格</th>
-                                <th>材质</th>
-                                <th>适用车型</th>
+                                <th>齿数/T</th>
+                                <th>长度/mm</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- 规格数据将在这里动态生成 -->
+                            <tr>
+                                <td colspan="3" class="search-result">
+                                    <div class="loading">
+                                        <div class="spinner"></div>
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -684,7 +845,6 @@
             <!-- 固定顶部区域：广告 -->
             <div class="knowledge-sticky-header">
                 <div class="knowledge-ad">
-                    <!-- 广告图片，可以替换 -->
                     <img src="https://placehold.co/600x200/9b59b6/white?text=知识库广告位" alt="知识库广告">
                 </div>
             </div>
@@ -692,7 +852,44 @@
             <!-- 知识库内容区域（可滑动） -->
             <div class="knowledge-content">
                 <div class="knowledge-grid" id="knowledgeGrid">
-                    <!-- 知识卡片将在这里动态生成 -->
+                    <div class="loading">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+                
+                <!-- 额外信息区域 -->
+                <div class="additional-info">
+                    <div class="info-section">
+                        <h3 class="info-title"><i class="fas fa-tools"></i> 工具介绍</h3>
+                        <div class="info-content">
+                            <p>自行车工程工具集提供专业的自行车设计与工程计算工具，涵盖几何计算、材料分析、性能模拟等多个领域，助力工程师和爱好者进行精准设计和优化。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-section">
+                        <h3 class="info-title"><i class="fas fa-info-circle"></i> 关于我们</h3>
+                        <div class="info-content">
+                            <p>我们是一支专注于自行车工程技术的团队，致力于为自行车行业提供专业的计算工具和技术支持。我们的使命是推动自行车设计与制造的技术进步。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-section">
+                        <h3 class="info-title"><i class="fas fa-headset"></i> 技术支持</h3>
+                        <div class="info-content">
+                            <ul class="contact-list">
+                                <li><i class="fas fa-envelope"></i> 邮箱：support@biketools.com</li>
+                                <li><i class="fas fa-phone"></i> 电话：400-123-4567</li>
+                                <li><i class="fas fa-globe"></i> 网址：www.biketools.com</li>
+                                <li><i class="fas fa-map-marker-alt"></i> 地址：北京市海淀区自行车科技园88号</li>
+                            </ul>
+                            <div class="qrcode-container">
+                                <div class="qrcode">
+                                    <img src="https://placehold.co/150x150/3498db/white?text=公众号二维码" alt="公众号二维码">
+                                </div>
+                                <div class="qrcode-text">扫码关注我们的公众号</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -734,7 +931,7 @@
                 category: "performance",
                 description: "估算不同设计条件下的空气阻力与性能影响",
                 image: "https://placehold.co/600x400/3498db/white?text=空气动力学",
-                link: "aero.html",
+                link: "https://cadenqi.github.io/tools/8",
                 uses: 678
             },
             {
@@ -743,7 +940,7 @@
                 category: "material",
                 description: "分析自行车各部件的重量分布，优化平衡性",
                 image: "https://placehold.co/600x400/1abc9c/white?text=重量分析",
-                link: "weight.html",
+                link: "https://cadenqi.github.io/tools/7",
                 uses: 432
             },
             {
@@ -752,7 +949,7 @@
                 category: "performance",
                 description: "模拟自行车在不同条件下的性能表现，预测速度与功率",
                 image: "https://placehold.co/600x400/e74c3c/white?text=性能模拟",
-                link: "performance.html",
+                link: "https://cadenqi.github.io/tools/6",
                 uses: 945
             },
             {
@@ -761,7 +958,7 @@
                 category: "material",
                 description: "计算车架和零部件的应力分布与安全系数",
                 image: "https://placehold.co/600x400/f39c12/white?text=材料强度",
-                link: "material.html",
+                link: "https://cadenqi.github.io/tools/5",
                 uses: 723
             },
             {
@@ -770,7 +967,7 @@
                 category: "mechanical",
                 description: "计算同步皮带长度和齿数，确定合适的皮带规格",
                 image: "https://placehold.co/600x400/9b59b6/white?text=同步带计算",
-                link: "htd-belt.html",
+                link: "https://cadenqi.github.io/tools/4",
                 uses: 567
             },
             {
@@ -779,7 +976,7 @@
                 category: "design",
                 description: "可视化组装和调整自行车设计，实时查看更改效果",
                 image: "https://placehold.co/600x400/e74c3c/white?text=3D配置器",
-                link: "configurator.html",
+                link: "https://cadenqi.github.io/tools/3",
                 uses: 856
             },
             {
@@ -788,7 +985,7 @@
                 category: "mechanical",
                 description: "计算不同齿比下的速度、踏频关系，优化传动系统设计",
                 image: "https://placehold.co/600x400/2ecc71/white?text=传动计算",
-                link: "gearing.html",
+                link: "https://cadenqi.github.io/tools/2",
                 uses: 892
             },
             {
@@ -797,7 +994,7 @@
                 category: "design",
                 description: "计算自行车车架的关键几何参数，如Stack、Reach、轴距等",
                 image: "https://placehold.co/600x400/3498db/white?text=几何计算",
-                link: "geometry.html",
+                link: "https://cadenqi.github.io/tools/1",
                 uses: 1243
             }
         ];
@@ -805,25 +1002,69 @@
         // ==================== 规格数据配置 ====================
         const specsData = {
             "11M": [
-                { model: "XC-11M-001", spec: "11速", material: "碳纤维", applicable: "公路车" },
-                { model: "XC-11M-002", spec: "11速", material: "铝合金", applicable: "山地车" },
-                { model: "XC-11M-003", spec: "11速", material: "钛合金", applicable: "旅行车" },
-                { model: "XC-11M-004", spec: "11速", material: "钢", applicable: "城市通勤车" },
-                { model: "XC-11M-005", spec: "11速", material: "碳纤维", applicable: "竞赛公路车" }
+                { model: "11M-825-12", spec: "75", applicable: "825" },
+                { model: "11M-858-12", spec: "78", applicable: "858" },
+                { model: "11M-1001-12", spec: "91", applicable: "1001" },
+                { model: "11M-1100-12", spec: "100", applicable: "1100" },
+                { model: "11M-1122-12", spec: "102", applicable: "1122" },
+                { model: "11M-1155-12", spec: "105", applicable: "1155" },
+                { model: "11M-1166-12", spec: "106", applicable: "1166" },
+                { model: "11M-1188-极", spec: "108", applicable: "1188" },
+                { model: "11M-1199-12", spec: "109", applicable: "1199" },
+                { model: "11M-1221-12", spec: "111", applicable: "1221" },
+                { model: "11M-1243-12", spec: "113", applicable: "1243" },
+                { model: "11M-1254-12", spec: "114", applicable: "1254" },
+                { model: "11M-1265-12", spec: "115", applicable: "1265" },
+                { model: "11M-1276-12", spec: "116", applicable: "极276" },
+                { model: "11M-1287-12", spec: "117", applicable: "1287" },
+                { model: "11M-1298-12", spec: "118", applicable: "1298" },
+                { model: "11M-1309-12", spec: "119", applicable: "1309" },
+                { model: "11极-1320-12", spec: "120", applicable: "1320" },
+                { model: "11M-1331-12", spec: "121", applicable: "1331" },
+                { model: "11M-1342-12", spec: "122", applicable: "1342" },
+                { model: "11M-1364-12", spec: "124", applicable: "1364" },
+                { model: "11M-1375-12", spec: "125", applicable: "1375" },
+                { model: "11M-1386-12", spec: "126", applicable: "1386" },
+                { model: "11M-1408-12", spec: "128", applicable: "1408" },
+                { model: "11M-1430-12", spec: "130", applicable: "1430" },
+                { model: "11M-1452-12", spec: "132", applicable: "1452" },
+                { model: "11M-1474-12", spec: "134", applicable: "1474" },
+                { model: "11M-1485-12", spec: "135", applicable: "1485" },
+                { model: "11M-1496-12", spec: "136", applicable: "1496" },
+                { model: "11M-1507-12", spec: "137", applicable: "1507" },
+                { model: "11M-1529-12", spec: "139", applicable: "1529" },
+                { model: "11M-1573-12", spec: "143", applicable: "1573" },
+                { model: "11M-1606-12", spec: "146", applicable: "1606" },
+                { model: "11M-1617-12", spec: "147", applicable: "1617" },
+                { model: "11M-1661-12", spec: "151", applicable: "1661" },
+                { model: "11M-1683-12", spec: "153", applicable: "1683" },
+                { model: "11M-1716-12", spec: "156", applicable: "1716" },
+                { model: "11M-1727-12", spec: "157", applicable: "1727" },
+                { model: "11M-1738-12", spec: "158", applicable: "1738" },
+                { model: "11M-1760-12", spec: "160", applicable: "1760" },
+                { model: "11M-1782-12", spec: "162", applicable: "1782" },
+                { model: "11M-1826-12", spec: "166", applicable: "1826" },
+                { model: "11M-1848-12", spec: "极68", applicable: "1848" },
+                { model: "11M-1881-12", spec: "171", applicable: "1881" },
+                { model: "11M-1892-12", spec: "172", applicable: "1892" },
+                { model: "11M-1914-12", spec: "174", applicable: "1914" },
+                { model: "11M-1947-12", spec: "177", applicable: "1947" },
+                { model: "11M-1969-12", spec: "179", applicable: "1969" },
+                { model: "11M-1991-12", spec: "181", applicable: "1991" }
             ],
             "10M": [
-                { model: "XC-10M-001", spec: "10速", material: "铝合金", applicable: "山地车" },
-                { model: "XC-10M-002", spec: "10速", material: "钢", applicable: "旅行车" },
-                { model: "XC-10M-003", spec: "10速", material: "碳纤维", applicable: "公路车" },
-                { model: "XC-10M-004", spec: "10速", material: "钛合金", applicable: "城市通勤车" },
-                { model: "XC-10M-005", spec: "10速", material: "铝合金", applicable: "折叠车" }
+                { model: "10M-001", spec: "10速", applicable: "示例数据" },
+                { model: "10M-002", spec: "10速", applicable: "示例数据" },
+                { model: "10M-003", spec: "10速", applicable: "示例数据" },
+                { model: "10M-004", spec: "10速", applicable: "示例数据" },
+                { model: "10M-005", spec: "10速", applicable: "示例数据" }
             ],
             "8M": [
-                { model: "XC-8M-001", spec: "8速", material: "钢", applicable: "城市通勤车" },
-                { model: "XC-8M-002", spec: "8速", material: "铝合金", applicable: "折叠车" },
-                { model: "XC-8M-003", spec: "8速", material: "碳纤维", applicable: "旅行车" },
-                { model: "XC-8M-004", spec: "8速", material: "钛合金", applicable: "山地车" },
-                { model: "XC-8M-005", spec: "8速", material: "铝合金", applicable: "儿童自行车" }
+                { model: "8M-001", spec: "8速", applicable: "示例数据" },
+                { model: "8M-002", spec: "8极", applicable: "示例数据" },
+                { model: "8M-003", spec: "8速", applicable: "示例数据" },
+                { model: "8M-004", spec: "8速", applicable: "示例数据" },
+                { model: "8M-005", spec: "8速", applicable: "示例数据" }
             ]
         };
 
@@ -863,6 +1104,8 @@
 
         // ==================== 初始化 ====================
         document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM内容已加载，开始初始化...");
+            
             // 初始化轮播图
             initCarousel();
             
@@ -982,11 +1225,9 @@
                 tableRows.forEach(row => {
                     const model = row.cells[0].textContent.toLowerCase();
                     const spec = row.cells[1].textContent.toLowerCase();
-                    const material = row.cells[2].textContent.toLowerCase();
-                    const applicable = row.cells[3].textContent.toLowerCase();
+                    const applicable = row.cells[2].textContent.toLowerCase();
                     
-                    if (model.includes(searchTerm) || spec.includes(searchTerm) || 
-                        material.includes(searchTerm) || applicable.includes(searchTerm)) {
+                    if (model.includes(searchTerm) || spec.includes(searchTerm) || applicable.includes(searchTerm)) {
                         row.style.display = '';
                         found = true;
                     } else {
@@ -997,7 +1238,7 @@
                 // 显示搜索结果提示
                 if (!found) {
                     const tbody = document.querySelector('#specsTable tbody');
-                    tbody.innerHTML = `<tr><td colspan="4" class="search-result">未找到匹配的规格</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="3" class="search-result">未找到匹配的规格</td></tr>`;
                 }
             }
             
@@ -1050,6 +1291,8 @@
                 document.title = "自行车工程工具集"; // 恢复页面标题
                 document.body.style.overflow = 'auto';
             }
+            
+            console.log("初始化完成！");
         });
 
         // ==================== 功能函数 ====================
@@ -1096,14 +1339,21 @@
         // 渲染工具卡片
         function renderTools() {
             const toolGrid = document.getElementById('toolGrid');
-            toolGrid.innerHTML = '';
             
-            // 按照ID从大到小排序
-            const sortedTools = [...toolsData].sort((a, b) => b.id - a.id);
+            // 先显示加载指示器
+            toolGrid.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
             
-            sortedTools.forEach(tool => {
-                toolGrid.appendChild(createToolCard(tool));
-            });
+            // 模拟加载延迟
+            setTimeout(() => {
+                toolGrid.innerHTML = '';
+                
+                // 按照ID从大到小排序
+                const sortedTools = [...toolsData].sort((a, b) => b.id - a.id);
+                
+                sortedTools.forEach(tool => {
+                    toolGrid.appendChild(createToolCard(tool));
+                });
+            }, 800);
         }
         
         // 创建工具卡片
@@ -1116,7 +1366,7 @@
             
             card.innerHTML = `
                 <div class="tool-image">
-                    <img src="${tool.image}" alt="${tool.title}">
+                    <img src="${tool.image}" alt="${tool.title}" onerror="this.src='https://placehold.co/600x400/718096/white?text=图片加载失败'">
                 </div>
                 <div class="tool-content">
                     <h3 class="tool-title">${tool.title}</h3>
@@ -1143,20 +1393,31 @@
         // 渲染规格表
         function renderSpecs(specType) {
             const tbody = document.querySelector('#specsTable tbody');
-            tbody.innerHTML = '';
             
-            const specs = specsData[specType] || [];
+            // 先显示加载指示器
+            tbody.innerHTML = '<tr><td colspan="3"><div class="loading"><div class="spinner"></div></div></td></tr>';
             
-            specs.forEach(spec => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${spec.model}</td>
-                    <td>${spec.spec}</td>
-                    <td>${spec.material}</td>
-                    <td>${spec.applicable}</td>
-                `;
-                tbody.appendChild(row);
-            });
+            // 模拟加载延迟
+            setTimeout(() => {
+                tbody.innerHTML = '';
+                
+                const specs = specsData[specType] || [];
+                
+                if (specs.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="3" class="search-result">暂无数据</td></tr>`;
+                    return;
+                }
+                
+                specs.forEach(spec => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${spec.model}</td>
+                        <td>${spec.spec}</td>
+                        <td>${spec.applicable}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }, 500);
             
             // 清空搜索框
             document.getElementById('specSearchInput').value = '';
@@ -1165,11 +1426,18 @@
         // 渲染知识库
         function renderKnowledge() {
             const knowledgeGrid = document.getElementById('knowledgeGrid');
-            knowledgeGrid.innerHTML = '';
             
-            knowledgeData.forEach(knowledge => {
-                knowledgeGrid.appendChild(createKnowledgeCard(knowledge));
-            });
+            // 先显示加载指示器
+            knowledgeGrid.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+            
+            // 模拟加载延迟
+            setTimeout(() => {
+                knowledgeGrid.innerHTML = '';
+                
+                knowledgeData.forEach(knowledge => {
+                    knowledgeGrid.appendChild(createKnowledgeCard(knowledge));
+                });
+            }, 600);
         }
         
         // 创建知识卡片
