@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>HTD皮带长度与齿数计算器</title>
+    <title>HTD皮带计算器</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -17,565 +15,557 @@
         }
         
         body {
-            background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
-            color: #334155;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
             line-height: 1.5;
-            padding: 12px;
-            min-height: 100vh;
-            -webkit-text-size-adjust: 100%;
-        }
-        
-        .container {
-            max-width: 100%;
-            margin: 0 auto;
-            background: white;
-            border-radius: 14px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             overflow: hidden;
+            height: 100vh;
+            padding: 0;
         }
         
-        header {
-            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
-            color: white;
-            padding: 18px 15px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .logo-title {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 10px;
-        }
-        
-        .logo-container {
-            width: 60px;
+        /* 顶部导航栏 */
+        .app-header {
+            background: rgba(255, 255, 255, 0.95);
+            color: #2d3748;
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
             height: 60px;
-            border-radius: 50%;
-            background: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
         }
         
-        .logo {
-            width: 50px;
-            height: 50px;
-            object-fit: contain;
-        }
-        
-        h1 {
+        .app-title {
+            text-align: center;
             font-size: 20px;
-            font-weight: 800;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+            font-weight: 700;
+            margin-bottom: 0;
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
-        .description {
-            font-size: 13px;
-            opacity: 0.95;
-            max-width: 100%;
-            margin: 0 auto;
-            font-weight: 300;
-        }
-        
-        .main-content {
+        /* 主导航 */
+        .main-nav {
             display: flex;
-            flex-direction: column;
-            padding: 18px 15px;
-            gap: 18px;
+            justify-content: space-around;
+            background: white;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            height: 50px;
         }
         
-        .input-section, .result-section {
-            width: 100%;
-            padding: 18px;
-            background: #f8fafc;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 14px;
+            color: #64748b;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            cursor: pointer;
         }
         
-        .section-title {
-            font-size: 16px;
+        .nav-item.active {
+            color: #2563eb;
+            border-bottom-color: #2563eb;
+        }
+        
+        /* 内容区域 */
+        .content-container {
+            position: fixed;
+            top: 110px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            overflow-y: auto;
+            padding: 15px;
+            background: #f5f7fa;
+        }
+        
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        /* 卡片样式 */
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-title {
+            font-size: 18px;
             font-weight: 700;
             color: #1e293b;
-            margin-bottom: 16px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #3b82f6;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eef2ff;
+        }
+        
+        /* 输入区域 */
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .input-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
         
-        .section-title i {
-            color: #3b82f6;
-            font-size: 15px;
-        }
-        
-        .form-group {
-            margin-bottom: 16px;
-            position: relative;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
-            color: #374151;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        label i {
-            color: #3b82f6;
-            font-size: 13px;
-        }
-        
-        .input-note {
-            font-size: 11px;
-            color: #64748b;
-            margin-top: 4px;
-            padding: 4px 8px;
-            background: #eef2ff;
-            border-radius: 4px;
-            display: inline-block;
-        }
-        
-        input, select {
+        .input-field {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 15px;
-            transition: all 0.2s;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 16px;
             background: white;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
-            -webkit-appearance: none;
+            transition: all 0.3s;
         }
         
-        input:focus, select:focus {
+        .input-field:focus {
             outline: none;
             border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
         }
         
+        /* 按钮样式 */
         .button-group {
-            margin-top: 12px;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 15px;
+            margin-top: 15px;
         }
         
-        button {
-            background: linear-gradient(to right, #2563eb, #3b82f6);
+        .button-primary {
+            background: linear-gradient(to right, #4f46e5, #6366f1);
             color: white;
             border: none;
-            padding: 14px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 14px;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
             font-weight: 600;
-            transition: all 0.2s;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            box-shadow: 0 3px 8px rgba(37, 99, 235, 0.2);
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+            transition: all 0.2s;
         }
         
-        button:active {
-            background: linear-gradient(to right, #1e40af, #2563eb);
-            transform: translateY(2px);
-            box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+        .button-primary:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 8px rgba(79, 70, 229, 0.4);
         }
         
-        #copy-results {
+        .button-secondary {
             background: linear-gradient(to right, #10b981, #059669);
-            box-shadow: 0 3px 8px rgba(16, 185, 129, 0.2);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            transition: all 0.2s;
         }
         
-        #copy-results:active {
-            background: linear-gradient(to right, #059669, #047857);
-            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.25);
+        .button-secondary:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
         }
         
-        .result-content {
-            flex: 1;
-        }
-        
+        /* 结果区域 */
         .result-grid {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
         }
         
         .result-item {
-            display: flex;
-            flex-direction: column;
-            padding: 14px;
-            background: #f8fafc;
-            border-radius: 8px;
-            border-left: 4px solid #3b82f6;
+            background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 4px solid #4f46e5;
+            transition: transform 0.3s;
+        }
+        
+        .result-item:hover {
+            transform: translateY(-3px);
         }
         
         .result-label {
-            font-weight: 600;
-            color: #64748b;
             font-size: 13px;
-            margin-bottom: 5px;
+            color: #64748b;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
         }
         
         .result-value {
-            font-size: 15px;
+            font-size: 18px;
+            font-weight: 700;
             color: #1e293b;
-            font-weight: 700;
         }
         
-        .combined-result {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .full-width {
+            grid-column: 1 / -1;
         }
         
-        .combined-value {
-            font-size: 14px;
-            color: #3b82f6;
-            font-weight: 600;
-        }
-        
+        /* 警告样式 */
         .warning {
-            background: #fef3c7;
+            background: linear-gradient(135deg, #fef3c7 0%, #fef9c3 100%);
             color: #92400e;
-            padding: 12px;
-            border-radius: 8px;
-            margin-top: 12px;
-            border-left: 4px solid #f59e0b;
-            font-size: 13px;
-            line-height: 1.4;
-        }
-        
-        .note {
-            background: #dbeafe;
-            color: #1e40af;
-            padding: 12px;
-            border-radius: 8px;
-            margin-top: 12px;
-            border-left: 4px solid #3b82f6;
-            font-size: 13px;
-            line-height: 1.4;
-        }
-        
-        .ad-container {
-            margin: 15px;
+            padding: 16px;
             border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.07);
-            position: relative;
+            margin-top: 20px;
+            border-left: 4px solid #f59e0b;
+            font-size: 14px;
+            line-height: 1.5;
         }
         
-        .ad-image {
-            width: 100%;
-            height: 120px;
-            object-fit: cover;
-            display: block;
+        /* 历史记录页面 */
+        .history-item {
+            background: white;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid #10b981;
+            transition: transform 0.3s;
         }
         
-        .ad-link {
-            display: block;
-            cursor: pointer;
-            position: relative;
+        .history-item:hover {
+            transform: translateX(5px);
         }
         
-        .ad-link.disabled {
-            cursor: default;
-        }
-        
-        .ad-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-            padding: 12px;
-            color: white;
-            text-align: center;
-        }
-        
-        .ad-title {
+        .history-title {
             font-size: 16px;
-            margin-bottom: 5px;
-            font-weight: 700;
-        }
-        
-        .ad-description {
-            font-size: 12px;
-            opacity: 0.9;
-            margin-bottom: 8px;
-        }
-        
-        .ad-button {
-            display: inline-block;
-            background: #f59e0b;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 20px;
-            text-decoration: none;
             font-weight: 600;
-            font-size: 12px;
+            margin-bottom: 8px;
+            color: #1e293b;
         }
         
-        footer {
-            text-align: center;
-            padding: 15px;
+        .history-details {
+            font-size: 14px;
             color: #64748b;
-            font-size: 12px;
-            border-top: 1px solid #e2e8f0;
-            background: #f8fafc;
         }
         
-        .custom-pitch-container {
-            display: none;
-            margin-top: 8px;
+        /* 使用说明页面 */
+        .instruction-item {
+            margin-bottom: 25px;
         }
         
-        /* 小屏幕设备优化 */
-        @media (min-width: 400px) {
-            .container {
-                max-width: 95%;
-            }
-            
-            header {
-                padding: 20px;
-            }
-            
-            h1 {
-                font-size: 22px;
-            }
-            
-            .description {
-                font-size: 14px;
-            }
+        .instruction-title {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
-        /* 平板设备优化 */
-        @media (min-width: 768px) {
-            body {
-                padding: 15px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
+        .instruction-content {
+            font-size: 15px;
+            color: #4a5568;
+            line-height: 1.6;
+            padding-left: 32px;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 340px) {
+            .input-grid, .result-grid, .button-group {
+                grid-template-columns: 1fr;
             }
             
-            .container {
-                max-width: 90%;
-            }
-            
-            .main-content {
-                flex-direction: row;
-                padding: 20px;
-            }
-            
-            .input-section, .result-section {
-                width: 50%;
-            }
-            
-            h1 {
-                font-size: 24px;
+            .nav-item {
+                font-size: 13px;
             }
         }
         
-        /* 大屏设备优化 */
-        @media (min-width: 1024px) {
-            .container {
-                max-width: 900px;
-            }
-            
-            header {
-                padding: 25px;
-            }
-            
-            h1 {
-                font-size: 26px;
-            }
-            
-            .description {
-                font-size: 15px;
-            }
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        /* 滚动条样式 */
+        .content-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .content-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .content-container::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo-title">
-                <div class="logo-container">
-                    <img src="https://image.qcc.com/logo/42b8de4114c25b56f8441eb40bdfa761.jpg?x-oss-process=style/logo_200" alt="HTD计算器Logo" class="logo">
-                </div>
-                <h1>皮带长度计算器</h1>
-            </div>
-            <p class="description">精准计算皮带参数，优化自行车传动系统设计</p>
-        </header>
-        
-        <div class="main-content">
-            <div class="input-section">
-                <h2 class="section-title"><i class="fas fa-sliders-h"></i> 输入参数</h2>
+    <!-- 顶部标题栏 -->
+    <header class="app-header">
+        <h1 class="app-title">HTD皮带计算器</h1>
+    </header>
+    
+    <!-- 主导航 -->
+    <nav class="main-nav">
+        <div class="nav-item active" data-page="calculator">
+            <i class="fas fa-calculator"></i> 计算器
+        </div>
+        <div class="nav-item" data-page="history">
+            <i class="fas fa-history"></i> 计算记录
+        </div>
+        <div class="nav-item" data-page="instructions">
+            <i class="fas fa-info-circle"></i> 使用说明
+        </div>
+    </nav>
+    
+    <!-- 内容区域 -->
+    <main class="content-container">
+        <!-- 计算器页面 -->
+        <section id="calculator" class="page active">
+            <div class="card fade-in">
+                <h2 class="card-title"><i class="fas fa-sliders-h"></i>输入参数</h2>
                 
-                <div class="form-group">
-                    <label for="pitch"><i class="fas fa-ruler"></i> 皮带节距 (毫米)</label>
-                    <select id="pitch">
-                        <option value="8">8M (童车系列)</option>
-                        <option value="10">10M (少年车系列)</option>
-                        <option value="11" selected>11M (成人车系列)</option>
-                        <option value="custom">自定义节距</option>
-                    </select>
-                    <div class="input-note">选择适合您自行车类型的皮带规格，成人车通常使用11M规格</div>
-                    
-                    <div id="custom-pitch-container" class="custom-pitch-container">
-                        <label for="custom_pitch"><i class="fas fa-pen"></i> 自定义节距值 (毫米)</label>
-                        <input type="number" id="custom_pitch" min="1" placeholder="输入自定义节距">
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label class="input-label"><i class="fas fa-ruler"></i>皮带节距 (mm)</label>
+                        <input type="number" id="pitch" class="input-field" value="11" min="1">
                     </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="driver_teeth"><i class="fas fa-cog"></i> 主动轮齿数 (皮带轮)</label>
-                    <input type="number" id="driver_teeth" min="1" value="24">
-                    <div class="input-note">输入皮带轮的齿数</div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="driven_teeth"><i class="fas fa-cogs"></i> 从动轮齿数 (飞轮)</label>
-                    <input type="number" id="driven_teeth" min="1" value="50">
-                    <div class="input-note">输入后飞轮齿数，与主动轮齿数共同决定传动比</div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="center_distance"><i class="fas fa-arrows-alt-h"></i> 理论中心距 (毫米)</label>
-                    <input type="number" id="center_distance" min="1" value="475">
-                    <div class="input-note">输入牙盘中心到飞轮中心的距离即RC值，影响车架设计和皮带张力</div>
+                    
+                    <div class="input-group">
+                        <label class="input-label"><i class="fas fa-cog"></i>主动轮齿数</label>
+                        <input type="number" id="driver_teeth" class="input-field" value="24" min="1">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label"><i class="fas fa-cogs"></i>从动轮齿数</label>
+                        <input type="number" id="driven_teeth" class="input-field" value="50" min="1">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label"><i class="fas fa-arrows-alt-h"></i>中心距 (mm)</label>
+                        <input type="number" id="center_distance" class="input-field" value="475" min="1">
+                    </div>
                 </div>
                 
                 <div class="button-group">
-                    <button id="calculate-btn"><i class="fas fa-calculator"></i> 计算</button>
-                    <button id="copy-results"><i class="fas fa-copy"></i> 复制结果</button>
-                </div>
-                
-                <div class="note">
-                    <p><strong><i class="fas fa-info-circle"></i> 提示：</strong>所有输入值必须为正数，齿数必须为整数。实际安装时可能需要微调中心距。</p>
+                    <button id="calculate-btn" class="button-primary">
+                        <i class="fas fa-calculator"></i> 计算
+                    </button>
+                    <button id="copy-results" class="button-secondary">
+                        <i class="fas fa-copy"></i> 复制结果
+                    </button>
                 </div>
             </div>
             
-            <div class="result-section">
-                <h2 class="section-title"><i class="fas fa-chart-line"></i> 计算结果</h2>
+            <div class="card fade-in">
+                <h2 class="card-title"><i class="fas fa-chart-line"></i>计算结果</h2>
                 
-                <div class="result-content">
-                    <div class="result-grid">
-                        <div class="result-item">
-                            <span class="result-label"><i class="fas fa-ruler-combined"></i> 理论皮带长度与齿数</span>
-                            <div class="combined-result">
-                                <span class="result-value" id="calculated-length">-</span>
-                                <span class="combined-value" id="calculated-teeth">-</span>
-                            </div>
-                        </div>
-                        
-                        <div class="result-item">
-                            <span class="result-label"><i class="fas fa-check-circle"></i> 推荐长度与齿数</span>
-                            <div class="combined-result">
-                                <span class="result-value" id="standard-length">-</span>
-                                <span class="combined-value" id="standard-teeth">-</span>
-                            </div>
-                        </div>
-                        
-                        <div class="result-item">
-                            <span class="result-label"><i class="fas fa-barcode"></i> 标准皮带型号</span>
-                            <span class="result-value" id="belt-type">-</span>
-                        </div>
-                        
-                        <div class="result-item">
-                            <span class="result-label"><i class="fas fa-tachometer-alt"></i> 前后齿比</span>
-                            <span class="result-value" id="gear-ratio">-</span>
-                        </div>
-                        
-                        <div class="result-item">
-                            <span class="result-label"><i class="fas fa-angle-double-right"></i> 小带轮包角</span>
-                            <span class="result-value" id="wrap-angle">-</span>
-                        </div>
-                        
-                        <div class="result-item">
-                            <span class="result-label"><i class="fas fa-tools"></i> 中心距调整建议</span>
-                            <span id="adjustment-note" class="result-value">-</span>
-                        </div>
+                <div class="result-grid">
+                    <div class="result-item">
+                        <div class="result-label"><i class="fas fa-ruler"></i>理论皮带长度</div>
+                        <div class="result-value" id="calculated-length">-</div>
                     </div>
                     
-                    <div id="warning-area"></div>
+                    <div class="result-item">
+                        <div class="result-label"><i class="fas fa-teeth"></i>理论皮带齿数</div>
+                        <div class="result-value" id="calculated-teeth">-</div>
+                    </div>
+                    
+                    <div class="result-item">
+                        <div class="result-label"><i class="fas fa-check-circle"></i>推荐长度</div>
+                        <div class="result-value" id="standard-length">-</div>
+                    </div>
+                    
+                    <div class="result-item">
+                        <div class="result-label"><i class="fas fa-check-circle"></i>推荐齿数</div>
+                        <div class="result-value" id="standard-teeth">-</div>
+                    </div>
+                    
+                    <div class="result-item">
+                        <div class="result-label"><i class="fas fa-tachometer-alt"></i>齿比</div>
+                        <div class="result-value" id="gear-ratio">-</div>
+                    </div>
+                    
+                    <div class="result-item">
+                        <div class="result-label"><i class="fas fa-angle-double-right"></i>小带轮包角</div>
+                        <div class="result-value" id="wrap-angle">-</div>
+                    </div>
+                </div>
+                
+                <div class="result-item full-width">
+                    <div class="result-label"><i class="fas fa-barcode"></i>标准皮带型号</div>
+                    <div class="result-value" id="belt-type">-</div>
+                </div>
+                
+                <div class="result-item full-width">
+                    <div class="result-label"><i class="fas fa-tools"></i>中心距调整建议</div>
+                    <div class="result-value" id="adjustment-note">-</div>
+                </div>
+                
+                <div id="warning-area"></div>
+            </div>
+        </section>
+        
+        <!-- 历史记录页面 -->
+        <section id="history" class="page">
+            <div class="card fade-in">
+                <h2 class="card-title"><i class="fas fa-history"></i>计算记录</h2>
+                
+                <div id="history-list">
+                    <!-- 历史记录将通过JavaScript动态添加 -->
                 </div>
             </div>
-        </div>
+        </section>
         
-        <!-- 广告位 - 图片形式 -->
-        <div class="ad-container">
-            <a id="ad-link" href="https://www.szjiankun.com/" class="ad-link">
-                <img src="https://images.unsplash.com/photo-1485965120184-e220f721d03e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" alt="自行车专用HTD同步皮带" class="ad-image">
-                <div class="ad-overlay">
-                    <div class="ad-title">自行车专用HTD同步皮带</div>
-                    <div class="ad-description">专为自行车传动系统设计的高性能同步皮带</div>
-                    <div class="ad-button">查看详情</div>
+        <!-- 使用说明页面 -->
+        <section id="instructions" class="page">
+            <div class="card fade-in">
+                <h2 class="card-title"><i class="fas fa-info-circle"></i>使用说明</h2>
+                
+                <div class="instruction-item">
+                    <div class="instruction-title"><i class="fas fa-ruler"></i>皮带节距</div>
+                    <div class="instruction-content">
+                        皮带节距是指相邻两齿中心之间的距离。常见自行车皮带规格为11mm，适用于成人自行车。
+                    </div>
                 </div>
-            </a>
-        </div>
-        
-        <footer>
-            <p><i class="fas fa-exclamation-circle"></i> 注意：最终采购前，仍建议对照Gates、JKaero等供应商的官方产品目录进行最终确认。</p>
-        </footer>
-    </div>
+                
+                <div class="instruction-item">
+                    <div class="instruction-title"><i class="fas fa-cog"></i>齿数输入</div>
+                    <div class="instruction-content">
+                        主动轮齿数指牙盘上的齿数，从动轮齿数指飞轮上的齿数。两者共同决定传动比。
+                    </div>
+                </div>
+                
+                <div class="instruction-item">
+                    <div class="instruction-title"><i class="fas fa-arrows-alt-h"></i>中心距</div>
+                    <div class="instruction-content">
+                        中心距指牙盘中心到飞轮中心的距离，影响车架设计和皮带张力。实际安装时可能需要微调。
+                    </div>
+                </div>
+                
+                <div class="instruction-item">
+                    <div class="instruction-title"><i class="fas fa-exclamation-triangle"></i>注意事项</div>
+                    <div class="instruction-content">
+                        最终采购前，建议对照Gates、JKaero等供应商的官方产品目录进行最终确认。小带轮包角小于120°时有跳齿风险。
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <script>
+        // 页面加载完成后执行
         document.addEventListener('DOMContentLoaded', function() {
+            // 获取DOM元素
+            const navItems = document.querySelectorAll('.nav-item');
+            const pages = document.querySelectorAll('.page');
             const calculateBtn = document.getElementById('calculate-btn');
             const copyBtn = document.getElementById('copy-results');
-            const adLink = document.getElementById('ad-link');
-            const pitchSelect = document.getElementById('pitch');
-            const customPitchContainer = document.getElementById('custom-pitch-container');
-            const customPitchInput = document.getElementById('custom_pitch');
+            const historyList = document.getElementById('history-list');
             
-            calculateBtn.addEventListener('click', calculateBelt);
-            copyBtn.addEventListener('click', copyResults);
+            // 初始化历史记录
+            let calculationHistory = JSON.parse(localStorage.getItem('beltCalculationHistory')) || [];
+            renderHistory();
             
-            // 监听节距选择变化
-            pitchSelect.addEventListener('change', function() {
-                if (this.value === 'custom') {
-                    customPitchContainer.style.display = 'block';
-                } else {
-                    customPitchContainer.style.display = 'none';
-                }
+            // 导航切换功能
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const targetPage = this.getAttribute('data-page');
+                    
+                    // 更新导航状态
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 显示对应页面
+                    pages.forEach(page => {
+                        page.classList.remove('active');
+                        if (page.id === targetPage) {
+                            page.classList.add('active');
+                            
+                            // 如果是历史记录页面，重新渲染
+                            if (targetPage === 'history') {
+                                renderHistory();
+                            }
+                        }
+                    });
+                });
             });
+            
+            // 计算按钮点击事件
+            calculateBtn.addEventListener('click', function() {
+                // 添加点击效果
+                this.classList.add('active');
+                setTimeout(() => {
+                    this.classList.remove('active');
+                }, 150);
+                
+                calculateBelt();
+            });
+            
+            // 复制按钮点击事件
+            copyBtn.addEventListener('click', copyResults);
             
             // 初始计算一次
             calculateBelt();
             
-            // 如果没有广告链接，则禁用点击
-            if (!adLink.getAttribute('href') || adLink.getAttribute('href') === '#') {
-                adLink.classList.add('disabled');
-                adLink.removeAttribute('href');
-            }
-            
-            function getPitchValue() {
-                if (pitchSelect.value === 'custom') {
-                    return parseFloat(customPitchInput.value) || 11; // 默认值11
-                }
-                return parseFloat(pitchSelect.value);
-            }
-            
+            // 皮带计算函数
             function calculateBelt() {
                 // 获取输入值
-                const pitch = getPitchValue();
+                const pitch = parseFloat(document.getElementById('pitch').value);
                 const driverTeeth = parseInt(document.getElementById('driver_teeth').value);
                 const drivenTeeth = parseInt(document.getElementById('driven_teeth').value);
                 const centerDistance = parseFloat(document.getElementById('center_distance').value);
@@ -587,7 +577,7 @@
                     return;
                 }
                 
-                // 计算带轮节圆直径 - 使用新公式: p / sin(180° / N)
+                // 计算带轮节圆直径
                 const π = Math.PI;
                 const toRadians = (degrees) => degrees * (π / 180);
                 
@@ -615,9 +605,9 @@
                 // 计算齿比
                 const gearRatio = (driverTeeth / drivenTeeth).toFixed(3);
                 
-                // 更新结果显示 - 先显示长度，再显示齿数
+                // 更新结果显示
                 document.getElementById('calculated-length').textContent = L.toFixed(2) + ' mm';
-                document.getElementById('calculated-teeth').textContent = '≈ ' + beltTeethCalculated.toFixed(1) + 'T';
+                document.getElementById('calculated-teeth').textContent = beltTeethCalculated.toFixed(1) + 'T';
                 document.getElementById('standard-length').textContent = beltCircumference + ' mm';
                 document.getElementById('standard-teeth').textContent = beltTeethStandard + 'T';
                 document.getElementById('belt-type').textContent = pitch + 'M-' + beltTeethStandard + '-' + beltCircumference;
@@ -638,8 +628,12 @@
                 
                 // 检查包角并显示警告
                 displayWrapAngleWarning(wrapAngle);
+                
+                // 保存到历史记录
+                saveToHistory(pitch, driverTeeth, drivenTeeth, centerDistance, beltTeethStandard, beltCircumference);
             }
             
+            // 计算小带轮包角函数
             function calculateWrapAngle(drivenDia, driverDia, centerDistance) {
                 // 确定小带轮直径
                 const smallPulleyDia = Math.min(drivenDia, driverDia);
@@ -652,6 +646,7 @@
                 return angleRad * (180 / Math.PI);
             }
             
+            // 显示包角警告
             function displayWrapAngleWarning(wrapAngle) {
                 const warningArea = document.getElementById('warning-area');
                 warningArea.innerHTML = '';
@@ -665,11 +660,59 @@
                 }
             }
             
+            // 保存到历史记录函数
+            function saveToHistory(pitch, driverTeeth, drivenTeeth, centerDistance, beltTeeth, beltLength) {
+                const historyItem = {
+                    pitch,
+                    driverTeeth,
+                    drivenTeeth,
+                    centerDistance,
+                    beltTeeth,
+                    beltLength,
+                    timestamp: new Date().toLocaleString()
+                };
+                
+                // 添加到历史记录数组
+                calculationHistory.unshift(historyItem);
+                
+                // 只保留最近10条记录
+                if (calculationHistory.length > 10) {
+                    calculationHistory = calculationHistory.slice(0, 10);
+                }
+                
+                // 保存到localStorage
+                localStorage.setItem('beltCalculationHistory', JSON.stringify(calculationHistory));
+                
+                // 重新渲染历史记录
+                renderHistory();
+            }
+            
+            // 渲染历史记录
+            function renderHistory() {
+                historyList.innerHTML = '';
+                
+                if (calculationHistory.length === 0) {
+                    historyList.innerHTML = '<div class="history-item"><div class="history-title">暂无计算记录</div><div class="history-details">进行计算后，记录将显示在这里</div></div>';
+                    return;
+                }
+                
+                calculationHistory.forEach(item => {
+                    const historyElement = document.createElement('div');
+                    historyElement.className = 'history-item';
+                    historyElement.innerHTML = `
+                        <div class="history-title">${item.pitch}M ${item.driverTeeth}/${item.drivenTeeth}T RC${item.centerDistance}mm</div>
+                        <div class="history-details">皮带型号: ${item.pitch}M-${item.beltTeeth}-${item.beltLength}mm | 时间: ${item.timestamp}</div>
+                    `;
+                    historyList.appendChild(historyElement);
+                });
+            }
+            
+            // 复制结果函数
             function copyResults() {
-                const pitch = getPitchValue();
-                const driverTeeth = document.getElementById('driver_teeth').value;
-                const drivenTeeth = document.getElementById('driven_teeth').value;
-                const centerDistance = document.getElementById('center_distance').value;
+                const pitch = parseFloat(document.getElementById('pitch').value);
+                const driverTeeth = parseInt(document.getElementById('driver_teeth').value);
+                const drivenTeeth = parseInt(document.getElementById('driven_teeth').value);
+                const centerDistance = parseFloat(document.getElementById('center_distance').value);
                 const beltType = document.getElementById('belt-type').textContent;
                 
                 // 检查是否有计算结果
@@ -678,9 +721,10 @@
                     return;
                 }
                 
-                // 格式化复制内容：节距 前齿/后齿 理论中心距 配皮带规格
+                // 格式化复制内容
                 const textToCopy = `${pitch}M ${driverTeeth}/${drivenTeeth}T RC${centerDistance}mm 配 ${beltType}皮带`;
                 
+                // 使用现代API复制到剪贴板
                 navigator.clipboard.writeText(textToCopy)
                     .then(() => {
                         // 改变按钮文本提示复制成功
@@ -696,32 +740,7 @@
                     })
                     .catch(err => {
                         console.error('复制失败:', err);
-                        // 降级方案：使用textarea方法复制
-                        const textArea = document.createElement("textarea");
-                        textArea.value = textToCopy;
-                        textArea.style.position = "fixed";
-                        document.body.appendChild(textArea);
-                        textArea.focus();
-                        textArea.select();
-                        
-                        try {
-                            const successful = document.execCommand('copy');
-                            if (successful) {
-                                const originalText = copyBtn.innerHTML;
-                                copyBtn.innerHTML = '<i class="fas fa-check"></i> 已复制';
-                                copyBtn.style.background = 'linear-gradient(to right, #059669, #047857)';
-                                
-                                setTimeout(() => {
-                                    copyBtn.innerHTML = originalText;
-                                    copyBtn.style.background = 'linear-gradient(to right, #10b981, #059669)';
-                                }, 2000);
-                            } else {
-                                alert('复制失败，请手动复制结果');
-                            }
-                        } catch (err) {
-                            alert('复制失败，请手动复制结果');
-                        }
-                        document.body.removeChild(textArea);
+                        alert('复制失败，请手动复制结果');
                     });
             }
         });
