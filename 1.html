@@ -82,11 +82,11 @@
             border-bottom-color: #3498db;
         }
         
-        /* 内容区域 - 关键修改：增加底部空间，防止被遮挡 */
+        /* 内容区域 - 优化顶部位置 */
         .content-container {
             position: fixed;
             top: 83px;
-            bottom: 20px; /* 增加底部空间，防止被遮挡 */
+            bottom: 0;
             left: 0;
             right: 0;
             overflow-y: auto;
@@ -480,7 +480,6 @@
             .content-container {
                 top: 110px;
                 padding: 15px;
-                bottom: 0; /* 桌面端恢复到底部 */
             }
             
             .card {
