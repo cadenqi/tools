@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自行车RC设计计算器</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #333;
+            min-height: 100vh;
+            padding-bottom: 60px;
+        }
+        
+        .app-container {
+            max-width: 100%;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #2c3e50, #4a6491);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .app-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .app-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .nav-tab {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #6c757d;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .nav-tab.active {
+            color: #0d6efd;
+            border-bottom: 3px solid #0d6efd;
+            background: rgba(13, 110, 253, 0.05);
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 20px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .input-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+        }
+        
+        .input-title i {
+            margin-right: 10px;
+            color: #0d6efd;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #495057;
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        select:focus, input:focus {
+            border-color: #0d6efd;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+        }
+        
+        .btn-calculate {
+            background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+        
+        .btn-calculate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(13, 110, 253, 0.4);
+        }
+        
+        .result-container {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .result-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #155724;
+            text-align: center;
+        }
+        
+        .result-value {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            color: #0f5132;
+            margin: 15px 0;
+        }
+        
+        .result-details {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .history-item {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .history-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+        
+        .history-details {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        
+        .instructions {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .instruction-section {
+            margin-bottom: 25px;
+        }
+        
+        .instruction-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .instruction-title i {
+            margin-right: 10px;
+            color: #0d6efd;
+        }
+        
+        .instruction-content {
+            line-height: 1.6;
+            color: #495057;
+        }
+        
+        .instruction-tip {
+            background: #e7f5ff;
+            border-left: 4px solid #0d6efd;
+            padding: 12px 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: white;
+            font-size: 0.9rem;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .app-container {
+                border-radius: 0;
+                margin-top: 0;
+            }
+            
+            body {
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1 class="app-title">自行车RC设计计算器</h1>
+            <p class="app-subtitle">专业后下叉长度设计与优化工具</p>
+        </header>
+        
+        <div class="nav-tabs">
+            <div class="nav-tab active" data-tab="calculator">
+                <i class="fas fa-calculator"></i> 计算器
+            </div>
+            <div class="nav-tab" data-tab="history">
+                <i class="fas fa-history"></i> 计算记录
+            </div>
+            <div class="nav-tab" data-tab="instructions">
+                <i class="fas fa-info-circle"></i> 使用说明
+            </div>
+        </div>
+        
+        <div class="tab-content active" id="calculator">
+            <div class="input-group">
+                <div class="input-title">
+                    <i class="fas fa-bicycle"></i> 车型与场景参数
+                </div>
+                
+                <div class="form-group">
+                    <label for="bikeType">车型选择</label>
+                    <select id="bikeType">
+                        <option value="road_race">公路竞速车</option>
+                        <option value="road_endurance">公路耐力车</option>
+                        <option value="mtb_xc">山地XC车</option>
+                        <option value="mtb_enduro">山地Enduro车</option>
+                        <option value="mtb_dh">山地DH车</option>
+                        <option value="urban">城市通勤车</option>
+                        <option value="folding">折叠车</option>
+                        <option value="belt_drive">皮带驱动通勤车</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="wheelSize">轮径规格</label>
+                    <select id="wheelSize">
+                        <option value="700c">700C</option>
+                        <option value="29er">29寸</option>
+                        <option value="27.5">27.5寸</option>
+                        <option value="26">26寸</option>
+                        <option value="20">20寸</option>
+                        <option value="16">16寸</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <div class="input-title">
+                    <i class="fas fa-cogs"></i> 传动系统参数
+                </div>
+                
+                <div class="form-group">
+                    <label for="driveType">传动类型</label>
+                    <select id="driveType">
+                        <option value="chain">链条传动</option>
+                        <option value="belt">皮带传动</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="chainring">牙盘齿数</label>
+                    <input type="number" id="chainring" value="50" min="30" max="60">
+                </div>
+                
+                <div class="form-group">
+                    <label for="cog">飞轮齿数</label>
+                    <input type="number" id="cog" value="16" min="10" max="50">
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <div class="input-title">
+                    <i class="fas fa-user"></i> 人体数据参数
+                </div>
+                
+                <div class="form-group">
+                    <label for="height">身高 (cm)</label>
+                    <input type="number" id="height" value="175" min="140" max="210">
+                </div>
+                
+                <div class="form-group">
+                    <label for="inseam">胯高 (cm)</label>
+                    <input type="number" id="inseam" value="80" min="60" max="110">
+                </div>
+                
+                <div class="form-group">
+                    <label for="footLength">脚长 (cm)</label>
+                    <input type="number" id="footLength" value="26" min="20" max="35">
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <div class="input-title">
+                    <i class="fas fa-ruler-combined"></i> 其他几何约束参数
+                </div>
+                
+                <div class="form-group">
+                    <label for="hta">头管角度 (°)</label>
+                    <input type="number" id="hta" value="72" min="63" max="73" step="0.1">
+                </div>
+                
+                <div class="form-group">
+                    <label for="dropoutWidth">后叉开档宽度 (mm)</label>
+                    <input type="number" id="dropoutWidth" value="135" min="130" max="150">
+                </div>
+            </div>
+            
+            <button class="btn-calculate" id="calculateBtn">
+                <i class="fas fa-calculator"></i> 计算RC值
+            </button>
+            
+            <div class="result-container" id="resultContainer">
+                <div class="result-title">推荐RC尺寸</div>
+                <div class="result-value">425 mm</div>
+                
+                <div class="result-details">
+                    <div class="result-item">
+                        <span>基础RC值:</span>
+                        <span>415 mm</span>
+                    </div>
+                    <div class="result-item">
+                        <span>几何约束修正:</span>
+                        <span>+5 mm</span>
+                    </div>
+                    <div class="result-item">
+                        <span>人体适配修正:</span>
+                        <span>+5 mm</span>
+                    </div>
+                    <div class="result-item">
+                        <span>轮胎间隙状态:</span>
+                        <span style="color: #28a745;">良好 (≥7mm)</span>
+                    </div>
+                    <div class="result-item">
+                        <span>齿比适配性:</span>
+                        <span style="color: #28a745;">优秀</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="history">
+            <div class="history-item">
+                <div class="history-title">公路竞速车 - 2023-10-15 14:30</div>
+                <div class="history-details">
+                    RC值: 418mm | 身高: 178cm | 牙盘: 50T | 飞轮: 16T
+                </div>
+            </div>
+            
+            <div class="history-item">
+                <div class="history-title">山地XC车 - 2023-10-14 11:20</div>
+                <div class="history-details">
+                    RC值: 432mm | 身高: 182cm | 牙盘: 34T | 飞轮: 42T
+                </div>
+            </div>
+            
+            <div class="history-item">
+                <div class="history-title">城市通勤车 - 2023-10-13 09:45</div>
+                <div class="history-details">
+                    RC值: 438mm | 身高: 170cm | 牙盘: 46T | 飞轮: 18T
+                </div>
+            </div>
+            
+            <div class="history-item">
+                <div class="history-title">皮带驱动车 - 2023-10-12 16:15</div>
+                <div class="history-details">
+                    RC值: 445mm | 身高: 175cm | 前皮带轮: 50T | 后皮带轮: 20T
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="instructions">
+            <div class="instructions">
+                <div class="instruction-section">
+                    <div class="instruction-title">
+                        <i class="fas fa-info-circle"></i> RC参数定义
+                    </div>
+                    <div class="instruction-content">
+                        <p>RC（Rear Center，后下叉长度）指五通中心到后花鼓中心的水平距离，是决定车架后三角布局、骑行稳定性与传动适配性的核心参数。</p>
+                        <div class="instruction-tip">
+                            RC设计需同步满足三大需求：适配车手身体数据以保证骑行姿态、匹配车型场景以实现性能目标、兼容传动系统以确保运行顺畅。
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="instruction-section">
+                    <div class="instruction-title">
+                        <i class="fas fa-cogs"></i> 设计核心逻辑
+                    </div>
+                    <div class="instruction-content">
+                        <p>RC设计以"场景定位→传动约束→几何匹配→人体适配"为递进逻辑：</p>
+                        <ol>
+                            <li>根据车型用途锁定RC基础范围</li>
+                            <li>通过传动系统确定约束边界</li>
+                            <li>联动车架其他几何参数优化平衡</li>
+                            <li>结合车手数据完成个性化修正</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div class="instruction-section">
+                    <div class="instruction-title">
+                        <i class="fas fa-tools"></i> 使用指南
+                    </div>
+                    <div class="instruction-content">
+                        <p>1. 选择您的自行车类型和轮径规格</p>
+                        <p>2. 根据您的传动系统输入牙盘和飞轮齿数</p>
+                        <p>3. 输入您的身体测量数据</p>
+                        <p>4. 根据需要调整其他几何参数</p>
+                        <p>5. 点击"计算RC值"按钮获取推荐尺寸</p>
+                        <div class="instruction-tip">
+                            计算结果仅供参考，实际设计应结合专业fitting和实地测试。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>自行车RC设计计算器 © 2023 | 专业自行车几何设计工具</p>
+    </footer>
+
+    <script>
+        // 切换标签页
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // 移除所有活动状态
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // 添加当前活动状态
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+        
+        // 计算按钮点击事件
+        document.getElementById('calculateBtn').addEventListener('click', () => {
+            // 获取输入值
+            const bikeType = document.getElementById('bikeType').value;
+            const driveType = document.getElementById('driveType').value;
+            const chainring = parseInt(document.getElementById('chainring').value);
+            const cog = parseInt(document.getElementById('cog').value);
+            const height = parseInt(document.getElementById('height').value);
+            
+            // 根据车型和传动类型计算基础RC值
+            let baseRC = 420; // 默认值
+            
+            if (bikeType === 'road_race') baseRC = 410;
+            else if (bikeType === 'road_endurance') baseRC = 425;
+            else if (bikeType === 'mtb_xc') baseRC = 430;
+            else if (bikeType === 'mtb_enduro') baseRC = 445;
+            else if (bikeType === 'mtb_dh') baseRC = 460;
+            else if (bikeType === 'urban') baseRC = 435;
+            else if (bikeType === 'folding') baseRC = 395;
+            else if (bikeType === 'belt_drive') baseRC = 440;
+            
+            // 根据身高调整
+            const heightAdjustment = (height - 170) * 1;
+            
+            // 根据齿比调整
+            const gearRatio = chainring / cog;
+            let gearAdjustment = 0;
+            
+            if (gearRatio > 4.5) gearAdjustment = 5;
+            else if (gearRatio < 2.5) gearAdjustment = -5;
+            
+            // 计算最终RC值
+            const finalRC = baseRC + heightAdjustment + gearAdjustment;
+            
+            // 更新结果显示
+            document.querySelector('.result-value').textContent = finalRC + ' mm';
+            document.querySelector('.result-details .result-item:nth-child(1) span:last-child').textContent = baseRC + ' mm';
+            document.querySelector('.result-details .result-item:nth-child(2) span:last-child').textContent = (heightAdjustment + gearAdjustment) + ' mm';
+            document.querySelector('.result-details .result-item:nth-child(3) span:last-child').textContent = '0 mm';
+            
+            // 显示结果容器
+            document.getElementById('resultContainer').style.display = 'block';
+            
+            // 添加到历史记录（简化示例）
+            const historyTab = document.getElementById('history');
+            const newHistoryItem = document.createElement('div');
+            newHistoryItem.className = 'history-item';
+            
+            const bikeTypeText = document.getElementById('bikeType').options[document.getElementById('bikeType').selectedIndex].text;
+            const now = new Date();
+            const dateStr = now.toLocaleDateString() + ' ' + now.toLocaleTimeString().substring(0, 5);
+            
+            newHistoryItem.innerHTML = `
+                <div class="history-title">${bikeTypeText} - ${dateStr}</div>
+                <div class="history-details">
+                    RC值: ${finalRC}mm | 身高: ${height}cm | 牙盘: ${chainring}T | 飞轮: ${cog}T
+                </div>
+            `;
+            
+            historyTab.insertBefore(newHistoryItem, historyTab.firstChild);
+        });
+        
+        // 初始隐藏结果容器
+        document.getElementById('resultContainer').style.display = 'none';
+    </script>
+</body>
+</html>

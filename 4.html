@@ -2,8 +2,8 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>健坤皮带驱动系统-专业计算工具</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>齿盘参数计算器</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -15,11 +15,12 @@
             --dark: #2d3e50;
             --success: #43aa8b;
             --card-bg: #ffffff;
-            --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
             --gradient: linear-gradient(135deg, #2c7da0 0%, #1a4c6f 100%);
             --bg-color: #f0f4f8;
-            --pulley-color: #61a5c2;
             --sprocket-color: #ff9e00;
+            --nav-height: 50px;
+            --header-height: 70px;
         }
         
         * {
@@ -27,18 +28,18 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
         
         body {
             background-color: var(--bg-color);
             color: var(--dark);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
+            padding: 0;
             position: relative;
             overflow-x: hidden;
+            font-size: 14px;
+            line-height: 1.4;
         }
         
         .background-pattern {
@@ -48,64 +49,100 @@
             width: 100%;
             height: 100%;
             background-image: 
-                radial-gradient(circle at 5% 10%, rgba(44, 125, 160, 0.03) 20px, transparent 40px),
-                radial-gradient(circle at 95% 80%, rgba(255, 158, 0, 0.03) 20px, transparent 40px);
+                radial-gradient(circle at 5% 10%, rgba(44, 125, 160, 0.03) 15px, transparent 30px),
+                radial-gradient(circle at 95% 80%, rgba(255, 158, 0, 0.03) 15px, transparent 30px);
             z-index: -1;
         }
         
+        /* 页面容器 */
         .container {
-            width: 100%;
-            max-width: 1200px;
-            margin-top: 20px;
-            z-index: 10;
+            max-width: 100%;
+            padding: 0 12px;
+            margin: 0 auto;
         }
         
+        /* 标题区域 */
         .header {
             text-align: center;
-            margin-bottom: 30px;
-            padding: 0 10px;
-        }
-        
-        .header h1 {
-            color: var(--primary);
-            font-size: 2.4rem;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-        
-        .header p {
-            color: #5a6a7e;
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.5;
+            padding: 12px 0 8px;
+            height: var(--header-height);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         
         .logo {
-            font-size: 3rem;
-            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+        
+        .logo i {
+            margin-right: 8px;
+            font-size: 1.3rem;
+        }
+        
+        /* 导航栏 */
+        .nav-tabs {
+            display: flex;
+            background: white;
+            border-radius: 10px;
+            padding: 4px;
+            box-shadow: var(--shadow);
             margin-bottom: 15px;
+            position: sticky;
+            top: 10px;
+            z-index: 100;
         }
         
-        .calculator-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 25px;
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 10px 5px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s;
         }
         
-        @media (min-width: 992px) {
-            .calculator-grid {
-                grid-template-columns: 1fr 1fr;
-            }
+        .nav-item.active {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
         
+        /* 内容区域 */
+        .content-area {
+            height: calc(100vh - var(--header-height) - 70px);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 20px;
+        }
+        
+        /* 页面部分 */
+        .page {
+            display: none;
+            width: 100%;
+        }
+        
+        .page.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        /* 计算器页面 */
         .calculator-card {
             background: var(--card-bg);
-            border-radius: 20px;
-            padding: 30px;
+            border-radius: 14px;
+            padding: 18px;
             box-shadow: var(--shadow);
             position: relative;
             overflow: hidden;
+            margin-bottom: 15px;
         }
         
         .calculator-card::before {
@@ -114,125 +151,100 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 5px;
-        }
-        
-        .pulley-card::before {
-            background: var(--pulley-color);
-        }
-        
-        .sprocket-card::before {
+            height: 4px;
             background: var(--sprocket-color);
         }
         
-        .card-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-        
-        .card-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-            font-size: 1.8rem;
-        }
-        
-        .pulley-icon {
-            background: rgba(97, 165, 194, 0.15);
-            color: var(--pulley-color);
-        }
-        
-        .sprocket-icon {
-            background: rgba(255, 158, 0, 0.15);
-            color: var(--sprocket-color);
-        }
-        
-        .card-title {
-            font-size: 1.6rem;
-            font-weight: 700;
-        }
-        
-        .pulley-title {
-            color: var(--pulley-color);
-        }
-        
-        .sprocket-title {
-            color: var(--sprocket-color);
-        }
-        
         .input-section {
-            margin-bottom: 25px;
+            margin-bottom: 18px;
+        }
+        
+        .section-title {
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .section-title i {
+            color: var(--sprocket-color);
+            font-size: 1rem;
         }
         
         .input-group {
-            margin-bottom: 20px;
+            margin-bottom: 12px;
         }
         
         .input-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: 600;
             color: var(--dark);
+            font-size: 0.9rem;
         }
         
         .input-group input {
             width: 100%;
-            padding: 14px 16px;
-            border: 2px solid #e0e6ed;
-            border-radius: 10px;
-            font-size: 1rem;
+            padding: 12px;
+            border: 1.5px solid #e0e6ed;
+            border-radius: 8px;
+            font-size: 0.95rem;
             transition: all 0.3s;
         }
         
         .input-group input:focus {
             border-color: var(--primary);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(44, 125, 160, 0.15);
+            box-shadow: 0 0 0 2px rgba(44, 125, 160, 0.15);
         }
         
         .pitch-selector {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-bottom: 12px;
         }
         
         .pitch-btn {
             background: white;
-            border: 2px solid #e0e6ed;
+            border: 1.5px solid #e0e6ed;
             border-radius: 8px;
-            padding: 8px 15px;
+            padding: 10px 6px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
         
         .pitch-btn.active {
+            background: var(--sprocket-color);
+            border-color: var(--sprocket-color);
             color: white;
         }
         
-        .pulley-pitch-btn.active {
-            background: var(--pulley-color);
-            border-color: var(--pulley-color);
+        .pitch-btn .pitch-value {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 3px;
         }
         
-        .sprocket-pitch-btn.active {
-            background: var(--sprocket-color);
-            border-color: var(--sprocket-color);
+        .pitch-btn .pitch-label {
+            font-size: 0.75rem;
+            opacity: 0.9;
         }
         
         .custom-pitch-container {
-            margin-top: 15px;
-            padding: 15px;
+            margin-top: 12px;
+            padding: 12px;
             background: #f8f9fa;
-            border-radius: 10px;
+            border-radius: 8px;
             display: none;
         }
         
@@ -240,112 +252,104 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            padding: 14px 20px;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 700;
+            gap: 6px;
+            padding: 13px 16px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             border: none;
             width: 100%;
-            color: white;
-        }
-        
-        .pulley-calculate {
-            background: var(--pulley-color);
-        }
-        
-        .pulley-calculate:hover {
-            background: #4c91b3;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(97, 165, 194, 0.3);
-        }
-        
-        .sprocket-calculate {
             background: var(--sprocket-color);
+            color: white;
+            margin-top: 8px;
         }
         
-        .sprocket-calculate:hover {
+        .calculate-btn:hover {
             background: #e58e00;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(255, 158, 0, 0.3);
+            box-shadow: 0 3px 6px rgba(255, 158, 0, 0.25);
         }
         
         .result-section {
-            margin-top: 25px;
+            margin-top: 18px;
         }
         
         .result-title {
-            font-size: 1.2rem;
-            margin-bottom: 15px;
+            font-size: 1rem;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-        
-        .pulley-result-title {
-            color: var(--pulley-color);
-        }
-        
-        .sprocket-result-title {
+            gap: 6px;
             color: var(--sprocket-color);
         }
         
         .result-box {
             background: #f8fafc;
-            border-radius: 12px;
-            padding: 20px;
+            border-radius: 10px;
+            padding: 15px;
             border: 1px solid #eaeef2;
         }
         
         .result-item {
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
         }
         
         .result-item:last-child {
             margin-bottom: 0;
+            border-bottom: none;
         }
         
         .result-label {
             font-weight: 600;
             color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .result-label i {
+            color: var(--sprocket-color);
+            font-size: 0.85rem;
         }
         
         .result-value {
             font-weight: 700;
-            font-size: 1.1rem;
-        }
-        
-        .pulley-result {
-            color: var(--pulley-color);
-        }
-        
-        .sprocket-result {
+            font-size: 0.95rem;
             color: var(--sprocket-color);
         }
         
         .note {
-            margin-top: 15px;
-            font-size: 0.9rem;
+            margin-top: 12px;
+            font-size: 0.8rem;
             color: #5a6a7e;
             background: #fffaf0;
-            padding: 12px 15px;
-            border-radius: 8px;
-            border-left: 3px solid var(--secondary);
+            padding: 10px 12px;
+            border-radius: 6px;
+            border-left: 2px solid var(--secondary);
+            line-height: 1.5;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
         }
         
         .copy-btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            padding: 10px 15px;
+            gap: 6px;
+            padding: 10px 12px;
             border-radius: 8px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -353,131 +357,264 @@
             width: 100%;
             background: var(--success);
             color: white;
-            margin-top: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .copy-btn.copied {
+            background: #379c80;
+        }
+        
+        .copy-btn.copied::after {
+            content: '✓ 已复制';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--success);
         }
         
         .copy-btn:hover {
             background: #379c80;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(67, 170, 139, 0.3);
+            box-shadow: 0 3px 6px rgba(67, 170, 139, 0.25);
         }
         
-        .ad-container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 40px auto 20px;
+        /* 计算记录页面 */
+        .history-section {
+            margin-top: 8px;
         }
         
-        .ad-item {
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .history-item {
             background: white;
-            border-radius: 16px;
+            border-radius: 10px;
+            padding: 14px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .history-info {
+            flex: 1;
             overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
         }
         
-        .ad-item:hover {
-            transform: translateY(-5px);
+        .history-type {
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+            color: var(--sprocket-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
-        .ad-link {
-            display: block;
-            text-decoration: none;
-            color: inherit;
-        }
-        
-        .ad-image {
-            width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 16px;
-        }
-        
-        .footer {
-            margin-top: 20px;
-            text-align: center;
+        .history-details {
+            font-size: 0.82rem;
             color: #5a6a7e;
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+        
+        .history-date {
+            font-size: 0.75rem;
+            color: #8a8a8a;
+        }
+        
+        .history-actions {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .history-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f0f4f8;
+            border: none;
+            color: var(--primary);
             font-size: 0.9rem;
-            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .history-btn.copied {
+            background: var(--success);
+            color: white;
+        }
+        
+        .history-btn.copied i {
+            opacity: 0;
+        }
+        
+        .history-btn.copied::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        
+        .history-btn:hover {
+            background: var(--primary-light);
+            color: white;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 30px 15px;
+            color: #8a8a8a;
+        }
+        
+        .empty-state i {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+            color: #e0e6ed;
+        }
+        
+        .empty-state p {
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .clear-history {
+            display: block;
             width: 100%;
-            max-width: 1200px;
+            padding: 12px;
+            background: #f8f9fa;
+            border: 1.5px solid #e0e6ed;
+            border-radius: 8px;
+            color: #5a6a7e;
+            font-weight: 600;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .clear-history:hover {
+            background: #fff;
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        /* 使用说明页面 */
+        .instructions-section {
+            margin-top: 8px;
+        }
+        
+        .instruction-card {
+            background: white;
+            border-radius: 14px;
+            padding: 18px;
+            box-shadow: var(--shadow);
+            margin-bottom: 12px;
+        }
+        
+        .instruction-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .instruction-content {
+            color: #5a6a7e;
+            line-height: 1.5;
+            font-size: 0.9rem;
+        }
+        
+        .instruction-content ol, .instruction-content ul {
+            padding-left: 18px;
+            margin: 10px 0;
+        }
+        
+        .instruction-content li {
+            margin-bottom: 6px;
+        }
+        
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .calculator-card, .history-item, .instruction-card {
+            animation: fadeIn 0.3s ease-out;
         }
         
         /* 响应式调整 */
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2rem;
+        @media (min-width: 480px) {
+            .container {
+                max-width: 480px;
+                padding: 0 15px;
+            }
+            
+            .pitch-btn {
+                padding: 10px 8px;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                max-width: 600px;
+            }
+            
+            .nav-item {
+                padding: 10px 8px;
+                font-size: 0.92rem;
             }
             
             .calculator-card {
                 padding: 20px;
             }
-            
-            .card-header {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .card-icon {
-                margin-right: 0;
-                margin-bottom: 15px;
-            }
-            
-            .card-title {
-                font-size: 1.4rem;
-            }
         }
         
-        @media (max-width: 480px) {
-            body {
-                padding: 15px;
+        @media (max-width: 350px) {
+            .pitch-selector {
+                grid-template-columns: repeat(2, 1fr);
             }
             
-            .header h1 {
-                font-size: 1.8rem;
+            .pitch-btn .pitch-value {
+                font-size: 0.9rem;
             }
             
-            .header p {
-                font-size: 1rem;
+            .pitch-btn .pitch-label {
+                font-size: 0.7rem;
             }
             
-            .calculator-card {
-                padding: 15px;
-            }
-            
-            .result-item {
+            .history-item {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 5px;
+                gap: 10px;
             }
-        }
-        
-        /* 动画效果 */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .calculator-card {
-            animation: fadeIn 0.5s ease-out;
-        }
-        
-        /* 复制成功提示 */
-        .copy-success {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--success);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            animation: fadeIn 0.3s ease-out;
+            
+            .history-actions {
+                align-self: flex-end;
+            }
+            
+            body {
+                font-size: 13px;
+            }
         }
     </style>
 </head>
@@ -485,230 +622,267 @@
     <div class="background-pattern"></div>
     
     <div class="container">
+        <!-- 标题区域 -->
         <div class="header">
             <div class="logo">
-                <i class="fas fa-cogs"></i>
+                <i class="fas fa-cog"></i>
+                <span>齿盘参数计算器</span>
             </div>
-            <h1>健坤皮带驱动系统</h1>
-            <p>专业自行车传动计算工具 - 精准计算皮带轮与齿盘参数</p>
         </div>
         
-        <div class="calculator-grid">
-            <!-- 皮带轮计算卡片 -->
-            <div class="calculator-card pulley-card">
-                <div class="card-header">
-                    <div class="card-icon pulley-icon">
-                        <i class="fas fa-circle-notch"></i>
-                    </div>
-                    <h2 class="card-title pulley-title">皮带轮计算</h2>
-                </div>
-                
-                <div class="input-section">
-                    <div class="pitch-selector">
-                        <div class="pitch-btn pulley-pitch-btn active" data-pitch="8">8M</div>
-                        <div class="pitch-btn pulley-pitch-btn" data-pitch="10">10M</div>
-                        <div class="pitch-btn pulley-pitch-btn" data-pitch="11">11M</div>
-                        <div class="pitch-btn pulley-pitch-btn" id="pulleyCustomBtn">自定义</div>
-                    </div>
-                    
-                    <div class="custom-pitch-container" id="pulleyCustomPitchContainer">
+        <!-- 导航栏 -->
+        <div class="nav-tabs">
+            <div class="nav-item active" data-page="calculator-page">计算</div>
+            <div class="nav-item" data-page="history-page">记录</div>
+            <div class="nav-item" data-page="instructions-page">说明</div>
+        </div>
+        
+        <!-- 内容区域 -->
+        <div class="content-area">
+            <!-- 计算器页面 -->
+            <div class="page active" id="calculator-page">
+                <div class="calculator-card">
+                    <div class="input-section">
+                        <h3 class="section-title"><i class="fas fa-sliders-h"></i> 参数设置</h3>
+                        
+                        <div class="pitch-selector">
+                            <div class="pitch-btn active" data-pitch="12.7">
+                                <span class="pitch-value">12.7</span>
+                                <span class="pitch-label">常用</span>
+                            </div>
+                            <div class="pitch-btn" id="customBtn">
+                                <span class="pitch-value">自定义</span>
+                                <span class="pitch-label">其他尺寸</span>
+                            </div>
+                        </div>
+                        
+                        <div class="custom-pitch-container" id="customPitchContainer">
+                            <div class="input-group">
+                                <label><i class="fas fa-ruler"></i> 齿盘节距 (mm)</label>
+                                <input type="number" id="sprocketPitch" placeholder="输入齿盘节距" min="1" step="0.1" value="12.7">
+                            </div>
+                        </div>
+                        
                         <div class="input-group">
-                            <label>皮带轮节距 (mm)</label>
-                            <input type="number" id="pulleyPitch" placeholder="输入皮带轮节距" min="1" step="0.1" value="8">
+                            <label><i class="fas fa-cog"></i> 齿盘齿数 (T)</label>
+                            <input type="number" id="sprocketTeeth" placeholder="输入齿数" min="1" max="1000" value="20">
                         </div>
-                    </div>
-                    
-                    <div class="input-group">
-                        <label>皮带轮齿数 (T)</label>
-                        <input type="number" id="pulleyTeeth" placeholder="输入齿数" min="1" max="1000">
-                    </div>
-                    
-                    <button class="calculate-btn pulley-calculate" id="calculatePulleyBtn">
-                        <i class="fas fa-calculator"></i>
-                        计算皮带轮参数
-                    </button>
-                </div>
-                
-                <div class="result-section">
-                    <h3 class="result-title pulley-result-title"><i class="fas fa-chart-line"></i> 计算结果</h3>
-                    
-                    <div class="result-box">
-                        <div class="result-item">
-                            <span class="result-label">节圆直径≈</span>
-                            <span class="result-value pulley-result" id="pulleyPCD">--</span>
-                        </div>
-                        <div class="result-item">
-                            <span class="result-label">皮带轮外径≈</span>
-                            <span class="result-value pulley-result" id="pulleyOD">--</span>
-                        </div>
-                        <div class="result-item">
-                            <span class="result-label">挡边外径≈</span>
-                            <span class="result-value pulley-result" id="pulleyFlange">--</span>
-                        </div>
-                        <div class="note" id="pulleyNote">
-                            输入齿数后点击计算按钮
-                        </div>
-                        <button class="copy-btn" id="copyPulleyBtn">
-                            <i class="fas fa-copy"></i>
-                            复制计算结果
+                        
+                        <button class="calculate-btn" id="calculateBtn">
+                            <i class="fas fa-calculator"></i>
+                            计算参数
                         </button>
+                    </div>
+                    
+                    <div class="result-section">
+                        <h3 class="result-title"><i class="fas fa-chart-line"></i> 计算结果</h3>
+                        
+                        <div class="result-box">
+                            <div class="result-item">
+                                <span class="result-label"><i class="fas fa-circle"></i> 节圆直径≈</span>
+                                <span class="result-value" id="sprocketPCD">--</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label"><i class="fas fa-arrows-alt-h"></i> 齿盘外径≈</span>
+                                <span class="result-value" id="sprocketOD">--</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label"><i class="fas fa-ruler-combined"></i> 齿盘内径≈</span>
+                                <span class="result-value" id="sprocketID">--</span>
+                            </div>
+                            <div class="note" id="sprocketNote">
+                                输入齿数后点击计算按钮
+                            </div>
+                            
+                            <div class="action-buttons">
+                                <button class="copy-btn" id="copyBtn">
+                                    <i class="fas fa-copy"></i>
+                                    复制结果
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <!-- 齿盘计算卡片 -->
-            <div class="calculator-card sprocket-card">
-                <div class="card-header">
-                    <div class="card-icon sprocket-icon">
-                        <i class="fas fa-cog"></i>
-                    </div>
-                    <h2 class="card-title sprocket-title">齿盘计算</h2>
-                </div>
-                
-                <div class="input-section">
-                    <div class="pitch-selector">
-                        <div class="pitch-btn sprocket-pitch-btn active" data-pitch="12.7">12.7mm</div>
-                        <div class="pitch-btn sprocket-pitch-btn" id="sprocketCustomBtn">自定义</div>
+            <!-- 计算记录页面 -->
+            <div class="page" id="history-page">
+                <div class="history-section">
+                    <div class="history-list" id="historyList">
+                        <!-- 历史记录将通过JS动态添加 -->
                     </div>
                     
-                    <div class="custom-pitch-container" id="sprocketCustomPitchContainer">
-                        <div class="input-group">
-                            <label>齿盘节距 (mm)</label>
-                            <input type="number" id="sprocketPitch" placeholder="输入齿盘节距" min="1" step="0.1" value="12.7">
-                        </div>
+                    <div class="empty-state" id="emptyHistory">
+                        <i class="fas fa-inbox"></i>
+                        <p>暂无计算记录</p>
+                        <p>开始使用计算器，您的记录将显示在这里</p>
                     </div>
                     
-                    <div class="input-group">
-                        <label>齿盘齿数 (T)</label>
-                        <input type="number" id="sprocketTeeth" placeholder="输入齿数" min="1" max="1000">
-                    </div>
-                    
-                    <button class="calculate-btn sprocket-calculate" id="calculateSprocketBtn">
-                        <i class="fas fa-calculator"></i>
-                        计算齿盘参数
+                    <button class="clear-history" id="clearHistoryBtn">
+                        <i class="fas fa-trash"></i> 清空所有记录
                     </button>
                 </div>
-                
-                <div class="result-section">
-                    <h3 class="result-title sprocket-result-title"><i class="fas fa-chart-line"></i> 计算结果</h3>
+            </div>
+            
+            <!-- 使用说明页面 -->
+            <div class="page" id="instructions-page">
+                <div class="instructions-section">
+                    <div class="instruction-card">
+                        <h3 class="instruction-title"><i class="fas fa-calculator"></i> 计算器使用指南</h3>
+                        <div class="instruction-content">
+                            <p>本工具提供齿盘参数的专业计算功能：</p>
+                            <ol>
+                                <li>选择或输入齿盘的节距（12.7mm或自定义）</li>
+                                <li>输入齿数（1-1000之间的整数）</li>
+                                <li>点击"计算"按钮获取精确参数</li>
+                                <li>计算结果会自动保存到历史记录</li>
+                            </ol>
+                        </div>
+                    </div>
                     
-                    <div class="result-box">
-                        <div class="result-item">
-                            <span class="result-label">节圆直径≈</span>
-                            <span class="result-value sprocket-result" id="sprocketPCD">--</span>
+                    <div class="instruction-card">
+                        <h3 class="instruction-title"><i class="fas fa-ruler"></i> 参数说明</h3>
+                        <div class="instruction-content">
+                            <ul>
+                                <li><strong>节距</strong>：相邻两齿中心之间的距离</li>
+                                <li><strong>节圆直径</strong>：理论啮合圆的直径，计算公式为：节距 / sin(π/齿数)</li>
+                                <li><strong>齿盘外径</strong>：齿顶圆的直径，计算公式为：节圆直径 + 0.6 * 节距</li>
+                                <li><strong>齿盘内径</strong>：齿根圆的直径，计算公式为：节圆直径 - 0.8 * 节距</li>
+                            </ul>
                         </div>
-                        <div class="result-item">
-                            <span class="result-label">齿盘外径≈</span>
-                            <span class="result-value sprocket-result" id="sprocketOD">--</span>
+                    </div>
+                    
+                    <div class="instruction-card">
+                        <h3 class="instruction-title"><i class="fas fa-lightbulb"></i> 使用技巧</h3>
+                        <div class="instruction-content">
+                            <ul>
+                                <li>常用齿盘节距：12.7mm</li>
+                                <li>计算结果仅供参考，实际应用需考虑材料和工艺因素</li>
+                                <li>历史记录功能可帮助您比较不同配置</li>
+                                <li>使用复制功能可以方便地分享计算结果</li>
+                            </ul>
                         </div>
-                        <div class="note" id="sprocketNote">
-                            输入齿数后点击计算按钮
-                        </div>
-                        <button class="copy-btn" id="copySprocketBtn">
-                            <i class="fas fa-copy"></i>
-                            复制计算结果
-                        </button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    
-    <!-- 广告位 - 纯图片形式 -->
-    <div class="ad-container">
-        <div class="ad-item">
-            <a href="https://example.com" class="ad-link" target="_blank" id="adLink">
-                <img src="https://via.placeholder.com/1000x200?text=广告位-替换为您的图片" alt="广告" class="ad-image">
-            </a>
-        </div>
-    </div>
-    
-    <div class="footer">
-        <p>© 2023 健坤驱动系统 | 专业自行车传动解决方案提供商</p>
     </div>
 
     <script>
         // 页面加载完成后执行
         document.addEventListener('DOMContentLoaded', function() {
             // 获取页面元素
-            // 皮带轮相关元素
-            const pulleyPitchButtons = document.querySelectorAll('.pulley-pitch-btn');
-            const pulleyCustomBtn = document.getElementById('pulleyCustomBtn');
-            const pulleyCustomPitchContainer = document.getElementById('pulleyCustomPitchContainer');
-            const pulleyPitchInput = document.getElementById('pulleyPitch');
-            const pulleyTeethInput = document.getElementById('pulleyTeeth');
-            const calculatePulleyBtn = document.getElementById('calculatePulleyBtn');
-            const pulleyPCD = document.getElementById('pulleyPCD');
-            const pulleyOD = document.getElementById('pulleyOD');
-            const pulleyFlange = document.getElementById('pulleyFlange');
-            const pulleyNote = document.getElementById('pulleyNote');
-            const copyPulleyBtn = document.getElementById('copyPulleyBtn');
+            // 页面切换元素
+            const navItems = document.querySelectorAll('.nav-item');
+            const pages = document.querySelectorAll('.page');
             
             // 齿盘相关元素
-            const sprocketPitchButtons = document.querySelectorAll('.sprocket-pitch-btn');
-            const sprocketCustomBtn = document.getElementById('sprocketCustomBtn');
-            const sprocketCustomPitchContainer = document.getElementById('sprocketCustomPitchContainer');
+            const pitchButtons = document.querySelectorAll('.pitch-btn');
+            const customBtn = document.getElementById('customBtn');
+            const customPitchContainer = document.getElementById('customPitchContainer');
             const sprocketPitchInput = document.getElementById('sprocketPitch');
             const sprocketTeethInput = document.getElementById('sprocketTeeth');
-            const calculateSprocketBtn = document.getElementById('calculateSprocketBtn');
+            const calculateBtn = document.getElementById('calculateBtn');
             const sprocketPCD = document.getElementById('sprocketPCD');
             const sprocketOD = document.getElementById('sprocketOD');
+            const sprocketID = document.getElementById('sprocketID');
             const sprocketNote = document.getElementById('sprocketNote');
-            const copySprocketBtn = document.getElementById('copySprocketBtn');
+            const copyBtn = document.getElementById('copyBtn');
             
-            // 广告元素
-            const adLink = document.getElementById('adLink');
+            // 历史记录相关元素
+            const historyList = document.getElementById('historyList');
+            const emptyHistory = document.getElementById('emptyHistory');
+            const clearHistoryBtn = document.getElementById('clearHistoryBtn');
             
             // 当前选择的参数
-            let currentPulleyPitch = 8; // 默认选择8M
-            let currentSprocketPitch = 12.7; // 默认选择12.7mm
-            let isPulleyCustomPitch = false; // 是否使用自定义节距
-            let isSprocketCustomPitch = false; // 是否使用自定义节距
+            let currentPitch = 12.7; // 默认选择12.7mm
+            let isCustomPitch = false; // 是否使用自定义节距
             
-            // 设置广告链接
-            adLink.href = "https://example.com"; // 替换为您的实际链接
+            // 初始化
+            init();
             
-            // 皮带轮节距按钮点击事件
-            pulleyPitchButtons.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    // 移除所有按钮的active类
-                    pulleyPitchButtons.forEach(b => b.classList.remove('active'));
-                    // 给当前点击的按钮添加active类
-                    this.classList.add('active');
-                    
-                    // 检查是否点击了自定义按钮
-                    if (this.id === 'pulleyCustomBtn') {
-                        isPulleyCustomPitch = true;
-                        pulleyCustomPitchContainer.style.display = 'block';
-                    } else {
-                        isPulleyCustomPitch = false;
-                        pulleyCustomPitchContainer.style.display = 'none';
-                        // 更新当前选择的节距
-                        currentPulleyPitch = parseFloat(this.getAttribute('data-pitch'));
+            // 初始化函数
+            function init() {
+                // 设置页面切换事件
+                setupPageNavigation();
+                
+                // 设置齿盘事件
+                setupSprocketEvents();
+                
+                // 设置历史记录事件
+                setupHistoryEvents();
+                
+                // 加载历史记录
+                loadHistory();
+            }
+            
+            // 设置页面导航
+            function setupPageNavigation() {
+                navItems.forEach(nav => {
+                    nav.addEventListener('click', function() {
+                        const pageId = this.getAttribute('data-page');
+                        
+                        // 更新激活的导航项
+                        navItems.forEach(item => item.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        // 显示对应的页面
+                        pages.forEach(page => page.classList.remove('active'));
+                        document.getElementById(pageId).classList.add('active');
+                    });
+                });
+            }
+            
+            // 设置齿盘事件
+            function setupSprocketEvents() {
+                // 节距按钮点击事件
+                pitchButtons.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        // 移除所有按钮的active类
+                        pitchButtons.forEach(b => b.classList.remove('active'));
+                        // 给当前点击的按钮添加active类
+                        this.classList.add('active');
+                        
+                        // 检查是否点击了自定义按钮
+                        if (this.id === 'customBtn') {
+                            isCustomPitch = true;
+                            customPitchContainer.style.display = 'block';
+                        } else {
+                            isCustomPitch = false;
+                            customPitchContainer.style.display = 'none';
+                            // 更新当前选择的节距
+                            currentPitch = parseFloat(this.getAttribute('data-pitch'));
+                        }
+                    });
+                });
+                
+                // 计算按钮点击事件
+                calculateBtn.addEventListener('click', function() {
+                    calculateSprocket();
+                });
+                
+                // 复制按钮点击事件
+                copyBtn.addEventListener('click', function() {
+                    copySprocketResult();
+                });
+                
+                // 输入框回车键计算
+                sprocketTeethInput.addEventListener('keyup', function(event) {
+                    if (event.key === 'Enter') {
+                        calculateSprocket();
                     }
                 });
-            });
+            }
             
-            // 齿盘节距按钮点击事件
-            sprocketPitchButtons.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    // 移除所有按钮的active类
-                    sprocketPitchButtons.forEach(b => b.classList.remove('active'));
-                    // 给当前点击的按钮添加active类
-                    this.classList.add('active');
-                    
-                    // 检查是否点击了自定义按钮
-                    if (this.id === 'sprocketCustomBtn') {
-                        isSprocketCustomPitch = true;
-                        sprocketCustomPitchContainer.style.display = 'block';
-                    } else {
-                        isSprocketCustomPitch = false;
-                        sprocketCustomPitchContainer.style.display = 'none';
-                        // 更新当前选择的节距
-                        currentSprocketPitch = parseFloat(this.getAttribute('data-pitch'));
+            // 设置历史记录事件
+            function setupHistoryEvents() {
+                // 清空历史记录按钮
+                clearHistoryBtn.addEventListener('click', function() {
+                    if (confirm('确定要清空所有历史记录吗？')) {
+                        clearHistory();
                     }
                 });
-            });
+            }
             
             // 计算节圆直径
             function calculatePCD(teeth, pitch) {
@@ -716,75 +890,15 @@
             }
             
             // 计算齿盘外径
-            function calculateSprocketOD(pcd) {
-                // 节顶距 = 6.8 - 3.875 = 2.925mm
-                return pcd + 2 * 2.925;
+            function calculateSprocketOD(pcd, pitch) {
+                // 齿盘外径 = 节圆直径 + 0.6 * 节距
+                return pcd + (0.6 * pitch);
             }
             
-            // 计算皮带轮外径（根据要求修改为减法）
-            function calculatePulleyOD(pcd, pitch) {
-                // 修改为：皮带轮外径 = 节圆直径 - (2 * 0.1 * 节距)
-                return pcd - (2 * 0.1 * pitch);
-            }
-            
-            // 计算挡边外径
-            function calculateFlangeDiameter(pcd, pitch) {
-                // 8M加6mm，10-11M加7mm
-                return pcd + (pitch === 8 ? 6 : 7);
-            }
-            
-            // 计算皮带轮参数
-            function calculatePulley() {
-                const teeth = parseInt(pulleyTeethInput.value);
-                
-                // 获取节距值
-                let pitch;
-                
-                if (isPulleyCustomPitch) {
-                    pitch = parseFloat(pulleyPitchInput.value);
-                    
-                    // 验证自定义节距输入
-                    if (isNaN(pitch) || pitch <= 0) {
-                        pulleyNote.textContent = '请输入有效的节距值';
-                        return;
-                    }
-                } else {
-                    pitch = currentPulleyPitch;
-                }
-                
-                // 验证输入是否有效
-                if (isNaN(teeth) || teeth <= 0) {
-                    pulleyPCD.textContent = '--';
-                    pulleyOD.textContent = '--';
-                    pulleyFlange.textContent = '--';
-                    pulleyNote.textContent = '请输入有效的齿数';
-                    return;
-                }
-                
-                // 计算节圆直径
-                const pcd = calculatePCD(teeth, pitch);
-                
-                // 计算皮带轮外径（使用修改后的公式）
-                const od = calculatePulleyOD(pcd, pitch);
-                
-                // 计算挡边外径
-                const flange = calculateFlangeDiameter(pcd, pitch);
-                
-                // 更新UI显示结果
-                pulleyPCD.textContent = `${pcd.toFixed(2)}mm`;
-                pulleyOD.textContent = `${od.toFixed(2)}mm`;
-                pulleyFlange.textContent = `${flange.toFixed(2)}mm`;
-                
-                pulleyNote.textContent = `基于${pitch}mm节距计算`;
-                
-                // 存储结果用于复制
-                window.pulleyResult = {
-                    teeth: teeth,
-                    pitch: pitch,
-                    pcd: pcd,
-                    od: od,
-                    flange: flange
-                };
+            // 计算齿盘内径
+            function calculateSprocketID(pcd, pitch) {
+                // 齿盘内径 = 节圆直径 - 0.8 * 节距
+                return pcd - (0.8 * pitch);
             }
             
             // 计算齿盘参数
@@ -794,7 +908,7 @@
                 // 获取节距值
                 let pitch;
                 
-                if (isSprocketCustomPitch) {
+                if (isCustomPitch) {
                     pitch = parseFloat(sprocketPitchInput.value);
                     
                     // 验证自定义节距输入
@@ -803,13 +917,14 @@
                         return;
                     }
                 } else {
-                    pitch = currentSprocketPitch;
+                    pitch = currentPitch;
                 }
                 
                 // 验证输入是否有效
                 if (isNaN(teeth) || teeth <= 0) {
                     sprocketPCD.textContent = '--';
                     sprocketOD.textContent = '--';
+                    sprocketID.textContent = '--';
                     sprocketNote.textContent = '请输入有效的齿数';
                     return;
                 }
@@ -818,51 +933,49 @@
                 const pcd = calculatePCD(teeth, pitch);
                 
                 // 计算齿盘外径
-                const od = calculateSprocketOD(pcd);
+                const od = calculateSprocketOD(pcd, pitch);
+                
+                // 计算齿盘内径
+                const id = calculateSprocketID(pcd, pitch);
                 
                 // 更新UI显示结果
                 sprocketPCD.textContent = `${pcd.toFixed(2)}mm`;
                 sprocketOD.textContent = `${od.toFixed(2)}mm`;
+                sprocketID.textContent = `${id.toFixed(2)}mm`;
                 
-                sprocketNote.textContent = `基于${pitch}mm节距计算`;
+                sprocketNote.innerHTML = `基于${pitch}mm节距计算`;
                 
                 // 存储结果用于复制
-                window.sprocketResult = {
+                const result = {
                     teeth: teeth,
                     pitch: pitch,
                     pcd: pcd,
-                    od: od
+                    od: od,
+                    id: id,
+                    type: 'sprocket'
                 };
+                
+                window.sprocketResult = result;
+                
+                // 自动保存到历史记录
+                saveToHistory(result);
             }
             
-            // 复制皮带轮计算结果
-            copyPulleyBtn.addEventListener('click', function() {
-                if (!window.pulleyResult) {
-                    alert('请先进行计算');
-                    return;
-                }
-                
-                const result = window.pulleyResult;
-                const copyText = `${result.pitch}M皮带轮${result.teeth}T：节圆直径≈${result.pcd.toFixed(2)}mm，外径≈${result.od.toFixed(2)}mm，挡边外径≈${result.flange.toFixed(2)}mm`;
-                
-                copyToClipboard(copyText);
-            });
-            
             // 复制齿盘计算结果
-            copySprocketBtn.addEventListener('click', function() {
+            function copySprocketResult() {
                 if (!window.sprocketResult) {
                     alert('请先进行计算');
                     return;
                 }
                 
                 const result = window.sprocketResult;
-                const copyText = `${result.pitch}M齿盘${result.teeth}T：节圆直径≈${result.pcd.toFixed(2)}mm，外径≈${result.od.toFixed(2)}mm`;
+                const copyText = `${result.pitch}mm齿盘${result.teeth}T：节圆直径≈${result.pcd.toFixed(2)}mm，外径≈${result.od.toFixed(2)}mm，内径≈${result.id.toFixed(2)}mm`;
                 
-                copyToClipboard(copyText);
-            });
+                copyToClipboard(copyText, copyBtn);
+            }
             
             // 复制到剪贴板函数
-            function copyToClipboard(text) {
+            function copyToClipboard(text, buttonElement) {
                 // 兼容手机端的复制方法
                 const textArea = document.createElement('textarea');
                 textArea.value = text;
@@ -883,7 +996,8 @@
                 try {
                     const successful = document.execCommand('copy');
                     if (successful) {
-                        showCopySuccess();
+                        // 显示复制成功反馈
+                        showCopyFeedback(buttonElement);
                     } else {
                         alert('复制失败，请手动复制结果');
                     }
@@ -894,35 +1008,121 @@
                 document.body.removeChild(textArea);
             }
             
-            // 显示复制成功提示
-            function showCopySuccess() {
-                const successDiv = document.createElement('div');
-                successDiv.className = 'copy-success';
-                successDiv.innerHTML = '<i class="fas fa-check-circle"></i> 已复制到剪贴板';
+            // 显示复制成功反馈
+            function showCopyFeedback(buttonElement) {
+                // 添加复制成功样式
+                buttonElement.classList.add('copied');
                 
-                document.body.appendChild(successDiv);
-                
+                // 2秒后恢复原状
                 setTimeout(function() {
-                    document.body.removeChild(successDiv);
+                    buttonElement.classList.remove('copied');
                 }, 2000);
             }
             
-            // 绑定计算按钮事件
-            calculatePulleyBtn.addEventListener('click', calculatePulley);
-            calculateSprocketBtn.addEventListener('click', calculateSprocket);
-            
-            // 输入框回车键计算
-            pulleyTeethInput.addEventListener('keyup', function(event) {
-                if (event.key === 'Enter') {
-                    calculatePulley();
+            // 保存到历史记录
+            function saveToHistory(result) {
+                // 获取现有历史记录
+                let history = JSON.parse(localStorage.getItem('sprocketHistory') || '[]');
+                
+                // 添加时间戳
+                result.timestamp = new Date().toISOString();
+                result.date = new Date().toLocaleString();
+                
+                // 添加到历史记录
+                history.unshift(result);
+                
+                // 限制历史记录数量（最多20条）
+                if (history.length > 20) {
+                    history = history.slice(0, 20);
                 }
-            });
+                
+                // 保存到本地存储
+                localStorage.setItem('sprocketHistory', JSON.stringify(history));
+                
+                // 刷新历史记录显示
+                loadHistory();
+            }
             
-            sprocketTeethInput.addEventListener('keyup', function(event) {
-                if (event.key === 'Enter') {
-                    calculateSprocket();
+            // 加载历史记录
+            function loadHistory() {
+                const history = JSON.parse(localStorage.getItem('sprocketHistory') || '[]');
+                
+                // 清空现有显示
+                historyList.innerHTML = '';
+                
+                if (history.length === 0) {
+                    emptyHistory.style.display = 'block';
+                    return;
                 }
-            });
+                
+                emptyHistory.style.display = 'none';
+                
+                // 添加历史记录项
+                history.forEach((item, index) => {
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'history-item';
+                    
+                    const typeText = `${item.pitch}mm齿盘 ${item.teeth}T`;
+                    const detailsText = `节圆直径: ${item.pcd.toFixed(2)}mm, 外径: ${item.od.toFixed(2)}mm, 内径: ${item.id.toFixed(2)}mm`;
+                    
+                    historyItem.innerHTML = `
+                        <div class="history-info">
+                            <div class="history-type">${typeText}</div>
+                            <div class="history-details">${detailsText}</div>
+                            <div class="history-date">${item.date}</div>
+                        </div>
+                        <div class="history-actions">
+                            <button class="history-btn" data-index="${index}">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <button class="history-btn" data-index="${index}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                    
+                    historyList.appendChild(historyItem);
+                });
+                
+                // 添加历史记录项的事件
+                document.querySelectorAll('.history-actions .history-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        const history = JSON.parse(localStorage.getItem('sprocketHistory') || '[]');
+                        
+                        if (this.querySelector('.fa-copy')) {
+                            // 复制操作
+                            copyHistoryItem(history[index], this);
+                        } else if (this.querySelector('.fa-trash')) {
+                            // 删除操作
+                            deleteHistoryItem(index);
+                        }
+                    });
+                });
+            }
+            
+            // 复制历史记录项
+            function copyHistoryItem(item, buttonElement) {
+                const copyText = `${item.pitch}mm齿盘${item.teeth}T：节圆直径≈${item.pcd.toFixed(2)}mm，外径≈${item.od.toFixed(2)}mm，内径≈${item.id.toFixed(2)}mm`;
+                copyToClipboard(copyText, buttonElement);
+            }
+            
+            // 删除历史记录项
+            function deleteHistoryItem(index) {
+                let history = JSON.parse(localStorage.getItem('sprocketHistory') || '[]');
+                
+                if (index >= 0 && index < history.length) {
+                    history.splice(index, 1);
+                    localStorage.setItem('sprocketHistory', JSON.stringify(history));
+                    loadHistory();
+                }
+            }
+            
+            // 清空历史记录
+            function clearHistory() {
+                localStorage.removeItem('sprocketHistory');
+                loadHistory();
+            }
         });
     </script>
 </body>
