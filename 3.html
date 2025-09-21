@@ -7,18 +7,18 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #ff9e00;
-            --primary-light: #ffb74d;
-            --secondary: #2c7da0;
-            --accent: #a61f2b;
+            --primary: #3498db;
+            --primary-light: #5dade2;
+            --secondary: #2ecc71;
+            --accent: #e74c3c;
             --light: #f8f9fa;
-            --dark: #2d3e50;
-            --success: #43aa8b;
+            --dark: #2c3e50;
+            --success: #27ae60;
             --card-bg: #ffffff;
-            --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            --gradient: linear-gradient(135deg, #ff9e00 0%, #e58e00 100%);
-            --bg-color: #fef8f0;
-            --pulley-color: #ff9e00;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --gradient: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+            --bg-color: #ecf0f1;
+            --pulley-color: #3498db;
             --nav-height: 50px;
             --header-height: 70px;
         }
@@ -39,7 +39,7 @@
             position: relative;
             overflow-x: hidden;
             font-size: 14px;
-            line-height: 1.4;
+            line-height: 1.5;
         }
         
         .background-pattern {
@@ -49,22 +49,22 @@
             width: 100%;
             height: 100%;
             background-image: 
-                radial-gradient(circle at 5% 10%, rgba(255, 158, 0, 0.03) 15px, transparent 30px),
-                radial-gradient(circle at 95% 80%, rgba(44, 125, 160, 0.03) 15px, transparent 30px);
+                radial-gradient(circle at 5% 10%, rgba(52, 152, 219, 0.05) 15px, transparent 30px),
+                radial-gradient(circle at 95% 80%, rgba(46, 204, 113, 0.05) 15px, transparent 30px);
             z-index: -1;
         }
         
         /* 页面容器 */
         .container {
             max-width: 100%;
-            padding: 0 12px;
+            padding: 0 15px;
             margin: 0 auto;
         }
         
         /* 标题区域 */
         .header {
             text-align: center;
-            padding: 12px 0 8px;
+            padding: 15px 0 10px;
             height: var(--header-height);
             display: flex;
             flex-direction: column;
@@ -76,73 +76,73 @@
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             color: var(--primary);
         }
         
         .logo i {
-            margin-right: 8px;
-            font-size: 1.3rem;
+            margin-right: 10px;
+            font-size: 1.5rem;
         }
         
         /* 导航栏 */
         .nav-tabs {
             display: flex;
             background: white;
-            border-radius: 10px;
-            padding: 4px;
+            border-radius: 12px;
+            padding: 5px;
             box-shadow: var(--shadow);
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             position: sticky;
-            top: 10px;
+            top: 15px;
             z-index: 100;
         }
         
         .nav-item {
             flex: 1;
             text-align: center;
-            padding: 10px 5px;
+            padding: 12px 5px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             cursor: pointer;
-            border-radius: 8px;
+            border-radius: 10px;
             transition: all 0.3s;
         }
         
         .nav-item.active {
             background: var(--gradient);
             color: white;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
         
         /* 内容区域 */
         .content-area {
-            height: calc(100vh - var(--header-height) - 70px);
+            height: calc(100vh - var(--header-height) - 80px);
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
-            padding-bottom: 20px;
+            padding-bottom: 25px;
         }
         
         /* 页面部分 */
         .page {
             display: none;
             width: 100%;
-            animation: fadeIn 0.3s ease;
         }
         
         .page.active {
             display: block;
+            animation: fadeIn 0.3s ease;
         }
         
         /* 计算器页面 */
         .calculator-card {
             background: var(--card-bg);
-            border-radius: 14px;
-            padding: 18px;
+            border-radius: 16px;
+            padding: 20px;
             box-shadow: var(--shadow);
             position: relative;
             overflow: hidden;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         
         .calculator-card::before {
@@ -156,55 +156,55 @@
         }
         
         .input-section {
-            margin-bottom: 18px;
+            margin-bottom: 20px;
         }
         
         .section-title {
-            font-size: 1.1rem;
-            margin-bottom: 12px;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
             color: var(--dark);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
         
         .section-title i {
             color: var(--pulley-color);
-            font-size: 1rem;
+            font-size: 1.1rem;
         }
         
         .input-group {
-            margin-bottom: 12px;
+            margin-bottom: 15px;
         }
         
         .input-group label {
             display: block;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             font-weight: 600;
             color: var(--dark);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
         
         .input-group input {
             width: 100%;
-            padding: 12px;
-            border: 1.5px solid #e0e6ed;
-            border-radius: 8px;
-            font-size: 0.95rem;
+            padding: 14px 16px;
+            border: 2px solid #e0e6ed;
+            border-radius: 10px;
+            font-size: 1rem;
             transition: all 0.3s;
         }
         
         .input-group input:focus {
             border-color: var(--primary);
             outline: none;
-            box-shadow: 0 0 0 2px rgba(255, 158, 0, 0.15);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
         }
         
         .pitch-selector {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            margin-bottom: 12px;
+            gap: 10px;
+            margin-bottom: 15px;
         }
         
         @media (min-width: 380px) {
@@ -215,14 +215,14 @@
         
         .pitch-btn {
             background: white;
-            border: 1.5px solid #e0e6ed;
-            border-radius: 8px;
-            padding: 10px 6px;
+            border: 2px solid #e0e6ed;
+            border-radius: 10px;
+            padding: 12px 8px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -236,21 +236,21 @@
         }
         
         .pitch-btn .pitch-value {
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: 700;
-            margin-bottom: 3px;
+            margin-bottom: 4px;
         }
         
         .pitch-btn .pitch-label {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             opacity: 0.9;
         }
         
         .custom-pitch-container {
-            margin-top: 12px;
-            padding: 12px;
+            margin-top: 15px;
+            padding: 15px;
             background: #f8f9fa;
-            border-radius: 8px;
+            border-radius: 10px;
             display: none;
         }
         
@@ -258,51 +258,51 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            padding: 13px 16px;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            font-weight: 600;
+            gap: 8px;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
             border: none;
             width: 100%;
             background: var(--pulley-color);
             color: white;
-            margin-top: 8px;
+            margin-top: 10px;
         }
         
         .calculate-btn:hover {
-            background: #e58e00;
-            box-shadow: 0 3px 6px rgba(255, 158, 0, 0.25);
+            background: #2980b9;
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
         }
         
         .result-section {
-            margin-top: 18px;
+            margin-top: 20px;
         }
         
         .result-title {
-            font-size: 1rem;
-            margin-bottom: 12px;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             color: var(--pulley-color);
         }
         
         .result-box {
             background: #f8fafc;
-            border-radius: 10px;
-            padding: 15px;
+            border-radius: 12px;
+            padding: 18px;
             border: 1px solid #eaeef2;
         }
         
         .result-item {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 0;
+            padding: 10px 0;
             border-bottom: 1px solid #eee;
         }
         
@@ -316,46 +316,46 @@
             color: var(--dark);
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 0.9rem;
+            gap: 8px;
+            font-size: 0.95rem;
         }
         
         .result-label i {
             color: var(--pulley-color);
-            font-size: 0.85rem;
+            font-size: 0.9rem;
         }
         
         .result-value {
             font-weight: 700;
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: var(--pulley-color);
         }
         
         .note {
-            margin-top: 12px;
-            font-size: 0.8rem;
+            margin-top: 15px;
+            font-size: 0.85rem;
             color: #5a6a7e;
             background: #fffaf0;
-            padding: 10px 12px;
-            border-radius: 6px;
-            border-left: 2px solid var(--secondary);
+            padding: 12px 15px;
+            border-radius: 8px;
+            border-left: 3px solid var(--secondary);
             line-height: 1.5;
         }
         
         .action-buttons {
             display: flex;
-            gap: 8px;
-            margin-top: 15px;
+            gap: 10px;
+            margin-top: 20px;
         }
         
         .copy-btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            padding: 10px 12px;
-            border-radius: 8px;
-            font-size: 0.85rem;
+            gap: 8px;
+            padding: 12px 15px;
+            border-radius: 10px;
+            font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -368,7 +368,7 @@
         }
         
         .copy-btn.copied {
-            background: #379c80;
+            background: #219653;
         }
         
         .copy-btn.copied::after {
@@ -385,25 +385,25 @@
         }
         
         .copy-btn:hover {
-            background: #379c80;
-            box-shadow: 0 3px 6px rgba(67, 170, 139, 0.25);
+            background: #219653;
+            box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
         }
         
         /* 计算记录页面 */
         .history-section {
-            margin-top: 8px;
+            margin-top: 10px;
         }
         
         .history-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
         }
         
         .history-item {
             background: white;
-            border-radius: 10px;
-            padding: 14px;
+            border-radius: 12px;
+            padding: 16px;
             box-shadow: var(--shadow);
             display: flex;
             justify-content: space-between;
@@ -417,8 +417,8 @@
         
         .history-type {
             font-weight: 700;
-            font-size: 0.95rem;
-            margin-bottom: 4px;
+            font-size: 1rem;
+            margin-bottom: 5px;
             color: var(--pulley-color);
             white-space: nowrap;
             overflow: hidden;
@@ -426,25 +426,25 @@
         }
         
         .history-details {
-            font-size: 0.82rem;
+            font-size: 0.85rem;
             color: #5a6a7e;
-            margin-bottom: 4px;
+            margin-bottom: 5px;
             line-height: 1.4;
         }
         
         .history-date {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             color: #8a8a8a;
         }
         
         .history-actions {
             display: flex;
-            gap: 6px;
+            gap: 8px;
         }
         
         .history-btn {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -452,7 +452,7 @@
             background: #f0f4f8;
             border: none;
             color: var(--primary);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             cursor: pointer;
             transition: all 0.3s;
             position: relative;
@@ -473,7 +473,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: bold;
         }
         
@@ -484,34 +484,34 @@
         
         .empty-state {
             text-align: center;
-            padding: 30px 15px;
+            padding: 40px 20px;
             color: #8a8a8a;
         }
         
         .empty-state i {
-            font-size: 2.5rem;
-            margin-bottom: 12px;
+            font-size: 3rem;
+            margin-bottom: 15px;
             color: #e0e6ed;
         }
         
         .empty-state p {
-            margin-bottom: 6px;
-            font-size: 0.9rem;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
         }
         
         .clear-history {
             display: block;
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             background: #f8f9fa;
-            border: 1.5px solid #e0e6ed;
-            border-radius: 8px;
+            border: 2px solid #e0e6ed;
+            border-radius: 10px;
             color: #5a6a7e;
             font-weight: 600;
-            margin-top: 15px;
+            margin-top: 20px;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
         
         .clear-history:hover {
@@ -522,61 +522,61 @@
         
         /* 使用说明页面 */
         .instructions-section {
-            margin-top: 8px;
+            margin-top: 10px;
         }
         
         .instruction-card {
             background: white;
-            border-radius: 14px;
-            padding: 18px;
+            border-radius: 16px;
+            padding: 20px;
             box-shadow: var(--shadow);
-            margin-bottom: 12px;
+            margin-bottom: 15px;
         }
         
         .instruction-title {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: var(--primary);
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
         
         .instruction-content {
             color: #5a6a7e;
-            line-height: 1.5;
-            font-size: 0.9rem;
+            line-height: 1.6;
+            font-size: 0.95rem;
         }
         
         .instruction-content ol, .instruction-content ul {
-            padding-left: 18px;
-            margin: 10px 0;
+            padding-left: 20px;
+            margin: 12px 0;
         }
         
         .instruction-content li {
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
         
         /* 动画效果 */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
         .calculator-card, .history-item, .instruction-card {
-            animation: fadeIn 0.3s ease-out;
+            animation: fadeIn 0.4s ease-out;
         }
         
         /* 响应式调整 */
         @media (min-width: 480px) {
             .container {
                 max-width: 480px;
-                padding: 0 15px;
+                padding: 0 20px;
             }
             
             .pitch-btn {
-                padding: 10px 8px;
+                padding: 12px 10px;
             }
         }
         
@@ -586,12 +586,12 @@
             }
             
             .nav-item {
-                padding: 10px 8px;
-                font-size: 0.92rem;
+                padding: 12px 10px;
+                font-size: 1rem;
             }
             
             .calculator-card {
-                padding: 20px;
+                padding: 25px;
             }
         }
         
@@ -605,13 +605,13 @@
             }
             
             .pitch-btn .pitch-label {
-                font-size: 0.7rem;
+                font-size: 0.75rem;
             }
             
             .history-item {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 10px;
+                gap: 12px;
             }
             
             .history-actions {
@@ -1017,7 +1017,7 @@
                 textArea.value = text;
                 textArea.style.position = 'fixed';
                 textArea.style.top = 0;
-                textArea.style.left: 0;
+                textArea.style.left = 0;
                 textArea.style.width = '2em';
                 textArea.style.height = '2em';
                 textArea.style.padding = 0;
