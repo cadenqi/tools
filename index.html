@@ -114,7 +114,7 @@
             background: var(--background);
         }
         
-        /* 轮播图样式 */
+        /* 轮播图样式 - 自适应优化 */
         .carousel {
             width: 100%;
             height: 130px;
@@ -131,6 +131,7 @@
         .carousel-item {
             min-width: 100%;
             height: 100%;
+            position: relative;
         }
         
         .carousel-item img {
@@ -770,17 +771,17 @@
                     <button class="category-btn active" data-category="all">
                         <i class="fas fa-th"></i> 所有工具
                     </button>
-                    <button class="category-btn" data-category="design">
-                        <i class="fas fa-pencil-ruler"></i> 设计
+                    <button class="category-btn" data-category="chain">
+                        <i class="fas fa-link"></i> 链条驱动
                     </button>
-                    <button class="category-btn" data-category="mechanical">
-                        <i class="fas fa-cogs"></i> 机械
+                    <button class="category-btn" data-category="belt">
+                        <i class="fas fa-cog"></i> 皮带驱动
                     </button>
-                    <button class="category-btn" data-category="material">
-                        <i class="fas fa-weight-hanging"></i> 材料
+                    <button class="category-btn" data-category="electric">
+                        <i class="fas fa-bolt"></i> 电驱动
                     </button>
-                    <button class="category-btn" data-category="performance">
-                        <i class="fas fa-tachometer-alt"></i> 性能
+                    <button class="category-btn" data-category="other">
+                        <i class="fas fa-ellipsis-h"></i> 其他
                     </button>
                 </div>
             </div>
@@ -928,7 +929,7 @@
             {
                 id: 8,
                 title: "空气动力学分析",
-                category: "performance",
+                category: "other",
                 description: "估算不同设计条件下的空气阻力与性能影响",
                 image: "https://placehold.co/600x400/3498db/white?text=空气动力学",
                 link: "https://cadenqi.github.io/tools/8",
@@ -937,7 +938,7 @@
             {
                 id: 7,
                 title: "重量分布分析",
-                category: "material",
+                category: "other",
                 description: "分析自行车各部件的重量分布，优化平衡性",
                 image: "https://placehold.co/600x400/1abc9c/white?text=重量分析",
                 link: "https://cadenqi.github.io/tools/7",
@@ -946,7 +947,7 @@
             {
                 id: 6,
                 title: "性能模拟器",
-                category: "performance",
+                category: "other",
                 description: "模拟自行车在不同条件下的性能表现，预测速度与功率",
                 image: "https://placehold.co/600x400/e74c3c/white?text=性能模拟",
                 link: "https://cadenqi.github.io/tools/6",
@@ -955,7 +956,7 @@
             {
                 id: 5,
                 title: "材料强度计算器",
-                category: "material",
+                category: "other",
                 description: "计算车架和零部件的应力分布与安全系数",
                 image: "https://placehold.co/600x400/f39c12/white?text=材料强度",
                 link: "https://cadenqi.github.io/tools/5",
@@ -964,7 +965,7 @@
             {
                 id: 4,
                 title: "HTD同步带计算",
-                category: "mechanical",
+                category: "belt",
                 description: "计算同步皮带长度和齿数，确定合适的皮带规格",
                 image: "https://placehold.co/600x400/9b59b6/white?text=同步带计算",
                 link: "https://cadenqi.github.io/tools/4",
@@ -973,7 +974,7 @@
             {
                 id: 3,
                 title: "3D自行车配置器",
-                category: "design",
+                category: "other",
                 description: "可视化组装和调整自行车设计，实时查看更改效果",
                 image: "https://placehold.co/600x400/e74c3c/white?text=3D配置器",
                 link: "https://cadenqi.github.io/tools/3",
@@ -982,7 +983,7 @@
             {
                 id: 2,
                 title: "传动比分析器",
-                category: "mechanical",
+                category: "chain",
                 description: "计算不同齿比下的速度、踏频关系，优化传动系统设计",
                 image: "https://placehold.co/600x400/2ecc71/white?text=传动计算",
                 link: "https://cadenqi.github.io/tools/2",
@@ -991,11 +992,29 @@
             {
                 id: 1,
                 title: "车架几何计算器",
-                category: "design",
+                category: "chain",
                 description: "计算自行车车架的关键几何参数，如Stack、Reach、轴距等",
                 image: "https://placehold.co/600x400/3498db/white?text=几何计算",
                 link: "https://cadenqi.github.io/tools/1",
                 uses: 1243
+            },
+            {
+                id: 9,
+                title: "电动助力系统分析",
+                category: "electric",
+                description: "分析电动助力系统的功率输出和电池续航能力",
+                image: "https://placehold.co/600x400/9b59b6/white?text=电动助力",
+                link: "https://cadenqi.github.io/tools/9",
+                uses: 523
+            },
+            {
+                id: 10,
+                title: "链条寿命计算器",
+                category: "chain",
+                description: "根据使用条件估算链条的磨损寿命和更换周期",
+                image: "https://placehold.co/600x400/e74c3c/white?text=链条寿命",
+                link: "https://cadenqi.github.io/tools/10",
+                uses: 789
             }
         ];
 
@@ -1004,7 +1023,7 @@
             "11M": [
                 { model: "11M-825-12", spec: "75", applicable: "825" },
                 { model: "11M-858-12", spec: "78", applicable: "858" },
-                { model: "11M-1001-12", spec: "91", applicable: "1001" },
+                { model: "11M-1001-12", spec: "91", applicable: "极001" },
                 { model: "11M-1100-12", spec: "100", applicable: "1100" },
                 { model: "11M-1122-12", spec: "102", applicable: "1122" },
                 { model: "11M-1155-12", spec: "105", applicable: "1155" },
@@ -1015,7 +1034,7 @@
                 { model: "11M-1243-12", spec: "113", applicable: "1243" },
                 { model: "11M-1254-12", spec: "114", applicable: "1254" },
                 { model: "11M-1265-12", spec: "115", applicable: "1265" },
-                { model: "11M-1276-12", spec: "116", applicable: "极276" },
+                { model: "11M-1276-12", spec: "极6", applicable: "极276" },
                 { model: "11M-1287-12", spec: "117", applicable: "1287" },
                 { model: "11极-1320-12", spec: "120", applicable: "1320" },
                 { model: "11M-1331-12", spec: "121", applicable: "1331" },
@@ -1026,13 +1045,13 @@
                 { model: "11M-1408-12", spec: "128", applicable: "1408" },
                 { model: "11M-1430-12", spec: "130", applicable: "1430" },
                 { model: "11M-1452-12", spec: "132", applicable: "1452" },
-                { model: "11M-1474-12", spec: "134", applicable: "1474" },
+                { model: "11M-1474-12", spec: "134", applicable: "147极" },
                 { model: "11M-1485-12", spec: "135", applicable: "1485" },
                 { model: "11M-1496-12", spec: "136", applicable: "1496" },
                 { model: "11M-1507-12", spec: "137", applicable: "1507" },
                 { model: "11M-1529-12", spec: "139", applicable: "1529" },
                 { model: "11M-1573-12", spec: "143", applicable: "1573" },
-                { model: "11M-1606-12", spec: "146", applicable: "1606" },
+                { model: "极M-1606-12", spec: "146", applicable: "1606" },
                 { model: "11M-1617-12", spec: "147", applicable: "1617" },
                 { model: "11M-1661-12", spec: "151", applicable: "1661" },
                 { model: "11M-1683-12", spec: "153", applicable: "1683" },
@@ -1058,10 +1077,10 @@
                 { model: "10M-005", spec: "10速", applicable: "示例数据" }
             ],
             "8M": [
-                { model: "8M-001", spec: "8速", applicable: "示例数据" },
+                { model: "8M-极01", spec: "8速", applicable: "示例数据" },
                 { model: "8M-002", spec: "8极", applicable: "示例数据" },
                 { model: "8M-003", spec: "8速", applicable: "示例数据" },
-                { model: "8M-004", spec: "8速", applicable: "示例数据" },
+                {极odel: "8M-004", spec: "8速", applicable: "示例数据" },
                 { model: "8M-005", spec: "8速", applicable: "示例数据" }
             ]
         };
@@ -1100,9 +1119,27 @@
             }
         ];
 
+        // ==================== 状态管理 ====================
+        let currentState = {
+            activeTool: null,
+            activeCategory: 'all',
+            activeSpecTab: '11M',
+            carouselIndex: 0
+        };
+
         // ==================== 初始化 ====================
         document.addEventListener('DOMContentLoaded', function() {
             console.log("DOM内容已加载，开始初始化...");
+            
+            // 从本地存储恢复状态
+            const savedState = localStorage.getItem('bikeToolsState');
+            if (savedState) {
+                try {
+                    currentState = {...currentState, ...JSON.parse(savedState)};
+                } catch (e) {
+                    console.error("恢复状态失败:", e);
+                }
+            }
             
             // 初始化轮播图
             initCarousel();
@@ -1111,7 +1148,7 @@
             renderTools();
             
             // 渲染规格表
-            renderSpecs('11M');
+            renderSpecs(currentState.activeSpecTab);
             
             // 渲染知识库
             renderKnowledge();
@@ -1127,7 +1164,6 @@
                 pages.forEach(page => {
                     page.classList.remove('active');
                     if (page.id === pageId) {
-                        // 添加延迟以解决闪屏问题
                         setTimeout(() => {
                             page.classList.add('active');
                         }, 50);
@@ -1142,6 +1178,9 @@
                         item.classList.remove('active');
                     }
                 });
+                
+                // 保存状态
+                saveState();
             }
             
             navItems.forEach(item => {
@@ -1153,7 +1192,6 @@
                     // 如果工具页面打开，先关闭工具
                     if (toolDisplay.style.display === 'flex') {
                         closeToolDisplay();
-                        // 使用setTimeout确保关闭完成后再切换页面
                         setTimeout(() => switchPage(targetPage), 100);
                     } else {
                         // 直接切换页面
@@ -1165,6 +1203,14 @@
             // 工具分类过滤
             const categoryButtons = document.querySelectorAll('.category-btn');
             
+            // 设置当前激活的分类
+            const activeCategoryBtn = document.querySelector(`.category-btn[data-category="${currentState.activeCategory}"]`);
+            if (activeCategoryBtn) {
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                activeCategoryBtn.classList.add('active');
+                filterToolsByCategory(currentState.activeCategory);
+            }
+            
             categoryButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     // 移除所有按钮的active类
@@ -1173,14 +1219,25 @@
                     this.classList.add('active');
                     
                     const category = this.getAttribute('data-category');
+                    currentState.activeCategory = category;
                     
                     // 显示或隐藏工具卡片
                     filterToolsByCategory(category);
+                    
+                    // 保存状态
+                    saveState();
                 });
             });
             
             // 规格表切换
             const specsTabs = document.querySelectorAll('.specs-tab');
+            
+            // 设置当前激活的规格标签
+            const activeSpecTab = document.querySelector(`.specs-tab[data-spec="${currentState.activeSpecTab}"]`);
+            if (activeSpecTab) {
+                specsTabs.forEach(t => t.classList.remove('active'));
+                activeSpecTab.classList.add('active');
+            }
             
             specsTabs.forEach(tab => {
                 tab.addEventListener('click', function() {
@@ -1190,9 +1247,13 @@
                     this.classList.add('active');
                     
                     const specType = this.getAttribute('data-spec');
+                    currentState.activeSpecTab = specType;
                     
                     // 渲染对应规格表
                     renderSpecs(specType);
+                    
+                    // 保存状态
+                    saveState();
                 });
             });
             
@@ -1280,6 +1341,10 @@
                 toolDisplay.style.display = 'flex';
                 closeTool.style.display = 'flex';
                 document.body.style.overflow = 'hidden';
+                
+                // 保存当前打开的工具
+                currentState.activeTool = {url, title};
+                saveState();
             }
             
             function closeToolDisplay() {
@@ -1288,17 +1353,35 @@
                 closeTool.style.display = 'none';
                 document.title = "自行车工程工具集"; // 恢复页面标题
                 document.body.style.overflow = 'auto';
+                
+                // 清除当前打开的工具
+                currentState.activeTool = null;
+                saveState();
+            }
+            
+            // 恢复之前打开的工具（如果有）
+            if (currentState.activeTool) {
+                openToolDisplay(currentState.activeTool.url, currentState.activeTool.title);
             }
             
             console.log("初始化完成！");
         });
+
+        // 保存状态到本地存储
+        function saveState() {
+            try {
+                localStorage.setItem('bikeToolsState', JSON.stringify(currentState));
+            } catch (e) {
+                console.error("保存状态失败:", e);
+            }
+        }
 
         // ==================== 功能函数 ====================
         // 初始化轮播图
         function initCarousel() {
             const carouselInner = document.getElementById('carouselInner');
             const indicators = document.querySelectorAll('.carousel-indicator');
-            let currentIndex = 0;
+            let currentIndex = currentState.carouselIndex;
             let carouselInterval;
             
             // 启动自动轮播
@@ -1306,6 +1389,8 @@
                 carouselInterval = setInterval(() => {
                     currentIndex = (currentIndex + 1) % 3;
                     updateCarousel();
+                    currentState.carouselIndex = currentIndex;
+                    saveState();
                 }, 3000);
             }
             
@@ -1323,12 +1408,17 @@
                 });
             }
             
+            // 初始化显示
+            updateCarousel();
+            
             // 点击指示器切换
             indicators.forEach(indicator => {
                 indicator.addEventListener('click', function() {
                     const index = parseInt(this.getAttribute('data-index'));
                     currentIndex = index;
                     updateCarousel();
+                    currentState.carouselIndex = currentIndex;
+                    saveState();
                     
                     // 重置自动轮播计时器
                     clearInterval(carouselInterval);
@@ -1357,6 +1447,9 @@
                 sortedTools.forEach(tool => {
                     toolGrid.appendChild(createToolCard(tool));
                 });
+                
+                // 应用当前分类过滤
+                filterToolsByCategory(currentState.activeCategory);
             }, 800);
         }
         
