@@ -752,10 +752,10 @@
                             <img src="https://placehold.co/600x300/3498db/white?text=自行车工具推荐" alt="轮播图1">
                         </div>
                         <div class="carousel-item">
-                            <img src="https://placehold.co/600x300/2ecc71/white?text=专业设计工具" alt="轮播图2">
+                            <img src="https://raw.githubusercontent.com/cadenqi/tools/main/images/banner1.jpg" alt="轮播图2" onerror="this.src='https://placehold.co/600x300/3498db/white?text=图片加载失败'">
                         </div>
                         <div class="carousel-item">
-                            <img src="https://placehold.co/600x300/e74c3c/white?text=工程计算平台" alt="轮播图3">
+                            <img src="https://raw.githubusercontent.com/cadenqi/tools/main/images/banner1.jpg" alt="轮播图3" onerror="this.src='https://placehold.co/600x300/3498db/white?text=图片加载失败'">
                         </div>
                     </div>
                     <div class="carousel-indicators" id="carouselIndicators">
@@ -1008,7 +1008,7 @@
                 { model: "11M-1100-12", spec: "100", applicable: "1100" },
                 { model: "11M-1122-12", spec: "102", applicable: "1122" },
                 { model: "11M-1155-12", spec: "105", applicable: "1155" },
-                { model: "11M-1166-12", spec: "106", applicable: "1166" },
+                { model: "11M-1166-12", spec: "106", applicable: "116极" },
                 { model: "11M-1188-极", spec: "108", applicable: "1188" },
                 { model: "11M-1199-12", spec: "109", applicable: "1199" },
                 { model: "11M-1221-12", spec: "111", applicable: "1221" },
@@ -1017,8 +1017,6 @@
                 { model: "11M-1265-12", spec: "115", applicable: "1265" },
                 { model: "11M-1276-12", spec: "116", applicable: "极276" },
                 { model: "11M-1287-12", spec: "117", applicable: "1287" },
-                { model: "11M-1298-12", spec: "118", applicable: "1298" },
-                { model: "11M-1309-12", spec: "119", applicable: "1309" },
                 { model: "11极-1320-12", spec: "120", applicable: "1320" },
                 { model: "11M-1331-12", spec: "121", applicable: "1331" },
                 { model: "11M-1342-12", spec: "122", applicable: "1342" },
@@ -1042,13 +1040,13 @@
                 { model: "11M-1727-12", spec: "157", applicable: "1727" },
                 { model: "11M-1738-12", spec: "158", applicable: "1738" },
                 { model: "11M-1760-12", spec: "160", applicable: "1760" },
-                { model: "11M-1782-12", spec: "162", applicable: "1782" },
+                { model: "11M-1782-极", spec: "162", applicable: "1782" },
                 { model: "11M-1826-12", spec: "166", applicable: "1826" },
                 { model: "11M-1848-12", spec: "极68", applicable: "1848" },
                 { model: "11M-1881-12", spec: "171", applicable: "1881" },
                 { model: "11M-1892-12", spec: "172", applicable: "1892" },
                 { model: "11M-1914-12", spec: "174", applicable: "1914" },
-                { model: "11M-1947-12", spec: "177", applicable: "1947" },
+                { model: "11M-1947-12", spec: "177", applicable: "极47" },
                 { model: "11M-1969-12", spec: "179", applicable: "1969" },
                 { model: "11M-1991-12", spec: "181", applicable: "1991" }
             ],
@@ -1056,7 +1054,7 @@
                 { model: "10M-001", spec: "10速", applicable: "示例数据" },
                 { model: "10M-002", spec: "10速", applicable: "示例数据" },
                 { model: "10M-003", spec: "10速", applicable: "示例数据" },
-                { model: "10M-004", spec: "10速", applicable: "示例数据" },
+                { model: "10极-004", spec: "10速", applicable: "示例数据" },
                 { model: "10M-005", spec: "10速", applicable: "示例数据" }
             ],
             "8M": [
@@ -1301,10 +1299,18 @@
             const carouselInner = document.getElementById('carouselInner');
             const indicators = document.querySelectorAll('.carousel-indicator');
             let currentIndex = 0;
+            let carouselInterval;
             
-            // 自动轮播
-            setInterval(() => {
-                currentIndex = (currentIndex + 1) % 3;
+            // 启动自动轮播
+            function startCarousel() {
+                carouselInterval = setInterval(() => {
+                    currentIndex = (currentIndex + 1) % 3;
+                    updateCarousel();
+                }, 3000);
+            }
+            
+            // 更新轮播图显示
+            function updateCarousel() {
                 carouselInner.style.transform = `translateX(-${currentIndex * 100}%)`;
                 
                 // 更新指示器
@@ -1315,25 +1321,23 @@
                         indicator.classList.remove('active');
                     }
                 });
-            }, 3000);
+            }
             
             // 点击指示器切换
             indicators.forEach(indicator => {
                 indicator.addEventListener('click', function() {
                     const index = parseInt(this.getAttribute('data-index'));
                     currentIndex = index;
-                    carouselInner.style.transform = `translateX(-${currentIndex * 100}%)`;
+                    updateCarousel();
                     
-                    // 更新指示器
-                    indicators.forEach((ind, i) => {
-                        if (i === currentIndex) {
-                            ind.classList.add('active');
-                        } else {
-                            ind.classList.remove('active');
-                        }
-                    });
+                    // 重置自动轮播计时器
+                    clearInterval(carouselInterval);
+                    startCarousel();
                 });
             });
+            
+            // 启动自动轮播
+            startCarousel();
         }
         
         // 渲染工具卡片
