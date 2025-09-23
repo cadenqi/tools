@@ -7,11 +7,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #2c3e50;
+            --primary: #1a5276;
             --secondary: #3498db;
             --accent: #e74c3c;
             --light: #ecf0f1;
-            --dark: #34495e;
+            --dark: #2c3e50;
             --success: #27ae60;
             --warning: #f39c12;
             --danger: #e74c3c;
@@ -224,37 +224,65 @@
             margin-top: 15px;
         }
         
-        /* 预设按钮 */
-        .preset-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-top: 10px;
+        /* 圆形测量按钮 */
+        .measure-button-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
         }
         
-        .preset-btn {
-            background: #f8f9fa;
-            border: 1px solid #ddd;
-            padding: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-align: center;
+        .measure-button {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--secondary), #2980b9);
+            color: white;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
-            font-size: 0.9rem;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
         }
         
-        .preset-btn:hover {
-            background: #e9ecef;
-            border-color: var(--secondary);
+        .measure-button:active {
+            transform: scale(0.95);
         }
         
-        .preset-btn i {
+        .measure-button.recording {
+            background: linear-gradient(135deg, var(--danger), #c0392b);
+            animation: pulse 1.5s infinite;
+        }
+        
+        .measure-button i {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        
+        .measure-button-text {
             font-size: 1rem;
-            color: var(--secondary);
+            font-weight: 600;
+        }
+        
+        .progress-ring {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+        
+        .progress-ring-circle {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.3);
+            stroke-width: 4;
+            stroke-dasharray: 314;
+            stroke-dashoffset: 314;
+            transition: stroke-dashoffset 0.3s;
         }
         
         /* 结果展示 */
@@ -376,6 +404,65 @@
             font-size: 0.9rem;
         }
         
+        /* 测量记录 */
+        .record-list {
+            margin-top: 15px;
+        }
+        
+        .record-item {
+            background: white;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .record-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .record-time {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+        }
+        
+        .record-tension {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .record-frequency {
+            font-size: 0.9rem;
+            color: var(--secondary);
+        }
+        
+        .record-actions {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .record-btn {
+            background: none;
+            border: none;
+            color: #7f8c8d;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .record-btn:hover {
+            color: var(--secondary);
+        }
+        
+        .clear-records {
+            text-align: center;
+            margin-top: 15px;
+        }
+        
         /* 张力参考表格 */
         .tension-table {
             width: 100%;
@@ -467,10 +554,6 @@
                 grid-template-columns: 1fr;
             }
             
-            .preset-section {
-                grid-template-columns: 1fr;
-            }
-            
             .btn-group {
                 flex-direction: column;
             }
@@ -485,6 +568,15 @@
             
             .result-value {
                 font-size: 2rem;
+            }
+            
+            .measure-button {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .measure-button i {
+                font-size: 1.5rem;
             }
         }
         
@@ -534,22 +626,6 @@
             padding: 10px;
         }
         
-        /* 参数说明 */
-        .param-explanation {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 12px;
-            margin-top: 10px;
-            font-size: 0.8rem;
-            color: #666;
-        }
-        
-        .param-explanation h4 {
-            margin-bottom: 8px;
-            color: var(--primary);
-            font-size: 0.9rem;
-        }
-        
         /* 权限提示 */
         .permission-hint {
             background: #e8f4fc;
@@ -579,7 +655,7 @@
         </div>
         <div class="nav-tabs">
             <div class="nav-tab active" data-tab="tool">检测工具</div>
-            <div class="nav-tab" data-tab="tension-ref">张力参考</div>
+            <div class="nav-tab" data-tab="records">测量记录</div>
             <div class="nav-tab" data-tab="instructions">使用说明</div>
         </div>
     </header>
@@ -598,17 +674,6 @@
                 <h2><i class="fas fa-cog"></i> 参数设置</h2>
                 
                 <div class="form-group">
-                    <label for="beltType">皮带类型</label>
-                    <select id="beltType">
-                        <option value="bicycle-sync">自行车同步带</option>
-                        <option value="v-belt">V型皮带</option>
-                        <option value="timing-belt">工业同步带</option>
-                        <option value="flat-belt">平皮带</option>
-                        <option value="custom">自定义</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
                     <label for="spanLength">跨度长度 (mm)</label>
                     <input type="number" id="spanLength" value="800" step="1" min="100">
                 </div>
@@ -616,24 +681,8 @@
                 <div class="form-group">
                     <label for="massDensity">线性密度 μ (kg/m)</label>
                     <input type="number" id="massDensity" value="0.01" step="0.001" min="0.001">
-                </div>
-                
-                <div class="preset-section">
-                    <div class="preset-btn" data-l="800" data-mu="0.01">
-                        <i class="fas fa-bicycle"></i>
-                        <span>自行车同步带</span>
-                    </div>
-                    <div class="preset-btn" data-l="1200" data-mu="0.08">
-                        <i class="fas fa-cog"></i>
-                        <span>工业同步带</span>
-                    </div>
-                    <div class="preset-btn" data-l="1500" data-mu="0.15">
-                        <i class="fas fa-industry"></i>
-                        <span>V型皮带</span>
-                    </div>
-                    <div class="preset-btn" data-l="2000" data-mu="0.25">
-                        <i class="fas fa-weight-hanging"></i>
-                        <span>重型皮带</span>
+                    <div style="font-size: 0.8rem; color: #666; margin-top: 5px;">
+                        自行车同步带通常为 0.01-0.02 kg/m
                     </div>
                 </div>
             </div>
@@ -642,13 +691,14 @@
             <div class="card">
                 <h2><i class="fas fa-sliders-h"></i> 测量控制</h2>
                 
-                <div class="btn-group">
-                    <button id="startButton" class="btn btn-success">
-                        <i class="fas fa-microphone"></i> 开始测量
-                    </button>
-                    <button id="stopButton" class="btn btn-danger" disabled>
-                        <i class="fas fa-stop"></i> 停止测量
-                    </button>
+                <div class="measure-button-container">
+                    <div class="measure-button" id="measureButton">
+                        <svg class="progress-ring" width="120" height="120">
+                            <circle class="progress-ring-circle" stroke="white" stroke-width="4" fill="transparent" r="50" cx="60" cy="60"/>
+                        </svg>
+                        <i class="fas fa-microphone"></i>
+                        <div class="measure-button-text">开始测量</div>
+                    </div>
                 </div>
                 
                 <div class="permission-hint">
@@ -671,12 +721,12 @@
                         <div id="lengthValue" class="detail-value">-- mm</div>
                     </div>
                     <div class="detail-item">
-                        <div class="detail-label">线性密度</div>
-                        <div id="densityValue" class="detail-value">-- kg/m</div>
+                        <div class="detail-label">张力 (N)</div>
+                        <div id="tensionNValue" class="detail-value">-- N</div>
                     </div>
                     <div class="detail-item">
-                        <div class="detail-label">测量时间</div>
-                        <div id="timeValue" class="detail-value">--</div>
+                        <div class="detail-label">张力 (kg)</div>
+                        <div id="tensionKgValue" class="detail-value">-- kg</div>
                     </div>
                 </div>
             </div>
@@ -688,8 +738,25 @@
             </div>
         </div>
         
-        <!-- 张力参考标签页 -->
-        <div id="tension-ref-tab" class="tab-content">
+        <!-- 测量记录标签页 -->
+        <div id="records-tab" class="tab-content">
+            <div class="card">
+                <h2><i class="fas fa-history"></i> 测量记录</h2>
+                
+                <div id="recordList" class="record-list">
+                    <!-- 测量记录将动态添加到这里 -->
+                    <div style="text-align: center; padding: 20px; color: #7f8c8d;">
+                        暂无测量记录
+                    </div>
+                </div>
+                
+                <div class="clear-records">
+                    <button id="clearRecords" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> 清空记录
+                    </button>
+                </div>
+            </div>
+            
             <div class="card">
                 <h2><i class="fas fa-table"></i> 张力参考标准</h2>
                 
@@ -778,12 +845,12 @@
                     
                     <div class="step-card">
                         <div class="step-number">1</div>
-                        <div>输入皮带参数或选择预设皮带类型</div>
+                        <div>输入皮带参数（跨度长度和线性密度）</div>
                     </div>
                     
                     <div class="step-card">
                         <div class="step-number">2</div>
-                        <div>点击"开始测量"按钮，允许麦克风访问权限</div>
+                        <div>点击圆形"开始测量"按钮，允许麦克风访问权限</div>
                     </div>
                     
                     <div class="step-card">
@@ -807,12 +874,7 @@
                     <div class="step-card">
                         <div class="step-number">μ</div>
                         <div>
-                            <strong>线性密度</strong>：指皮带单位长度的质量（kg/m）。这个参数可以从皮带制造商的技术规格中获得，或者通过称量已知长度皮带的质量来计算。不同皮带类型有典型的线性密度范围：
-                            <ul>
-                                <li>自行车同步带：约 0.01-0.02 kg/m</li>
-                                <li>工业同步带：约 0.05-0.15 kg/m</li>
-                                <li>V型皮带：约 0.1-0.3 kg/m</li>
-                            </ul>
+                            <strong>线性密度</strong>：指皮带单位长度的质量（kg/m）。这个参数可以从皮带制造商的技术规格中获得，或者通过称量已知长度皮带的质量来计算。自行车同步带通常为 0.01-0.02 kg/m。
                         </div>
                     </div>
                     
@@ -829,11 +891,11 @@
                         <li><strong>f</strong> - 振动频率 (Hz)，通过敲击皮带产生的振动频率</li>
                     </ul>
                     
-                    <h3>三星浏览器权限设置</h3>
+                    <h3>麦克风权限设置</h3>
                     <div class="permission-hint">
                         <p>如果无法访问麦克风，请按以下步骤设置：</p>
                         <ol>
-                            <li>点击三星浏览器右上角的三个点菜单</li>
+                            <li>点击浏览器右上角的设置菜单</li>
                             <li>选择"设置" → "网站权限" → "麦克风"</li>
                             <li>找到本网站并设置为"允许"</li>
                             <li>刷新页面后重试</li>
@@ -893,33 +955,36 @@
         let scriptProcessor;
         let isRecording = false;
         const sampleRate = 44100;
-        const fftSize = 4096; // 增加FFT大小以提高频率分辨率
-        const bufferDuration = 4; // 增加录制时长以提高准确性
-        let permissionRequested = false; // 标记是否已经请求过权限
+        const fftSize = 4096;
+        const bufferDuration = 4;
+        let permissionRequested = false;
+        let measurementRecords = JSON.parse(localStorage.getItem('tensionRecords')) || [];
         
         // DOM元素
-        const startButton = document.getElementById('startButton');
-        const stopButton = document.getElementById('stopButton');
+        const measureButton = document.getElementById('measureButton');
         const resultStatus = document.getElementById('resultStatus');
         const resultValue = document.getElementById('resultValue');
         const resultDetails = document.getElementById('resultDetails');
         const frequencyValue = document.getElementById('frequencyValue');
         const lengthValue = document.getElementById('lengthValue');
-        const densityValue = document.getElementById('densityValue');
-        const timeValue = document.getElementById('timeValue');
+        const tensionNValue = document.getElementById('tensionNValue');
+        const tensionKgValue = document.getElementById('tensionKgValue');
         const canvas = document.getElementById('frequencyCanvas');
         const canvasCtx = canvas.getContext('2d');
-        const presetButtons = document.querySelectorAll('.preset-btn');
         const navTabs = document.querySelectorAll('.nav-tab');
         const tabContents = document.querySelectorAll('.tab-content');
         const permissionModal = document.getElementById('permissionModal');
         const grantPermissionBtn = document.getElementById('grantPermission');
         const denyPermissionBtn = document.getElementById('denyPermission');
+        const recordList = document.getElementById('recordList');
+        const clearRecordsBtn = document.getElementById('clearRecords');
+        const progressCircle = document.querySelector('.progress-ring-circle');
         
         // 页面加载时初始化
         document.addEventListener('DOMContentLoaded', function() {
             setupCanvas();
             setupEventListeners();
+            updateRecordList();
         });
         
         // 设置Canvas尺寸
@@ -952,27 +1017,14 @@
                 });
             });
             
-            // 预设按钮事件
-            presetButtons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    document.getElementById('spanLength').value = btn.dataset.l;
-                    document.getElementById('massDensity').value = btn.dataset.mu;
-                    
-                    // 添加视觉反馈
-                    btn.style.background = '#e3f2fd';
-                    btn.style.borderColor = '#2196f3';
-                    setTimeout(() => {
-                        btn.style.background = '';
-                        btn.style.borderColor = '';
-                    }, 300);
-                });
+            // 测量按钮事件
+            measureButton.addEventListener('click', function() {
+                if (isRecording) {
+                    stopRecording();
+                } else {
+                    startRecording();
+                }
             });
-            
-            // 开始录制
-            startButton.addEventListener('click', startRecording);
-            
-            // 停止录制
-            stopButton.addEventListener('click', stopRecording);
             
             // 权限模态框按钮
             grantPermissionBtn.addEventListener('click', () => {
@@ -988,41 +1040,11 @@
                 permissionRequested = true;
             });
             
+            // 清空记录按钮
+            clearRecordsBtn.addEventListener('click', clearRecords);
+            
             // 窗口调整大小时重置Canvas
             window.addEventListener('resize', setupCanvas);
-            
-            // 皮带类型变化时更新默认参数
-            document.getElementById('beltType').addEventListener('change', function() {
-                updateDefaultParams(this.value);
-            });
-        }
-        
-        // 根据皮带类型更新默认参数
-        function updateDefaultParams(beltType) {
-            const spanLengthInput = document.getElementById('spanLength');
-            const massDensityInput = document.getElementById('massDensity');
-            
-            switch(beltType) {
-                case 'bicycle-sync':
-                    spanLengthInput.value = '800';
-                    massDensityInput.value = '0.01';
-                    break;
-                case 'v-belt':
-                    spanLengthInput.value = '1500';
-                    massDensityInput.value = '0.15';
-                    break;
-                case 'timing-belt':
-                    spanLengthInput.value = '1200';
-                    massDensityInput.value = '0.08';
-                    break;
-                case 'flat-belt':
-                    spanLengthInput.value = '2000';
-                    massDensityInput.value = '0.25';
-                    break;
-                default:
-                    // 自定义类型不改变当前值
-                    break;
-            }
         }
         
         // 开始录制
@@ -1052,14 +1074,13 @@
                         
                         if (permissionStatus.state === 'prompt') {
                             permissionModal.style.display = 'flex';
-                            return; // 等待用户选择
+                            return;
                         } else if (permissionStatus.state === 'denied') {
                             showError('麦克风访问被拒绝。请在浏览器设置中允许麦克风权限。');
                             permissionRequested = true;
                             return;
                         }
                     } else {
-                        // 某些浏览器不支持permissions API
                         permissionModal.style.display = 'flex';
                         return;
                     }
@@ -1078,7 +1099,7 @@
                 microphone = audioContext.createMediaStreamSource(stream);
                 analyser = audioContext.createAnalyser();
                 analyser.fftSize = fftSize;
-                analyser.smoothingTimeConstant = 0.5; // 降低平滑系数以提高响应速度
+                analyser.smoothingTimeConstant = 0.5;
                 
                 // 创建脚本处理器用于处理音频数据
                 scriptProcessor = audioContext.createScriptProcessor(fftSize, 1, 1);
@@ -1100,8 +1121,13 @@
                         // 实时绘制频谱
                         drawRealTimeSpectrum();
                         
+                        // 更新进度环
+                        const elapsed = Date.now() - startTime;
+                        const progress = elapsed / (bufferDuration * 1000);
+                        setProgress(progress);
+                        
                         // 检查是否超时
-                        if (Date.now() - startTime > bufferDuration * 1000) {
+                        if (elapsed > bufferDuration * 1000) {
                             stopRecording(audioData);
                         }
                     }
@@ -1109,8 +1135,8 @@
                 
                 // 开始录制
                 isRecording = true;
-                startButton.disabled = true;
-                stopButton.disabled = false;
+                measureButton.classList.add('recording');
+                measureButton.querySelector('.measure-button-text').textContent = '停止测量';
                 resultStatus.innerHTML = '<span class="recording-indicator"></span> 正在录制... 请敲击皮带中央';
                 resultValue.textContent = '--';
                 resultDetails.style.display = 'none';
@@ -1142,8 +1168,9 @@
         // 停止录制
         function stopRecording(audioData = []) {
             isRecording = false;
-            startButton.disabled = false;
-            stopButton.disabled = true;
+            measureButton.classList.remove('recording');
+            measureButton.querySelector('.measure-button-text').textContent = '开始测量';
+            setProgress(0);
             
             // 断开音频节点
             if (microphone) microphone.disconnect();
@@ -1164,18 +1191,19 @@
                 const L = parseFloat(document.getElementById('spanLength').value);
                 const mu = parseFloat(document.getElementById('massDensity').value);
                 // 注意：L是毫米，需要转换为米
-                const tension = 4 * mu * Math.pow(L/1000, 2) * Math.pow(frequency, 2);
+                const tensionN = 4 * mu * Math.pow(L/1000, 2) * Math.pow(frequency, 2);
+                const tensionKg = tensionN / 9.8; // 转换为千克力
                 
                 // 显示结果
                 resultStatus.textContent = '测量完成';
                 resultStatus.style.color = 'var(--success)';
-                resultValue.textContent = `${tension.toFixed(2)} N`;
+                resultValue.textContent = `${tensionKg.toFixed(2)} kg`;
                 
                 // 显示详细信息
                 frequencyValue.textContent = `${frequency.toFixed(2)} Hz`;
                 lengthValue.textContent = `${L} mm`;
-                densityValue.textContent = `${mu} kg/m`;
-                timeValue.textContent = new Date().toLocaleTimeString();
+                tensionNValue.textContent = `${tensionN.toFixed(2)} N`;
+                tensionKgValue.textContent = `${tensionKg.toFixed(2)} kg`;
                 resultDetails.style.display = 'grid';
                 
                 // 添加成功动画
@@ -1183,6 +1211,16 @@
                 setTimeout(() => {
                     resultValue.style.transform = 'scale(1)';
                 }, 300);
+                
+                // 保存测量记录
+                addRecord({
+                    frequency: frequency,
+                    length: L,
+                    density: mu,
+                    tensionN: tensionN,
+                    tensionKg: tensionKg,
+                    time: new Date().toLocaleTimeString()
+                });
                 
             } else {
                 showError('未检测到有效频率，请重试。确保在安静环境中敲击皮带。');
@@ -1226,7 +1264,7 @@
             const frequency = maxIndex * freqResolution;
             
             // 只有幅度足够大的频率才被认为是有效信号
-            const threshold = 0.01; // 调整这个阈值以适应不同环境
+            const threshold = 0.01;
             if (maxMag > threshold) {
                 return frequency;
             }
@@ -1316,7 +1354,7 @@
                 }
             }
             
-            if (maxValue > 10) { // 只有明显峰值才标记
+            if (maxValue > 10) {
                 const freq = (maxIndex * sampleRate) / (2 * dataArray.length);
                 const xPos = (maxIndex / dataArray.length) * width;
                 const yPos = height - (maxValue / 255) * height;
@@ -1331,6 +1369,69 @@
                 canvasCtx.fillStyle = '#2c3e50';
                 canvasCtx.font = '12px Arial';
                 canvasCtx.fillText(`${freq.toFixed(1)} Hz`, xPos + 8, yPos - 5);
+            }
+        }
+        
+        // 设置进度环
+        function setProgress(percent) {
+            const circumference = 2 * Math.PI * 50;
+            const offset = circumference - percent * circumference;
+            progressCircle.style.strokeDashoffset = offset;
+        }
+        
+        // 添加测量记录
+        function addRecord(record) {
+            measurementRecords.unshift(record);
+            if (measurementRecords.length > 10) {
+                measurementRecords = measurementRecords.slice(0, 10);
+            }
+            localStorage.setItem('tensionRecords', JSON.stringify(measurementRecords));
+            updateRecordList();
+        }
+        
+        // 更新记录列表
+        function updateRecordList() {
+            if (measurementRecords.length === 0) {
+                recordList.innerHTML = '<div style="text-align: center; padding: 20px; color: #7f8c8d;">暂无测量记录</div>';
+                return;
+            }
+            
+            recordList.innerHTML = '';
+            measurementRecords.forEach((record, index) => {
+                const recordItem = document.createElement('div');
+                recordItem.className = 'record-item';
+                recordItem.innerHTML = `
+                    <div class="record-info">
+                        <div class="record-time">${record.time}</div>
+                        <div class="record-tension">${record.tensionKg.toFixed(2)} kg (${record.tensionN.toFixed(2)} N)</div>
+                        <div class="record-frequency">频率: ${record.frequency.toFixed(2)} Hz</div>
+                    </div>
+                    <div class="record-actions">
+                        <button class="record-btn delete-record" data-index="${index}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                recordList.appendChild(recordItem);
+            });
+            
+            // 添加删除事件监听器
+            document.querySelectorAll('.delete-record').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    measurementRecords.splice(index, 1);
+                    localStorage.setItem('tensionRecords', JSON.stringify(measurementRecords));
+                    updateRecordList();
+                });
+            });
+        }
+        
+        // 清空记录
+        function clearRecords() {
+            if (confirm('确定要清空所有测量记录吗？')) {
+                measurementRecords = [];
+                localStorage.setItem('tensionRecords', JSON.stringify(measurementRecords));
+                updateRecordList();
             }
         }
         
