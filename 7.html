@@ -15,9 +15,9 @@
             --success: #27ae60;
             --warning: #f39c12;
             --danger: #e74c3c;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             --border-radius: 16px;
-            --header-height: 60px;
+            --header-height: 64px;
         }
         
         * {
@@ -59,11 +59,11 @@
             align-items: center;
             gap: 10px;
             font-weight: 700;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
         }
         
         .logo i {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
         }
         
         .nav-tabs {
@@ -94,7 +94,7 @@
         /* 主容器 */
         .container {
             max-width: 100%;
-            padding: 15px;
+            padding: 20px;
             margin: 0 auto;
         }
         
@@ -182,7 +182,7 @@
         .measure-button-container {
             display: flex;
             justify-content: center;
-            margin: 20px 0;
+            margin: 25px 0;
         }
         
         .measure-button {
@@ -316,23 +316,41 @@
             100% { opacity: 1; }
         }
         
-        /* 权限提示 */
-        .permission-hint {
-            background: #e8f4fc;
-            border-left: 4px solid var(--secondary);
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 0 var(--border-radius) var(--border-radius) 0;
-            font-size: 0.9rem;
+        /* 权限提示图标 */
+        .permission-info {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            margin-left: 10px;
         }
         
-        .permission-hint h3 {
+        .permission-icon {
             color: var(--secondary);
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 1rem;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        
+        .permission-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            width: 200px;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 100;
+        }
+        
+        .permission-info:hover .permission-tooltip {
+            opacity: 1;
+            visibility: visible;
         }
         
         /* 测量记录 */
@@ -519,7 +537,7 @@
         /* 响应式调整 */
         @media (max-width: 480px) {
             .container {
-                padding: 10px;
+                padding: 15px;
             }
             
             .card {
@@ -569,7 +587,7 @@
         
         @media (max-width: 360px) {
             .container {
-                padding: 8px;
+                padding: 10px;
             }
             
             .card {
@@ -735,7 +753,14 @@
             
             <!-- 测量控制卡片 -->
             <div class="card">
-                <h2><i class="fas fa-sliders-h"></i> 测量控制</h2>
+                <h2><i class="fas fa-sliders-h"></i> 测量控制
+                    <div class="permission-info">
+                        <i class="fas fa-info-circle permission-icon"></i>
+                        <div class="permission-tooltip">
+                            需要麦克风权限来测量皮带振动频率。点击"开始测量"后请允许访问。
+                        </div>
+                    </div>
+                </h2>
                 
                 <div class="measure-button-container">
                     <div class="measure-button" id="measureButton">
@@ -745,11 +770,6 @@
                         <i class="fas fa-microphone"></i>
                         <div class="measure-button-text">开始测量</div>
                     </div>
-                </div>
-                
-                <div class="permission-hint">
-                    <h3><i class="fas fa-info-circle"></i> 麦克风权限提示</h3>
-                    <p>点击"开始测量"后，请允许浏览器访问麦克风。如果遇到权限问题，请查看"使用说明"页面。</p>
                 </div>
             </div>
             
@@ -763,15 +783,7 @@
                         <div id="frequencyValue" class="detail-value">-- Hz</div>
                     </div>
                     <div class="detail-item">
-                        <div class="detail-label">跨度长度</div>
-                        <div id="lengthValue" class="detail-value">-- mm</div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-label">张力 (N)</div>
-                        <div id="tensionNValue" class="detail-value">-- N</div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-label">张力 (kg)</div>
+                        <div class="detail-label">皮带张力</div>
                         <div id="tensionKgValue" class="detail-value">-- kg</div>
                     </div>
                 </div>
@@ -1012,8 +1024,6 @@
         const resultValue = document.getElementById('resultValue');
         const resultDetails = document.getElementById('resultDetails');
         const frequencyValue = document.getElementById('frequencyValue');
-        const lengthValue = document.getElementById('lengthValue');
-        const tensionNValue = document.getElementById('tensionNValue');
         const tensionKgValue = document.getElementById('tensionKgValue');
         const canvas = document.getElementById('frequencyCanvas');
         const canvasCtx = canvas.getContext('2d');
@@ -1247,8 +1257,6 @@
                 
                 // 显示详细信息
                 frequencyValue.textContent = `${frequency.toFixed(2)} Hz`;
-                lengthValue.textContent = `${L} mm`;
-                tensionNValue.textContent = `${tensionN.toFixed(2)} N`;
                 tensionKgValue.textContent = `${tensionKg.toFixed(2)} kg`;
                 resultDetails.style.display = 'grid';
                 
@@ -1449,7 +1457,7 @@
                 recordItem.innerHTML = `
                     <div class="record-info">
                         <div class="record-time">${record.time}</div>
-                        <div class="record-tension">${record.tensionKg.toFixed(2)} kg (${record.tensionN.toFixed(2)} N)</div>
+                        <div class="record-tension">${record.tensionKg.toFixed(2)} kg</div>
                         <div class="record-frequency">频率: ${record.frequency.toFixed(2)} Hz</div>
                     </div>
                     <div class="record-actions">
