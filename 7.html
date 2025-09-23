@@ -93,7 +93,7 @@
         /* 主容器 */
         .container {
             max-width: 100%;
-            padding: 20px;
+            padding: 15px;
             margin: 0 auto;
         }
         
@@ -117,14 +117,9 @@
             background: white;
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 15px;
+            margin-bottom: 15px;
             transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
         
         .card h2 {
@@ -135,6 +130,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            font-size: 1.2rem;
         }
         
         .card h2 i {
@@ -143,7 +139,7 @@
         
         /* 表单元素 */
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         
         label {
@@ -151,11 +147,12 @@
             margin-bottom: 8px;
             font-weight: 600;
             color: var(--dark);
+            font-size: 0.9rem;
         }
         
         input, select {
             width: 100%;
-            padding: 15px;
+            padding: 12px;
             border: 1px solid #ddd;
             border-radius: 8px;
             font-size: 1rem;
@@ -178,7 +175,7 @@
             background: var(--secondary);
             color: white;
             border: none;
-            padding: 15px 20px;
+            padding: 12px 20px;
             border-radius: 8px;
             cursor: pointer;
             font-size: 1rem;
@@ -224,21 +221,21 @@
         .btn-group {
             display: flex;
             gap: 10px;
-            margin-top: 20px;
+            margin-top: 15px;
         }
         
         /* 预设按钮 */
         .preset-section {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 8px;
+            margin-top: 10px;
         }
         
         .preset-btn {
             background: #f8f9fa;
             border: 1px solid #ddd;
-            padding: 12px;
+            padding: 10px;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s;
@@ -247,6 +244,7 @@
             flex-direction: column;
             align-items: center;
             gap: 5px;
+            font-size: 0.9rem;
         }
         
         .preset-btn:hover {
@@ -255,7 +253,7 @@
         }
         
         .preset-btn i {
-            font-size: 1.2rem;
+            font-size: 1rem;
             color: var(--secondary);
         }
         
@@ -266,34 +264,34 @@
         }
         
         .result-value {
-            font-size: 3rem;
+            font-size: 2.5rem;
             font-weight: 700;
             color: var(--secondary);
-            margin: 15px 0;
+            margin: 10px 0;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
         
         .result-details {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 20px;
+            gap: 10px;
+            margin-top: 15px;
         }
         
         .detail-item {
             background: white;
-            padding: 15px;
+            padding: 12px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
         
         .detail-label {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: #7f8c8d;
         }
         
         .detail-value {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 600;
             margin-top: 5px;
             color: var(--primary);
@@ -302,10 +300,10 @@
         /* 频谱图 */
         #frequencyCanvas {
             width: 100%;
-            height: 200px;
+            height: 150px;
             background: #f8f9fa;
             border-radius: 8px;
-            margin-top: 20px;
+            margin-top: 15px;
         }
         
         /* 状态指示 */
@@ -314,16 +312,17 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            padding: 15px;
+            padding: 12px;
             border-radius: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             background: #f8f9fa;
+            font-size: 0.9rem;
         }
         
         .recording-indicator {
             display: inline-block;
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             background: var(--danger);
             border-radius: 50%;
             animation: pulse 1.5s infinite;
@@ -335,53 +334,37 @@
             100% { opacity: 1; }
         }
         
-        /* 权限引导 */
-        .permission-guide {
-            background: #e8f4fc;
-            border-left: 4px solid var(--secondary);
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 0 var(--border-radius) var(--border-radius) 0;
-        }
-        
-        .permission-guide h3 {
-            color: var(--secondary);
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
         /* 使用说明 */
         .instructions {
             background: #f8f9fa;
             border-radius: var(--border-radius);
-            padding: 20px;
+            padding: 15px;
         }
         
         .instructions ol, .instructions ul {
             padding-left: 20px;
-            margin: 15px 0;
+            margin: 10px 0;
         }
         
         .instructions li {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
         }
         
         .step-card {
             background: white;
             border-radius: var(--border-radius);
-            padding: 15px;
-            margin-bottom: 15px;
+            padding: 12px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
         
         .step-number {
-            width: 30px;
-            height: 30px;
+            width: 25px;
+            height: 25px;
             background: var(--secondary);
             color: white;
             border-radius: 50%;
@@ -390,19 +373,20 @@
             justify-content: center;
             font-weight: 700;
             flex-shrink: 0;
+            font-size: 0.9rem;
         }
         
         /* 张力参考表格 */
         .tension-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
-            font-size: 0.9rem;
+            margin: 15px 0;
+            font-size: 0.8rem;
         }
         
         .tension-table th, .tension-table td {
             border: 1px solid #ddd;
-            padding: 10px;
+            padding: 8px;
             text-align: center;
         }
         
@@ -416,18 +400,19 @@
         }
         
         .tension-note {
-            margin-top: 15px;
+            margin-top: 12px;
             padding: 10px;
             background: #fff3cd;
             border-radius: 8px;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
         
         .tension-legend {
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
-            margin: 15px 0;
+            gap: 10px;
+            margin: 12px 0;
+            font-size: 0.8rem;
         }
         
         .legend-item {
@@ -437,8 +422,8 @@
         }
         
         .legend-color {
-            width: 15px;
-            height: 15px;
+            width: 12px;
+            height: 12px;
             border-radius: 3px;
         }
         
@@ -461,20 +446,21 @@
         /* 底部信息 */
         footer {
             text-align: center;
-            margin-top: 40px;
-            padding: 20px;
+            margin-top: 30px;
+            padding: 15px;
             color: #7f8c8d;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
         
         /* 响应式调整 */
         @media (max-width: 480px) {
             .container {
-                padding: 15px;
+                padding: 10px;
             }
             
             .card {
-                padding: 15px;
+                padding: 12px;
+                margin-bottom: 12px;
             }
             
             .result-details {
@@ -490,27 +476,16 @@
             }
             
             .tension-table {
-                font-size: 0.8rem;
+                font-size: 0.7rem;
             }
             
             .tension-table th, .tension-table td {
                 padding: 5px;
             }
-        }
-        
-        /* 加载动画 */
-        .loader {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+            
+            .result-value {
+                font-size: 2rem;
+            }
         }
         
         /* 模态框 */
@@ -530,9 +505,9 @@
         .modal-content {
             background: white;
             border-radius: var(--border-radius);
-            padding: 25px;
+            padding: 20px;
             max-width: 90%;
-            width: 400px;
+            width: 350px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             animation: modalFadeIn 0.3s ease;
         }
@@ -543,33 +518,55 @@
         }
         
         .modal h3 {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             color: var(--primary);
+            font-size: 1.2rem;
         }
         
         .modal-buttons {
             display: flex;
             gap: 10px;
-            margin-top: 20px;
+            margin-top: 15px;
         }
         
         .modal-buttons .btn {
             flex: 1;
+            padding: 10px;
         }
         
         /* 参数说明 */
         .param-explanation {
             background: #f8f9fa;
             border-radius: 8px;
-            padding: 15px;
+            padding: 12px;
             margin-top: 10px;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: #666;
         }
         
         .param-explanation h4 {
             margin-bottom: 8px;
             color: var(--primary);
+            font-size: 0.9rem;
+        }
+        
+        /* 权限提示 */
+        .permission-hint {
+            background: #e8f4fc;
+            border-left: 4px solid var(--secondary);
+            padding: 10px;
+            margin: 15px 0;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            font-size: 0.9rem;
+        }
+        
+        .permission-hint h3 {
+            color: var(--secondary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
         }
     </style>
 </head>
@@ -612,42 +609,29 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="spanLength">跨度长度 L (米)</label>
-                    <input type="number" id="spanLength" value="0.8" step="0.01" min="0.1">
-                    <div class="param-explanation">
-                        <h4>什么是跨度长度？</h4>
-                        <p>跨度长度是指皮带在两个皮带轮之间自由振动的长度，通常是指两个皮带轮中心之间的距离。对于自行车，这通常是前链轮和后飞轮之间的距离。</p>
-                    </div>
+                    <label for="spanLength">跨度长度 (mm)</label>
+                    <input type="number" id="spanLength" value="800" step="1" min="100">
                 </div>
                 
                 <div class="form-group">
                     <label for="massDensity">线性密度 μ (kg/m)</label>
                     <input type="number" id="massDensity" value="0.01" step="0.001" min="0.001">
-                    <div class="param-explanation">
-                        <h4>什么是线性密度？</h4>
-                        <p>线性密度是指皮带单位长度的质量（kg/m）。这个参数参与张力计算：T = 4 × μ × L² × f²。不同皮带类型有不同的线性密度：</p>
-                        <ul>
-                            <li>自行车同步带：约 0.01-0.02 kg/m</li>
-                            <li>工业同步带：约 0.05-0.15 kg/m</li>
-                            <li>V型皮带：约 0.1-0.3 kg/m</li>
-                        </ul>
-                    </div>
                 </div>
                 
                 <div class="preset-section">
-                    <div class="preset-btn" data-l="0.8" data-mu="0.01">
+                    <div class="preset-btn" data-l="800" data-mu="0.01">
                         <i class="fas fa-bicycle"></i>
                         <span>自行车同步带</span>
                     </div>
-                    <div class="preset-btn" data-l="1.2" data-mu="0.08">
+                    <div class="preset-btn" data-l="1200" data-mu="0.08">
                         <i class="fas fa-cog"></i>
                         <span>工业同步带</span>
                     </div>
-                    <div class="preset-btn" data-l="1.5" data-mu="0.15">
+                    <div class="preset-btn" data-l="1500" data-mu="0.15">
                         <i class="fas fa-industry"></i>
                         <span>V型皮带</span>
                     </div>
-                    <div class="preset-btn" data-l="2.0" data-mu="0.25">
+                    <div class="preset-btn" data-l="2000" data-mu="0.25">
                         <i class="fas fa-weight-hanging"></i>
                         <span>重型皮带</span>
                     </div>
@@ -667,15 +651,9 @@
                     </button>
                 </div>
                 
-                <div class="permission-guide">
-                    <h3><i class="fas fa-info-circle"></i> 三星浏览器麦克风权限设置</h3>
-                    <p>如果无法访问麦克风，请按以下步骤设置：</p>
-                    <ol>
-                        <li>点击三星浏览器右上角的三个点菜单</li>
-                        <li>选择"设置" → "网站权限" → "麦克风"</li>
-                        <li>找到本网站并设置为"允许"</li>
-                        <li>刷新页面后重试</li>
-                    </ol>
+                <div class="permission-hint">
+                    <h3><i class="fas fa-info-circle"></i> 麦克风权限提示</h3>
+                    <p>点击"开始测量"后，请允许浏览器访问麦克风。如果遇到权限问题，请查看"使用说明"页面。</p>
                 </div>
             </div>
             
@@ -690,7 +668,7 @@
                     </div>
                     <div class="detail-item">
                         <div class="detail-label">跨度长度</div>
-                        <div id="lengthValue" class="detail-value">-- m</div>
+                        <div id="lengthValue" class="detail-value">-- mm</div>
                     </div>
                     <div class="detail-item">
                         <div class="detail-label">线性密度</div>
@@ -818,33 +796,64 @@
                         <div>系统自动分析频率并计算张力，结果显示在屏幕上</div>
                     </div>
                     
-                    <h3>技术原理</h3>
-                    <p>本工具基于弦振动理论，通过检测皮带振动频率计算张力：</p>
-                    <p style="text-align: center; font-weight: bold; margin: 15px 0; background: #f8f9fa; padding: 10px; border-radius: 8px;">
-                        T = 4 × μ × L² × f²
-                    </p>
-                    <p>其中：</p>
-                    <ul>
-                        <li><strong>T</strong> - 皮带张力 (N)</li>
-                        <li><strong>μ</strong> - 皮带线性密度 (kg/m)，即皮带每米长度的质量</li>
-                        <li><strong>L</strong> - 皮带跨度长度 (m)，即两个皮带轮中心之间的距离</li>
-                        <li><strong>f</strong> - 振动频率 (Hz)，通过敲击皮带产生的振动频率</li>
-                    </ul>
-                    
                     <h3>参数说明</h3>
                     <div class="step-card">
                         <div class="step-number">L</div>
                         <div>
-                            <strong>跨度长度</strong>：指皮带在两个皮带轮之间自由振动的长度。对于自行车，通常是前链轮和后飞轮中心之间的距离。测量时请使用米作为单位。
+                            <strong>跨度长度</strong>：指皮带在两个皮带轮之间自由振动的长度。对于自行车，通常是前链轮和后飞轮中心之间的距离。测量时请使用毫米作为单位。
                         </div>
                     </div>
                     
                     <div class="step-card">
                         <div class="step-number">μ</div>
                         <div>
-                            <strong>线性密度</strong>：指皮带单位长度的质量（kg/m）。这个参数可以从皮带制造商的技术规格中获得，或者通过称量已知长度皮带的质量来计算。不同皮带类型有典型的线性密度范围。
+                            <strong>线性密度</strong>：指皮带单位长度的质量（kg/m）。这个参数可以从皮带制造商的技术规格中获得，或者通过称量已知长度皮带的质量来计算。不同皮带类型有典型的线性密度范围：
+                            <ul>
+                                <li>自行车同步带：约 0.01-0.02 kg/m</li>
+                                <li>工业同步带：约 0.05-0.15 kg/m</li>
+                                <li>V型皮带：约 0.1-0.3 kg/m</li>
+                            </ul>
                         </div>
                     </div>
+                    
+                    <h3>技术原理</h3>
+                    <p>本工具基于弦振动理论，通过检测皮带振动频率计算张力：</p>
+                    <p style="text-align: center; font-weight: bold; margin: 15px 0; background: #f8f9fa; padding: 10px; border-radius: 8px;">
+                        T = 4 × μ × (L/1000)² × f²
+                    </p>
+                    <p>其中：</p>
+                    <ul>
+                        <li><strong>T</strong> - 皮带张力 (N)</li>
+                        <li><strong>μ</strong> - 皮带线性密度 (kg/m)</li>
+                        <li><strong>L</strong> - 皮带跨度长度 (mm)，转换为米需要除以1000</li>
+                        <li><strong>f</strong> - 振动频率 (Hz)，通过敲击皮带产生的振动频率</li>
+                    </ul>
+                    
+                    <h3>三星浏览器权限设置</h3>
+                    <div class="permission-hint">
+                        <p>如果无法访问麦克风，请按以下步骤设置：</p>
+                        <ol>
+                            <li>点击三星浏览器右上角的三个点菜单</li>
+                            <li>选择"设置" → "网站权限" → "麦克风"</li>
+                            <li>找到本网站并设置为"允许"</li>
+                            <li>刷新页面后重试</li>
+                        </ol>
+                    </div>
+                    
+                    <h3>测量结果说明</h3>
+                    <p>测量结果是通过以下步骤生成的：</p>
+                    <ol>
+                        <li>使用设备的麦克风录制皮带振动的声音</li>
+                        <li>通过快速傅里叶变换(FFT)算法分析音频信号</li>
+                        <li>提取主导频率（峰值频率）</li>
+                        <li>根据公式计算皮带张力</li>
+                    </ol>
+                    <p><strong>如果环境嘈杂，可能无法检测到正确频率</strong>。请确保：</p>
+                    <ul>
+                        <li>在安静环境中进行测量</li>
+                        <li>敲击皮带中央以获得清晰的振动</li>
+                        <li>确保麦克风距离皮带适当（约10-30厘米）</li>
+                    </ul>
                     
                     <h3>注意事项</h3>
                     <ul>
@@ -852,7 +861,6 @@
                         <li>敲击皮带中央以获得准确的基频振动</li>
                         <li>测量结果仅供参考，关键应用请使用专业设备验证</li>
                         <li>不同浏览器和设备可能影响测量精度</li>
-                        <li>三星浏览器用户如遇权限问题，请参考"检测工具"页面的权限设置指南</li>
                     </ul>
                 </div>
             </div>
@@ -885,8 +893,8 @@
         let scriptProcessor;
         let isRecording = false;
         const sampleRate = 44100;
-        const fftSize = 2048;
-        const bufferDuration = 3; // 录制时长（秒）
+        const fftSize = 4096; // 增加FFT大小以提高频率分辨率
+        const bufferDuration = 4; // 增加录制时长以提高准确性
         let permissionRequested = false; // 标记是否已经请求过权限
         
         // DOM元素
@@ -912,7 +920,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             setupCanvas();
             setupEventListeners();
-            // 不再自动检查权限，避免重复提醒
         });
         
         // 设置Canvas尺寸
@@ -997,19 +1004,19 @@
             
             switch(beltType) {
                 case 'bicycle-sync':
-                    spanLengthInput.value = '0.8';
+                    spanLengthInput.value = '800';
                     massDensityInput.value = '0.01';
                     break;
                 case 'v-belt':
-                    spanLengthInput.value = '1.5';
+                    spanLengthInput.value = '1500';
                     massDensityInput.value = '0.15';
                     break;
                 case 'timing-belt':
-                    spanLengthInput.value = '1.2';
+                    spanLengthInput.value = '1200';
                     massDensityInput.value = '0.08';
                     break;
                 case 'flat-belt':
-                    spanLengthInput.value = '2.0';
+                    spanLengthInput.value = '2000';
                     massDensityInput.value = '0.25';
                     break;
                 default:
@@ -1040,14 +1047,20 @@
                 
                 // 只在未请求过权限时显示模态框
                 if (!permissionRequested) {
-                    const permissionStatus = await navigator.permissions.query({ name: 'microphone' });
-                    
-                    if (permissionStatus.state === 'prompt') {
+                    if (navigator.permissions) {
+                        const permissionStatus = await navigator.permissions.query({ name: 'microphone' });
+                        
+                        if (permissionStatus.state === 'prompt') {
+                            permissionModal.style.display = 'flex';
+                            return; // 等待用户选择
+                        } else if (permissionStatus.state === 'denied') {
+                            showError('麦克风访问被拒绝。请在浏览器设置中允许麦克风权限。');
+                            permissionRequested = true;
+                            return;
+                        }
+                    } else {
+                        // 某些浏览器不支持permissions API
                         permissionModal.style.display = 'flex';
-                        return; // 等待用户选择
-                    } else if (permissionStatus.state === 'denied') {
-                        showError('麦克风访问被拒绝。请在浏览器设置中允许麦克风权限。');
-                        permissionRequested = true;
                         return;
                     }
                 }
@@ -1056,7 +1069,8 @@
                     audio: {
                         echoCancellation: false,
                         noiseSuppression: false,
-                        autoGainControl: false
+                        autoGainControl: false,
+                        sampleRate: sampleRate
                     } 
                 });
                 
@@ -1064,7 +1078,7 @@
                 microphone = audioContext.createMediaStreamSource(stream);
                 analyser = audioContext.createAnalyser();
                 analyser.fftSize = fftSize;
-                analyser.smoothingTimeConstant = 0.8;
+                analyser.smoothingTimeConstant = 0.5; // 降低平滑系数以提高响应速度
                 
                 // 创建脚本处理器用于处理音频数据
                 scriptProcessor = audioContext.createScriptProcessor(fftSize, 1, 1);
@@ -1076,6 +1090,8 @@
                 
                 // 设置音频处理回调
                 let audioData = [];
+                let startTime = Date.now();
+                
                 scriptProcessor.onaudioprocess = (e) => {
                     if (isRecording) {
                         const input = e.inputBuffer.getChannelData(0);
@@ -1083,6 +1099,11 @@
                         
                         // 实时绘制频谱
                         drawRealTimeSpectrum();
+                        
+                        // 检查是否超时
+                        if (Date.now() - startTime > bufferDuration * 1000) {
+                            stopRecording(audioData);
+                        }
                     }
                 };
                 
@@ -1093,11 +1114,6 @@
                 resultStatus.innerHTML = '<span class="recording-indicator"></span> 正在录制... 请敲击皮带中央';
                 resultValue.textContent = '--';
                 resultDetails.style.display = 'none';
-                
-                // 设置自动停止
-                setTimeout(() => {
-                    if (isRecording) stopRecording(audioData);
-                }, bufferDuration * 1000);
                 
             } catch (err) {
                 console.error('录音错误:', err);
@@ -1147,7 +1163,8 @@
                 // 计算张力
                 const L = parseFloat(document.getElementById('spanLength').value);
                 const mu = parseFloat(document.getElementById('massDensity').value);
-                const tension = 4 * mu * Math.pow(L, 2) * Math.pow(frequency, 2);
+                // 注意：L是毫米，需要转换为米
+                const tension = 4 * mu * Math.pow(L/1000, 2) * Math.pow(frequency, 2);
                 
                 // 显示结果
                 resultStatus.textContent = '测量完成';
@@ -1156,7 +1173,7 @@
                 
                 // 显示详细信息
                 frequencyValue.textContent = `${frequency.toFixed(2)} Hz`;
-                lengthValue.textContent = `${L} m`;
+                lengthValue.textContent = `${L} mm`;
                 densityValue.textContent = `${mu} kg/m`;
                 timeValue.textContent = new Date().toLocaleTimeString();
                 resultDetails.style.display = 'grid';
@@ -1168,18 +1185,18 @@
                 }, 300);
                 
             } else {
-                showError('未检测到有效频率，请重试');
+                showError('未检测到有效频率，请重试。确保在安静环境中敲击皮带。');
             }
         }
         
         // 分析频率
         function analyzeFrequency(audioData) {
-            const n = fftSize;
+            const n = Math.min(fftSize, audioData.length);
             const real = new Float32Array(n);
             const imag = new Float32Array(n);
             
             // 应用汉宁窗减少频谱泄漏
-            for (let i = 0; i < Math.min(n, audioData.length); i++) {
+            for (let i = 0; i < n; i++) {
                 const window = 0.5 * (1 - Math.cos(2 * Math.PI * i / (n - 1)));
                 real[i] = audioData[i] * window;
                 imag[i] = 0;
@@ -1192,7 +1209,11 @@
             let maxMag = 0;
             let maxIndex = 0;
             
-            for (let i = 5; i < n / 2; i++) { // 从5开始忽略极低频
+            // 只分析20Hz到1000Hz的频率范围
+            const minFreqIndex = Math.floor(20 * n / sampleRate);
+            const maxFreqIndex = Math.floor(1000 * n / sampleRate);
+            
+            for (let i = minFreqIndex; i < Math.min(maxFreqIndex, n/2); i++) {
                 const mag = Math.sqrt(real[i] * real[i] + imag[i] * imag[i]);
                 if (mag > maxMag) {
                     maxMag = mag;
@@ -1202,7 +1223,15 @@
             
             // 计算频率
             const freqResolution = sampleRate / n;
-            return maxIndex * freqResolution;
+            const frequency = maxIndex * freqResolution;
+            
+            // 只有幅度足够大的频率才被认为是有效信号
+            const threshold = 0.01; // 调整这个阈值以适应不同环境
+            if (maxMag > threshold) {
+                return frequency;
+            }
+            
+            return null;
         }
         
         // FFT实现（Cooley-Tukey算法）
