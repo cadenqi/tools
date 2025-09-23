@@ -203,135 +203,6 @@
             transition: stroke-dashoffset 0.3s;
         }
         
-        /* 结果展示 */
-        .result-card {
-            text-align: center;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            position: relative;
-        }
-        
-        .result-value {
-            font-size: 2.8rem;
-            font-weight: 700;
-            color: var(--secondary);
-            margin: 15px 0;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        
-        .result-details {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .detail-item {
-            background: white;
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-        
-        .detail-label {
-            font-size: 0.85rem;
-            color: #7f8c8d;
-        }
-        
-        .detail-value {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-top: 5px;
-            color: var(--primary);
-        }
-        
-        /* 实时测量记录 */
-        .live-records {
-            margin-top: 20px;
-        }
-        
-        .records-container {
-            display: flex;
-            overflow-x: auto;
-            gap: 15px;
-            padding: 10px 0;
-            margin-top: 15px;
-            scrollbar-width: thin;
-        }
-        
-        .record-card {
-            background: white;
-            border-radius: 12px;
-            padding: 15px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            min-width: 120px;
-            position: relative;
-            flex-shrink: 0;
-        }
-        
-        .record-number {
-            font-size: 0.8rem;
-            color: #7f8c8d;
-        }
-        
-        .record-tension {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--primary);
-            margin: 5px 0;
-        }
-        
-        .record-frequency {
-            font-size: 0.9rem;
-            color: var(--secondary);
-        }
-        
-        .record-delete {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background: rgba(231, 76, 60, 0.1);
-            border: none;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: var(--danger);
-            font-size: 0.8rem;
-        }
-        
-        .average-result {
-            background: #e8f4fc;
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 15px;
-            text-align: center;
-        }
-        
-        .average-label {
-            font-size: 0.9rem;
-            color: #7f8c8d;
-        }
-        
-        .average-value {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--success);
-            margin-top: 5px;
-        }
-        
-        /* 频谱图 */
-        #frequencyCanvas {
-            width: 100%;
-            height: 180px;
-            background: #f8f9fa;
-            border-radius: 12px;
-            margin-top: 15px;
-        }
-        
         /* 状态指示 */
         .status-indicator {
             display: flex;
@@ -358,6 +229,103 @@
             0% { opacity: 1; }
             50% { opacity: 0.5; }
             100% { opacity: 1; }
+        }
+        
+        /* 实时测量记录 */
+        .live-records {
+            margin-top: 20px;
+        }
+        
+        .records-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+            justify-content: center;
+        }
+        
+        .record-item {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            width: 120px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+            transition: transform 0.3s;
+        }
+        
+        .record-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .record-number {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+        }
+        
+        .record-frequency {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 5px 0;
+        }
+        
+        .record-tension {
+            font-size: 0.9rem;
+            color: var(--secondary);
+        }
+        
+        .record-close {
+            position: absolute;
+            top: 5px;
+            right: 8px;
+            background: none;
+            border: none;
+            color: #7f8c8d;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .record-close:hover {
+            color: var(--danger);
+        }
+        
+        .average-result {
+            background: #e8f4fc;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .average-label {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+        
+        .average-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--success);
+            margin-top: 5px;
+        }
+        
+        .records-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        /* 频谱图 */
+        #frequencyCanvas {
+            width: 100%;
+            height: 180px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-top: 15px;
         }
         
         /* 权限提示图标 */
@@ -395,6 +363,28 @@
         .permission-info:hover .permission-tooltip {
             opacity: 1;
             visibility: visible;
+        }
+        
+        /* 参数设置按钮 */
+        .param-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin: 10px auto;
+            transition: all 0.3s;
+        }
+        
+        .param-button:hover {
+            background: #154360;
+            transform: translateY(-2px);
         }
         
         /* 张力参考表格 */
@@ -547,8 +537,14 @@
                 margin-bottom: 15px;
             }
             
-            .result-details {
-                grid-template-columns: 1fr;
+            .records-container {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: 10px;
+            }
+            
+            .record-item {
+                flex-shrink: 0;
             }
             
             .tension-table {
@@ -557,10 +553,6 @@
             
             .tension-table th, .tension-table td {
                 padding: 8px;
-            }
-            
-            .result-value {
-                font-size: 2.2rem;
             }
             
             .measure-button {
@@ -599,10 +591,6 @@
             .measure-button i {
                 font-size: 1.8rem;
             }
-            
-            .result-value {
-                font-size: 2rem;
-            }
         }
         
         /* 模态框 */
@@ -622,9 +610,9 @@
         .modal-content {
             background: white;
             border-radius: var(--border-radius);
-            padding: 20px;
+            padding: 25px;
             max-width: 90%;
-            width: 350px;
+            width: 400px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             animation: modalFadeIn 0.3s ease;
         }
@@ -635,20 +623,21 @@
         }
         
         .modal h3 {
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             color: var(--primary);
-            font-size: 1.2rem;
+            font-size: 1.3rem;
+            text-align: center;
         }
         
         .modal-buttons {
             display: flex;
             gap: 10px;
-            margin-top: 15px;
+            margin-top: 20px;
         }
         
         .modal-buttons .btn {
             flex: 1;
-            padding: 10px;
+            padding: 12px;
         }
         
         /* 按钮样式 */
@@ -703,33 +692,17 @@
             background: #219653;
         }
         
-        .btn-clear {
+        .btn-warning {
             background: var(--warning);
         }
         
-        .btn-clear:hover {
+        .btn-warning:hover {
             background: #e67e22;
         }
         
-        .btn-params {
-            background: var(--primary);
-            margin-top: 10px;
-        }
-        
-        .btn-params:hover {
-            background: #154360;
-        }
-        
-        /* 参数设置表单 */
-        .param-form {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-        
+        /* 表单元素 */
         .form-group {
-            margin-bottom: 0;
+            margin-bottom: 20px;
         }
         
         label {
@@ -756,22 +729,16 @@
             box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
         }
         
-        /* 删除最新结果按钮 */
-        .delete-result {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(231, 76, 60, 0.1);
-            border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: var(--danger);
-            font-size: 1rem;
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .param-hint {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 5px;
         }
     </style>
 </head>
@@ -795,7 +762,7 @@
         <div id="tool-tab" class="tab-content active">
             <!-- 状态指示器 -->
             <div class="status-indicator">
-                <div id="resultStatus">准备测量皮带张力</div>
+                <div id="resultStatus">准备测量皮带频率</div>
             </div>
             
             <!-- 测量控制卡片 -->
@@ -809,6 +776,10 @@
                     </div>
                 </h2>
                 
+                <button class="param-button" id="paramButton">
+                    <i class="fas fa-cog"></i> 参数设置
+                </button>
+                
                 <div class="measure-button-container">
                     <div class="measure-button" id="measureButton">
                         <svg class="progress-ring" width="140" height="140">
@@ -818,59 +789,36 @@
                         <div class="measure-button-text">开始测量</div>
                     </div>
                 </div>
-                
-                <button id="paramsButton" class="btn btn-params">
-                    <i class="fas fa-cog"></i> 参数设置
-                </button>
             </div>
             
             <!-- 实时测量记录 -->
             <div class="card">
-                <h2><i class="fas fa-history"></i> 实时测量记录</h2>
+                <h2><i class="fas fa-history"></i> 测量记录</h2>
                 
                 <div class="live-records">
-                    <div class="records-container" id="liveRecordsContainer">
+                    <div class="records-container" id="recordsContainer">
                         <!-- 实时测量记录将动态添加到这里 -->
-                        <div style="text-align: center; padding: 20px; color: #7f8c8d; width: 100%;">
+                        <div style="text-align: center; width: 100%; padding: 20px; color: #7f8c8d;">
                             暂无测量记录，点击上方按钮开始测量
                         </div>
                     </div>
                     
-                    <div class="average-result" id="averageResult" style="display: none;">
-                        <div class="average-label">4次测量平均值</div>
-                        <div class="average-value" id="averageValue">-- kg</div>
-                    </div>
-                    
-                    <div style="text-align: center; margin-top: 15px;">
-                        <button id="clearLiveRecords" class="btn btn-clear">
+                    <div class="records-controls">
+                        <button id="clearRecords" class="btn btn-warning">
                             <i class="fas fa-eraser"></i> 清空记录
                         </button>
                     </div>
-                </div>
-            </div>
-            
-            <!-- 结果展示卡片 -->
-            <div class="card result-card">
-                <button class="delete-result" id="deleteResult" style="display: none;">
-                    <i class="fas fa-times"></i>
-                </button>
-                <h2><i class="fas fa-chart-line"></i> 最新测量结果</h2>
-                <div id="resultValue" class="result-value">--</div>
-                <div id="resultDetails" class="result-details" style="display: none;">
-                    <div class="detail-item">
-                        <div class="detail-label">检测频率</div>
-                        <div id="frequencyValue" class="detail-value">-- Hz</div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-label">皮带张力</div>
-                        <div id="tensionKgValue" class="detail-value">-- kg</div>
+                    
+                    <div class="average-result" id="averageResult" style="display: none;">
+                        <div class="average-label">4次测量平均值</div>
+                        <div class="average-value" id="averageValue">-- Hz</div>
                     </div>
                 </div>
             </div>
             
             <!-- 频谱图卡片 -->
             <div class="card">
-                <h2><i class="fas fa-waveform"></i> 频率频谱 (5-100Hz)</h2>
+                <h2><i class="fas fa-waveform"></i> 频率频谱</h2>
                 <canvas id="frequencyCanvas"></canvas>
             </div>
         </div>
@@ -1001,7 +949,7 @@
                     
                     <div class="step-card">
                         <div class="step-number">1</div>
-                        <div>点击"参数设置"按钮，输入皮带参数（跨度长度和线性密度）</div>
+                        <div>点击"参数设置"按钮，设置皮带参数</div>
                     </div>
                     
                     <div class="step-card">
@@ -1016,7 +964,7 @@
                     
                     <div class="step-card">
                         <div class="step-number">4</div>
-                        <div>系统自动分析频率并计算张力，结果显示在屏幕上</div>
+                        <div>系统自动分析频率，结果显示在测量记录中</div>
                     </div>
                     
                     <div class="step-card">
@@ -1042,7 +990,7 @@
                     <ul>
                         <li><strong>频率范围限制</strong>：只分析5-100Hz范围内的频率，过滤人声和其他高频噪声</li>
                         <li><strong>幅度阈值</strong>：只有超过特定幅度的信号才被认为是有效振动</li>
-                        <li><strong>短时测量</strong>：2秒的测量时间减少环境噪声干扰</li>
+                        <li><strong>短时测量</strong>：检测皮带按下时的瞬时振动，减少环境噪声干扰</li>
                         <li><strong>峰值检测</strong>：识别最明显的频率峰值，忽略背景噪声</li>
                     </ul>
                     
@@ -1071,29 +1019,33 @@
     </div>
     
     <!-- 参数设置模态框 -->
-    <div id="paramsModal" class="modal">
+    <div id="paramModal" class="modal">
         <div class="modal-content">
             <h3><i class="fas fa-cog"></i> 参数设置</h3>
             
-            <div class="param-form">
-                <div class="form-group">
-                    <label for="spanLength">跨度长度 (mm)</label>
-                    <input type="number" id="spanLength" value="800" step="1" min="100">
-                </div>
-                
-                <div class="form-group">
-                    <label for="massDensity">线性密度 (kg/m)</label>
-                    <input type="number" id="massDensity" value="0.01" step="0.001" min="0.001">
-                </div>
+            <div class="form-group">
+                <label for="spanLength">跨度长度 (mm)</label>
+                <input type="number" id="spanLength" value="800" step="1" min="100">
+                <div class="param-hint">皮带在两个皮带轮之间的自由振动长度</div>
             </div>
             
-            <div style="font-size: 0.8rem; color: #666; margin-top: 5px;">
-                自行车同步带线性密度通常为 0.01-0.02 kg/m
+            <div class="form-group">
+                <label for="massDensity">线性密度 (kg/m)</label>
+                <input type="number" id="massDensity" value="0.01" step="0.001" min="0.001">
+                <div class="param-hint">自行车同步带通常为 0.01-0.02 kg/m</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="beltType">皮带类型</label>
+                <select id="beltType">
+                    <option value="bicycle-sync">自行车同步带</option>
+                    <option value="custom">自定义</option>
+                </select>
             </div>
             
             <div class="modal-buttons">
-                <button id="cancelParams" class="btn btn-danger">取消</button>
-                <button id="saveParams" class="btn btn-success">保存</button>
+                <button id="cancelParam" class="btn btn-danger">取消</button>
+                <button id="saveParam" class="btn btn-success">保存</button>
             </div>
         </div>
     </div>
@@ -1125,18 +1077,14 @@
         let isRecording = false;
         const sampleRate = 44100;
         const fftSize = 4096;
-        const bufferDuration = 2; // 缩短测量时间至2秒
         let permissionRequested = false;
         let liveRecords = []; // 实时测量记录
-        let currentResult = null; // 最新测量结果
+        let recordingStartTime = 0;
+        let recordingTimeout = null;
         
         // DOM元素
         const measureButton = document.getElementById('measureButton');
         const resultStatus = document.getElementById('resultStatus');
-        const resultValue = document.getElementById('resultValue');
-        const resultDetails = document.getElementById('resultDetails');
-        const frequencyValue = document.getElementById('frequencyValue');
-        const tensionKgValue = document.getElementById('tensionKgValue');
         const canvas = document.getElementById('frequencyCanvas');
         const canvasCtx = canvas.getContext('2d');
         const navTabs = document.querySelectorAll('.nav-tab');
@@ -1144,26 +1092,23 @@
         const permissionModal = document.getElementById('permissionModal');
         const grantPermissionBtn = document.getElementById('grantPermission');
         const denyPermissionBtn = document.getElementById('denyPermission');
-        const liveRecordsContainer = document.getElementById('liveRecordsContainer');
+        const recordsContainer = document.getElementById('recordsContainer');
         const averageResult = document.getElementById('averageResult');
         const averageValue = document.getElementById('averageValue');
-        const clearLiveRecordsBtn = document.getElementById('clearLiveRecords');
+        const clearRecordsBtn = document.getElementById('clearRecords');
         const progressCircle = document.querySelector('.progress-ring-circle');
-        const paramsButton = document.getElementById('paramsButton');
-        const paramsModal = document.getElementById('paramsModal');
-        const saveParamsBtn = document.getElementById('saveParams');
-        const cancelParamsBtn = document.getElementById('cancelParams');
+        const paramButton = document.getElementById('paramButton');
+        const paramModal = document.getElementById('paramModal');
+        const cancelParam = document.getElementById('cancelParam');
+        const saveParam = document.getElementById('saveParam');
         const spanLengthInput = document.getElementById('spanLength');
         const massDensityInput = document.getElementById('massDensity');
-        const deleteResultBtn = document.getElementById('deleteResult');
+        const beltTypeSelect = document.getElementById('beltType');
         
         // 页面加载时初始化
         document.addEventListener('DOMContentLoaded', function() {
             setupCanvas();
             setupEventListeners();
-            
-            // 从本地存储加载参数
-            loadParamsFromStorage();
         });
         
         // 设置Canvas尺寸
@@ -1219,82 +1164,38 @@
                 permissionRequested = true;
             });
             
-            // 清空实时记录按钮
-            clearLiveRecordsBtn.addEventListener('click', clearLiveRecords);
+            // 清空记录按钮
+            clearRecordsBtn.addEventListener('click', clearLiveRecords);
             
             // 参数设置按钮
-            paramsButton.addEventListener('click', () => {
-                paramsModal.style.display = 'flex';
+            paramButton.addEventListener('click', () => {
+                paramModal.style.display = 'flex';
             });
             
-            // 保存参数按钮
-            saveParamsBtn.addEventListener('click', saveParams);
-            
-            // 取消参数设置按钮
-            cancelParamsBtn.addEventListener('click', () => {
-                paramsModal.style.display = 'none';
+            // 参数设置模态框按钮
+            cancelParam.addEventListener('click', () => {
+                paramModal.style.display = 'none';
             });
             
-            // 删除最新结果按钮
-            deleteResultBtn.addEventListener('click', deleteCurrentResult);
+            saveParam.addEventListener('click', () => {
+                paramModal.style.display = 'none';
+                // 这里可以添加保存参数的逻辑
+            });
+            
+            // 皮带类型变化事件
+            beltTypeSelect.addEventListener('change', function() {
+                if (this.value === 'bicycle-sync') {
+                    spanLengthInput.value = '800';
+                    massDensityInput.value = '0.01';
+                }
+            });
             
             // 窗口调整大小时重置Canvas
             window.addEventListener('resize', setupCanvas);
         }
         
-        // 从本地存储加载参数
-        function loadParamsFromStorage() {
-            const savedSpanLength = localStorage.getItem('spanLength');
-            const savedMassDensity = localStorage.getItem('massDensity');
-            
-            if (savedSpanLength) {
-                spanLengthInput.value = savedSpanLength;
-            }
-            
-            if (savedMassDensity) {
-                massDensityInput.value = savedMassDensity;
-            }
-        }
-        
-        // 保存参数到本地存储
-        function saveParams() {
-            const spanLength = spanLengthInput.value;
-            const massDensity = massDensityInput.value;
-            
-            if (!spanLength || spanLength <= 0) {
-                alert('请输入有效的跨度长度（大于0）');
-                return;
-            }
-            
-            if (!massDensity || massDensity <= 0) {
-                alert('请输入有效的线性密度（大于0）');
-                return;
-            }
-            
-            localStorage.setItem('spanLength', spanLength);
-            localStorage.setItem('massDensity', massDensity);
-            
-            paramsModal.style.display = 'none';
-            resultStatus.textContent = '参数已保存，准备测量皮带张力';
-            resultStatus.style.color = 'var(--dark)';
-        }
-        
         // 开始录制
         async function startRecording() {
-            // 验证输入
-            const L = parseFloat(spanLengthInput.value);
-            const mu = parseFloat(massDensityInput.value);
-            
-            if (!L || L <= 0) {
-                showError('请输入有效的跨度长度（大于0）');
-                return;
-            }
-            
-            if (!mu || mu <= 0) {
-                showError('请输入有效的线性密度（大于0）');
-                return;
-            }
-            
             try {
                 // 请求麦克风权限并创建音频上下文
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -1343,7 +1244,7 @@
                 
                 // 设置音频处理回调
                 let audioData = [];
-                let startTime = Date.now();
+                recordingStartTime = Date.now();
                 
                 scriptProcessor.onaudioprocess = (e) => {
                     if (isRecording) {
@@ -1353,13 +1254,8 @@
                         // 实时绘制频谱
                         drawRealTimeSpectrum();
                         
-                        // 更新进度环
-                        const elapsed = Date.now() - startTime;
-                        const progress = elapsed / (bufferDuration * 1000);
-                        setProgress(progress);
-                        
-                        // 检查是否超时
-                        if (elapsed > bufferDuration * 1000) {
+                        // 检查是否有明显的频率峰值（表示皮带被敲击）
+                        if (detectImpact(audioData)) {
                             stopRecording(audioData);
                         }
                     }
@@ -1368,11 +1264,15 @@
                 // 开始录制
                 isRecording = true;
                 measureButton.classList.add('recording');
-                measureButton.querySelector('.measure-button-text').textContent = '停止测量';
-                resultStatus.innerHTML = '<span class="recording-indicator"></span> 正在录制... 请敲击皮带中央';
-                resultValue.textContent = '--';
-                resultDetails.style.display = 'none';
-                deleteResultBtn.style.display = 'none';
+                measureButton.querySelector('.measure-button-text').textContent = '检测中...';
+                resultStatus.innerHTML = '<span class="recording-indicator"></span> 正在检测皮带振动...';
+                
+                // 设置超时自动停止（5秒后）
+                recordingTimeout = setTimeout(() => {
+                    if (isRecording) {
+                        stopRecording(audioData);
+                    }
+                }, 5000);
                 
             } catch (err) {
                 console.error('录音错误:', err);
@@ -1398,8 +1298,31 @@
             }
         }
         
+        // 检测是否有明显的冲击（皮带被敲击）
+        function detectImpact(audioData) {
+            if (audioData.length < 1024) return false;
+            
+            // 取最近1024个样本进行分析
+            const recentData = audioData.slice(-1024);
+            
+            // 计算信号的RMS（均方根）值
+            let sum = 0;
+            for (let i = 0; i < recentData.length; i++) {
+                sum += recentData[i] * recentData[i];
+            }
+            const rms = Math.sqrt(sum / recentData.length);
+            
+            // 如果RMS超过阈值，认为有冲击
+            return rms > 0.05;
+        }
+        
         // 停止录制
         function stopRecording(audioData = []) {
+            if (recordingTimeout) {
+                clearTimeout(recordingTimeout);
+                recordingTimeout = null;
+            }
+            
             isRecording = false;
             measureButton.classList.remove('recording');
             measureButton.querySelector('.measure-button-text').textContent = '开始测量';
@@ -1419,50 +1342,30 @@
             // 分析频率
             const frequency = analyzeFrequency(audioData);
             
-            if (frequency && frequency > 5 && frequency < 100) {
-                // 计算张力
+            if (frequency && frequency >= 5 && frequency <= 100) {
+                // 计算张力（如果需要）
                 const L = parseFloat(spanLengthInput.value);
                 const mu = parseFloat(massDensityInput.value);
-                // 注意：L是毫米，需要转换为米
                 const tensionN = 4 * mu * Math.pow(L/1000, 2) * Math.pow(frequency, 2);
-                const tensionKg = tensionN / 9.8; // 转换为千克力
+                const tensionKg = tensionN / 9.8;
                 
-                // 保存最新结果
-                currentResult = {
-                    frequency: frequency,
-                    length: L,
-                    density: mu,
-                    tensionN: tensionN,
-                    tensionKg: tensionKg,
-                    time: new Date().toLocaleTimeString()
-                };
-                
-                // 显示结果
+                // 显示成功状态
                 resultStatus.textContent = '测量完成';
                 resultStatus.style.color = 'var(--success)';
-                resultValue.textContent = `${tensionKg.toFixed(2)} kg`;
-                
-                // 显示详细信息
-                frequencyValue.textContent = `${frequency.toFixed(2)} Hz`;
-                tensionKgValue.textContent = `${tensionKg.toFixed(2)} kg`;
-                resultDetails.style.display = 'grid';
-                deleteResultBtn.style.display = 'flex';
-                
-                // 添加成功动画
-                resultValue.style.transform = 'scale(1.1)';
-                setTimeout(() => {
-                    resultValue.style.transform = 'scale(1)';
-                }, 300);
                 
                 // 保存到实时测量记录
-                addLiveRecord(currentResult);
+                addLiveRecord({
+                    frequency: frequency,
+                    tensionKg: tensionKg,
+                    time: new Date().toLocaleTimeString()
+                });
                 
             } else {
-                showError('未检测到有效频率，请重试。确保在安静环境中敲击皮带。');
+                showError('未检测到有效频率（5-100Hz），请重试。确保敲击皮带。');
             }
         }
         
-        // 分析频率 - 优化版，过滤杂音（5-100Hz）
+        // 分析频率 - 优化版，过滤杂音
         function analyzeFrequency(audioData) {
             const n = Math.min(fftSize, audioData.length);
             const real = new Float32Array(n);
@@ -1499,11 +1402,9 @@
             const frequency = maxIndex * freqResolution;
             
             // 只有幅度足够大的频率才被认为是有效信号
-            // 调整阈值以过滤杂音
             const threshold = 0.02; // 提高阈值以减少环境噪声影响
             
-            // 检查频率是否在合理范围内（皮带振动通常在5-100Hz）
-            if (maxMag > threshold && frequency >= 5 && frequency <= 100) {
+            if (maxMag > threshold) {
                 return frequency;
             }
             
@@ -1570,17 +1471,13 @@
             const barWidth = width / dataArray.length;
             let x = 0;
             
-            // 只绘制5-100Hz范围内的频谱
-            const minFreqIndex = Math.floor(5 * dataArray.length / (sampleRate/2));
-            const maxFreqIndex = Math.floor(100 * dataArray.length / (sampleRate/2));
-            
-            for (let i = minFreqIndex; i < Math.min(maxFreqIndex, dataArray.length); i++) {
+            for (let i = 0; i < dataArray.length; i++) {
                 const barHeight = (dataArray[i] / 255) * height;
                 
                 canvasCtx.moveTo(x, height);
                 canvasCtx.lineTo(x, height - barHeight);
                 
-                x += barWidth * (maxFreqIndex - minFreqIndex) / dataArray.length;
+                x += barWidth;
             }
             
             canvasCtx.stroke();
@@ -1589,7 +1486,7 @@
             let maxIndex = 0;
             let maxValue = 0;
             
-            for (let i = minFreqIndex; i < Math.min(maxFreqIndex, dataArray.length); i++) {
+            for (let i = 0; i < dataArray.length; i++) {
                 if (dataArray[i] > maxValue) {
                     maxValue = dataArray[i];
                     maxIndex = i;
@@ -1597,7 +1494,7 @@
             }
             
             if (maxValue > 10) {
-                const freq = (maxIndex * (sampleRate/2)) / dataArray.length;
+                const freq = (maxIndex * sampleRate) / (2 * dataArray.length);
                 const xPos = (maxIndex / dataArray.length) * width;
                 const yPos = height - (maxValue / 255) * height;
                 
@@ -1634,31 +1531,29 @@
         
         // 更新实时测量记录显示
         function updateLiveRecordsDisplay() {
-            liveRecordsContainer.innerHTML = '';
+            recordsContainer.innerHTML = '';
             
             if (liveRecords.length === 0) {
-                liveRecordsContainer.innerHTML = '<div style="text-align: center; padding: 20px; color: #7f8c8d; width: 100%;">暂无测量记录，点击上方按钮开始测量</div>';
+                recordsContainer.innerHTML = '<div style="text-align: center; width: 100%; padding: 20px; color: #7f8c8d;">暂无测量记录，点击上方按钮开始测量</div>';
                 averageResult.style.display = 'none';
                 return;
             }
             
             liveRecords.forEach((record, index) => {
-                const recordCard = document.createElement('div');
-                recordCard.className = 'record-card';
-                recordCard.innerHTML = `
-                    <button class="record-delete" data-index="${index}">
-                        <i class="fas fa-times"></i>
-                    </button>
+                const recordItem = document.createElement('div');
+                recordItem.className = 'record-item';
+                recordItem.innerHTML = `
+                    <button class="record-close" data-index="${index}">×</button>
                     <div class="record-number">测量 ${index + 1}</div>
-                    <div class="record-tension">${record.tensionKg.toFixed(2)} kg</div>
                     <div class="record-frequency">${record.frequency.toFixed(1)} Hz</div>
+                    <div class="record-tension">${record.tensionKg.toFixed(1)} kg</div>
                 `;
-                liveRecordsContainer.appendChild(recordCard);
-                
-                // 添加删除事件监听器
-                const deleteBtn = recordCard.querySelector('.record-delete');
-                deleteBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
+                recordsContainer.appendChild(recordItem);
+            });
+            
+            // 添加删除事件监听器
+            document.querySelectorAll('.record-close').forEach(btn => {
+                btn.addEventListener('click', function() {
                     const index = parseInt(this.getAttribute('data-index'));
                     liveRecords.splice(index, 1);
                     updateLiveRecordsDisplay();
@@ -1673,12 +1568,12 @@
             // 取最近4次测量
             const recentRecords = liveRecords.slice(-4);
             
-            // 计算张力平均值
-            const totalTension = recentRecords.reduce((sum, record) => sum + record.tensionKg, 0);
-            const averageTension = totalTension / 4;
+            // 计算频率平均值
+            const totalFrequency = recentRecords.reduce((sum, record) => sum + record.frequency, 0);
+            const averageFrequency = totalFrequency / 4;
             
             // 显示平均值
-            averageValue.textContent = `${averageTension.toFixed(2)} kg`;
+            averageValue.textContent = `${averageFrequency.toFixed(1)} Hz`;
             averageResult.style.display = 'block';
         }
         
@@ -1688,23 +1583,10 @@
             updateLiveRecordsDisplay();
         }
         
-        // 删除最新结果
-        function deleteCurrentResult() {
-            currentResult = null;
-            resultValue.textContent = '--';
-            resultDetails.style.display = 'none';
-            deleteResultBtn.style.display = 'none';
-            resultStatus.textContent = '准备测量皮带张力';
-            resultStatus.style.color = 'var(--dark)';
-        }
-        
         // 显示错误信息
         function showError(message) {
             resultStatus.innerHTML = message;
             resultStatus.style.color = 'var(--danger)';
-            resultValue.textContent = '--';
-            resultDetails.style.display = 'none';
-            deleteResultBtn.style.display = 'none';
         }
     </script>
 </body>
