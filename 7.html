@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>皮带张力检测工具</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #34495e;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+            --header-height: 60px;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding-top: var(--header-height);
+            overflow-x: hidden;
+        }
+        
+        /* 固定顶部导航 */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--header-height);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        
+        .logo i {
+            font-size: 1.5rem;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 5px;
+            overflow-x: auto;
+            max-width: 70%;
+        }
+        
+        .nav-tab {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        
+        .nav-tab.active {
+            background: white;
+            color: var(--primary);
+        }
+        
+        /* 主容器 */
+        .container {
+            max-width: 100%;
+            padding: 20px;
+            margin: 0 auto;
+        }
+        
+        /* 标签页内容 */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* 卡片样式 */
+        .card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card h2 i {
+            color: var(--secondary);
+        }
+        
+        /* 表单元素 */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            background: #f8f9fa;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        /* 按钮样式 */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+        }
+        
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+        
+        .btn-success {
+            background: var(--success);
+        }
+        
+        .btn-success:hover {
+            background: #219653;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        /* 预设按钮 */
+        .preset-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .preset-btn {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .preset-btn:hover {
+            background: #e9ecef;
+            border-color: var(--secondary);
+        }
+        
+        .preset-btn i {
+            font-size: 1.2rem;
+            color: var(--secondary);
+        }
+        
+        /* 结果展示 */
+        .result-card {
+            text-align: center;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        
+        .result-value {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin: 15px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .result-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .detail-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .detail-label {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+        
+        .detail-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-top: 5px;
+            color: var(--primary);
+        }
+        
+        /* 频谱图 */
+        #frequencyCanvas {
+            width: 100%;
+            height: 200px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        /* 状态指示 */
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background: #f8f9fa;
+        }
+        
+        .recording-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: var(--danger);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        /* 权限引导 */
+        .permission-guide {
+            background: #e8f4fc;
+            border-left: 4px solid var(--secondary);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+        
+        .permission-guide h3 {
+            color: var(--secondary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* 使用说明 */
+        .instructions {
+            background: #f8f9fa;
+            border-radius: var(--border-radius);
+            padding: 20px;
+        }
+        
+        .instructions ol, .instructions ul {
+            padding-left: 20px;
+            margin: 15px 0;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+        }
+        
+        .step-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .step-number {
+            width: 30px;
+            height: 30px;
+            background: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        
+        /* 张力参考表格 */
+        .tension-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+        
+        .tension-table th, .tension-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .tension-table th {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .tension-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .tension-note {
+            margin-top: 15px;
+            padding: 10px;
+            background: #fff3cd;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .tension-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 3px;
+        }
+        
+        .legend-good {
+            background: #d4edda;
+        }
+        
+        .legend-acceptable {
+            background: #fff3cd;
+        }
+        
+        .legend-high {
+            background: #f8d7da;
+        }
+        
+        .legend-low {
+            background: #e2e3e5;
+        }
+        
+        /* 底部信息 */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .card {
+                padding: 15px;
+            }
+            
+            .result-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .preset-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            .tension-table {
+                font-size: 0.8rem;
+            }
+            
+            .tension-table th, .tension-table td {
+                padding: 5px;
+            }
+        }
+        
+        /* 加载动画 */
+        .loader {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 模态框 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            max-width: 90%;
+            width: 400px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: modalFadeIn 0.3s ease;
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .modal h3 {
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .modal-buttons .btn {
+            flex: 1;
+        }
+        
+        /* 参数说明 */
+        .param-explanation {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .param-explanation h4 {
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- 固定顶部导航 -->
+    <header>
+        <div class="logo">
+            <i class="fas fa-wave-square"></i>
+            <span>张力检测</span>
+        </div>
+        <div class="nav-tabs">
+            <div class="nav-tab active" data-tab="tool">检测工具</div>
+            <div class="nav-tab" data-tab="tension-ref">张力参考</div>
+            <div class="nav-tab" data-tab="instructions">使用说明</div>
+        </div>
+    </header>
+
+    <!-- 主容器 -->
+    <div class="container">
+        <!-- 检测工具标签页 -->
+        <div id="tool-tab" class="tab-content active">
+            <!-- 状态指示器 -->
+            <div class="status-indicator">
+                <div id="resultStatus">准备测量皮带张力</div>
+            </div>
+            
+            <!-- 参数设置卡片 -->
+            <div class="card">
+                <h2><i class="fas fa-cog"></i> 参数设置</h2>
+                
+                <div class="form-group">
+                    <label for="beltType">皮带类型</label>
+                    <select id="beltType">
+                        <option value="bicycle-sync">自行车同步带</option>
+                        <option value="v-belt">V型皮带</option>
+                        <option value="timing-belt">工业同步带</option>
+                        <option value="flat-belt">平皮带</option>
+                        <option value="custom">自定义</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="spanLength">跨度长度 L (米)</label>
+                    <input type="number" id="spanLength" value="0.8" step="0.01" min="0.1">
+                    <div class="param-explanation">
+                        <h4>什么是跨度长度？</h4>
+                        <p>跨度长度是指皮带在两个皮带轮之间自由振动的长度，通常是指两个皮带轮中心之间的距离。对于自行车，这通常是前链轮和后飞轮之间的距离。</p>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="massDensity">线性密度 μ (kg/m)</label>
+                    <input type="number" id="massDensity" value="0.01" step="0.001" min="0.001">
+                    <div class="param-explanation">
+                        <h4>什么是线性密度？</h4>
+                        <p>线性密度是指皮带单位长度的质量（kg/m）。这个参数参与张力计算：T = 4 × μ × L² × f²。不同皮带类型有不同的线性密度：</p>
+                        <ul>
+                            <li>自行车同步带：约 0.01-0.02 kg/m</li>
+                            <li>工业同步带：约 0.05-0.15 kg/m</li>
+                            <li>V型皮带：约 0.1-0.3 kg/m</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="preset-section">
+                    <div class="preset-btn" data-l="0.8" data-mu="0.01">
+                        <i class="fas fa-bicycle"></i>
+                        <span>自行车同步带</span>
+                    </div>
+                    <div class="preset-btn" data-l="1.2" data-mu="0.08">
+                        <i class="fas fa-cog"></i>
+                        <span>工业同步带</span>
+                    </div>
+                    <div class="preset-btn" data-l="1.5" data-mu="0.15">
+                        <i class="fas fa-industry"></i>
+                        <span>V型皮带</span>
+                    </div>
+                    <div class="preset-btn" data-l="2.0" data-mu="0.25">
+                        <i class="fas fa-weight-hanging"></i>
+                        <span>重型皮带</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 测量控制卡片 -->
+            <div class="card">
+                <h2><i class="fas fa-sliders-h"></i> 测量控制</h2>
+                
+                <div class="btn-group">
+                    <button id="startButton" class="btn btn-success">
+                        <i class="fas fa-microphone"></i> 开始测量
+                    </button>
+                    <button id="stopButton" class="btn btn-danger" disabled>
+                        <i class="fas fa-stop"></i> 停止测量
+                    </button>
+                </div>
+                
+                <div class="permission-guide">
+                    <h3><i class="fas fa-info-circle"></i> 三星浏览器麦克风权限设置</h3>
+                    <p>如果无法访问麦克风，请按以下步骤设置：</p>
+                    <ol>
+                        <li>点击三星浏览器右上角的三个点菜单</li>
+                        <li>选择"设置" → "网站权限" → "麦克风"</li>
+                        <li>找到本网站并设置为"允许"</li>
+                        <li>刷新页面后重试</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <!-- 结果展示卡片 -->
+            <div class="card result-card">
+                <h2><i class="fas fa-chart-line"></i> 测量结果</h2>
+                <div id="resultValue" class="result-value">--</div>
+                <div id="resultDetails" class="result-details" style="display: none;">
+                    <div class="detail-item">
+                        <div class="detail-label">检测频率</div>
+                        <div id="frequencyValue" class="detail-value">-- Hz</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">跨度长度</div>
+                        <div id="lengthValue" class="detail-value">-- m</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">线性密度</div>
+                        <div id="densityValue" class="detail-value">-- kg/m</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">测量时间</div>
+                        <div id="timeValue" class="detail-value">--</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 频谱图卡片 -->
+            <div class="card">
+                <h2><i class="fas fa-waveform"></i> 频率频谱</h2>
+                <canvas id="frequencyCanvas"></canvas>
+            </div>
+        </div>
+        
+        <!-- 张力参考标签页 -->
+        <div id="tension-ref-tab" class="tab-content">
+            <div class="card">
+                <h2><i class="fas fa-table"></i> 张力参考标准</h2>
+                
+                <div class="tension-legend">
+                    <div class="legend-item">
+                        <div class="legend-color legend-good"></div>
+                        <span>建议张力设置</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color legend-acceptable"></div>
+                        <span>可接受范围</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color legend-high"></div>
+                        <span>张力过高（不推荐）</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color legend-low"></div>
+                        <span>张力过低（危险）</span>
+                    </div>
+                </div>
+                
+                <table class="tension-table">
+                    <thead>
+                        <tr>
+                            <th>频率 (Hz)</th>
+                            <th>35 Hz</th>
+                            <th>40 Hz</th>
+                            <th>45 Hz</th>
+                            <th>50 Hz</th>
+                            <th>55 Hz</th>
+                            <th>60 Hz</th>
+                            <th>65 Hz</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>张力 (磅)</td>
+                            <td class="legend-good">28 磅</td>
+                            <td class="legend-good">32 磅</td>
+                            <td class="legend-good">35 磅</td>
+                            <td class="legend-good">40 磅</td>
+                            <td class="legend-acceptable">43 磅</td>
+                            <td class="legend-acceptable">45 磅</td>
+                            <td class="legend-high">48 磅</td>
+                        </tr>
+                        <tr>
+                            <td>张力 (kg)</td>
+                            <td class="legend-good">13 kg</td>
+                            <td class="legend-good">15 kg</td>
+                            <td class="legend-good">16 kg</td>
+                            <td class="legend-good">18 kg</td>
+                            <td class="legend-acceptable">19 kg</td>
+                            <td class="legend-acceptable">20 kg</td>
+                            <td class="legend-high">22 kg</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="tension-note">
+                    <h4><i class="fas fa-info-circle"></i> 使用说明</h4>
+                    <ul>
+                        <li><strong>建议张力设置</strong>：表示推荐的张力设置。</li>
+                        <li><strong>可接受范围</strong>：可能需要在此范围内调节张力，但不得低于最小范围。</li>
+                        <li><strong>张力过高</strong>：可能会对换挡性能、传动系统轴承寿命和系统效率产生负面影响。</li>
+                        <li><strong>张力过低</strong>：不应低于最小张力，否则可能出现跳齿、缩短皮带寿命。</li>
+                    </ul>
+                    
+                    <h4>应用范围</h4>
+                    <ul>
+                        <li><strong>内变速花鼓</strong>：中置电机电动自行车系统</li>
+                        <li><strong>内变速花鼓</strong>：自行车、花鼓电机电动自行车</li>
+                        <li><strong>非变速花鼓</strong>：MTB、变速箱、协力车、载货、单速</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 使用说明标签页 -->
+        <div id="instructions-tab" class="tab-content">
+            <div class="card">
+                <h2><i class="fas fa-book"></i> 使用说明</h2>
+                
+                <div class="instructions">
+                    <h3>测量步骤</h3>
+                    
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <div>输入皮带参数或选择预设皮带类型</div>
+                    </div>
+                    
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <div>点击"开始测量"按钮，允许麦克风访问权限</div>
+                    </div>
+                    
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <div>在安静环境中敲击皮带中央使其振动</div>
+                    </div>
+                    
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <div>系统自动分析频率并计算张力，结果显示在屏幕上</div>
+                    </div>
+                    
+                    <h3>技术原理</h3>
+                    <p>本工具基于弦振动理论，通过检测皮带振动频率计算张力：</p>
+                    <p style="text-align: center; font-weight: bold; margin: 15px 0; background: #f8f9fa; padding: 10px; border-radius: 8px;">
+                        T = 4 × μ × L² × f²
+                    </p>
+                    <p>其中：</p>
+                    <ul>
+                        <li><strong>T</strong> - 皮带张力 (N)</li>
+                        <li><strong>μ</strong> - 皮带线性密度 (kg/m)，即皮带每米长度的质量</li>
+                        <li><strong>L</strong> - 皮带跨度长度 (m)，即两个皮带轮中心之间的距离</li>
+                        <li><strong>f</strong> - 振动频率 (Hz)，通过敲击皮带产生的振动频率</li>
+                    </ul>
+                    
+                    <h3>参数说明</h3>
+                    <div class="step-card">
+                        <div class="step-number">L</div>
+                        <div>
+                            <strong>跨度长度</strong>：指皮带在两个皮带轮之间自由振动的长度。对于自行车，通常是前链轮和后飞轮中心之间的距离。测量时请使用米作为单位。
+                        </div>
+                    </div>
+                    
+                    <div class="step-card">
+                        <div class="step-number">μ</div>
+                        <div>
+                            <strong>线性密度</strong>：指皮带单位长度的质量（kg/m）。这个参数可以从皮带制造商的技术规格中获得，或者通过称量已知长度皮带的质量来计算。不同皮带类型有典型的线性密度范围。
+                        </div>
+                    </div>
+                    
+                    <h3>注意事项</h3>
+                    <ul>
+                        <li>确保在安静环境中测量，避免背景噪声干扰</li>
+                        <li>敲击皮带中央以获得准确的基频振动</li>
+                        <li>测量结果仅供参考，关键应用请使用专业设备验证</li>
+                        <li>不同浏览器和设备可能影响测量精度</li>
+                        <li>三星浏览器用户如遇权限问题，请参考"检测工具"页面的权限设置指南</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 权限请求模态框 -->
+    <div id="permissionModal" class="modal">
+        <div class="modal-content">
+            <h3><i class="fas fa-microphone"></i> 麦克风权限请求</h3>
+            <p>皮带张力检测工具需要访问您的麦克风以测量皮带振动频率。</p>
+            <p>请点击"允许"以继续使用本应用。</p>
+            <div class="modal-buttons">
+                <button id="denyPermission" class="btn btn-danger">拒绝</button>
+                <button id="grantPermission" class="btn btn-success">允许</button>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>基于Web Audio API的皮带张力检测工具 | 开发原理：弦振动频率分析法</p>
+        <p>© 2023 工业测量工具 | 仅供技术参考</p>
+    </footer>
+
+    <script>
+        // 全局变量
+        let audioContext;
+        let analyser;
+        let microphone;
+        let scriptProcessor;
+        let isRecording = false;
+        const sampleRate = 44100;
+        const fftSize = 2048;
+        const bufferDuration = 3; // 录制时长（秒）
+        let permissionRequested = false; // 标记是否已经请求过权限
+        
+        // DOM元素
+        const startButton = document.getElementById('startButton');
+        const stopButton = document.getElementById('stopButton');
+        const resultStatus = document.getElementById('resultStatus');
+        const resultValue = document.getElementById('resultValue');
+        const resultDetails = document.getElementById('resultDetails');
+        const frequencyValue = document.getElementById('frequencyValue');
+        const lengthValue = document.getElementById('lengthValue');
+        const densityValue = document.getElementById('densityValue');
+        const timeValue = document.getElementById('timeValue');
+        const canvas = document.getElementById('frequencyCanvas');
+        const canvasCtx = canvas.getContext('2d');
+        const presetButtons = document.querySelectorAll('.preset-btn');
+        const navTabs = document.querySelectorAll('.nav-tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const permissionModal = document.getElementById('permissionModal');
+        const grantPermissionBtn = document.getElementById('grantPermission');
+        const denyPermissionBtn = document.getElementById('denyPermission');
+        
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            setupCanvas();
+            setupEventListeners();
+            // 不再自动检查权限，避免重复提醒
+        });
+        
+        // 设置Canvas尺寸
+        function setupCanvas() {
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            canvasCtx.scale(dpr, dpr);
+        }
+        
+        // 设置事件监听器
+        function setupEventListeners() {
+            // 导航标签切换
+            navTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.dataset.tab;
+                    
+                    // 更新活动标签
+                    navTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    // 显示对应内容
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === `${tabId}-tab`) {
+                            content.classList.add('active');
+                        }
+                    });
+                });
+            });
+            
+            // 预设按钮事件
+            presetButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.getElementById('spanLength').value = btn.dataset.l;
+                    document.getElementById('massDensity').value = btn.dataset.mu;
+                    
+                    // 添加视觉反馈
+                    btn.style.background = '#e3f2fd';
+                    btn.style.borderColor = '#2196f3';
+                    setTimeout(() => {
+                        btn.style.background = '';
+                        btn.style.borderColor = '';
+                    }, 300);
+                });
+            });
+            
+            // 开始录制
+            startButton.addEventListener('click', startRecording);
+            
+            // 停止录制
+            stopButton.addEventListener('click', stopRecording);
+            
+            // 权限模态框按钮
+            grantPermissionBtn.addEventListener('click', () => {
+                permissionModal.style.display = 'none';
+                permissionRequested = true;
+                startRecording();
+            });
+            
+            denyPermissionBtn.addEventListener('click', () => {
+                permissionModal.style.display = 'none';
+                resultStatus.textContent = '需要麦克风权限才能进行测量';
+                resultStatus.style.color = 'var(--danger)';
+                permissionRequested = true;
+            });
+            
+            // 窗口调整大小时重置Canvas
+            window.addEventListener('resize', setupCanvas);
+            
+            // 皮带类型变化时更新默认参数
+            document.getElementById('beltType').addEventListener('change', function() {
+                updateDefaultParams(this.value);
+            });
+        }
+        
+        // 根据皮带类型更新默认参数
+        function updateDefaultParams(beltType) {
+            const spanLengthInput = document.getElementById('spanLength');
+            const massDensityInput = document.getElementById('massDensity');
+            
+            switch(beltType) {
+                case 'bicycle-sync':
+                    spanLengthInput.value = '0.8';
+                    massDensityInput.value = '0.01';
+                    break;
+                case 'v-belt':
+                    spanLengthInput.value = '1.5';
+                    massDensityInput.value = '0.15';
+                    break;
+                case 'timing-belt':
+                    spanLengthInput.value = '1.2';
+                    massDensityInput.value = '0.08';
+                    break;
+                case 'flat-belt':
+                    spanLengthInput.value = '2.0';
+                    massDensityInput.value = '0.25';
+                    break;
+                default:
+                    // 自定义类型不改变当前值
+                    break;
+            }
+        }
+        
+        // 开始录制
+        async function startRecording() {
+            // 验证输入
+            const L = parseFloat(document.getElementById('spanLength').value);
+            const mu = parseFloat(document.getElementById('massDensity').value);
+            
+            if (!L || L <= 0) {
+                showError('请输入有效的跨度长度（大于0）');
+                return;
+            }
+            
+            if (!mu || mu <= 0) {
+                showError('请输入有效的线性密度（大于0）');
+                return;
+            }
+            
+            try {
+                // 请求麦克风权限并创建音频上下文
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // 只在未请求过权限时显示模态框
+                if (!permissionRequested) {
+                    const permissionStatus = await navigator.permissions.query({ name: 'microphone' });
+                    
+                    if (permissionStatus.state === 'prompt') {
+                        permissionModal.style.display = 'flex';
+                        return; // 等待用户选择
+                    } else if (permissionStatus.state === 'denied') {
+                        showError('麦克风访问被拒绝。请在浏览器设置中允许麦克风权限。');
+                        permissionRequested = true;
+                        return;
+                    }
+                }
+                
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    audio: {
+                        echoCancellation: false,
+                        noiseSuppression: false,
+                        autoGainControl: false
+                    } 
+                });
+                
+                // 创建分析节点
+                microphone = audioContext.createMediaStreamSource(stream);
+                analyser = audioContext.createAnalyser();
+                analyser.fftSize = fftSize;
+                analyser.smoothingTimeConstant = 0.8;
+                
+                // 创建脚本处理器用于处理音频数据
+                scriptProcessor = audioContext.createScriptProcessor(fftSize, 1, 1);
+                
+                // 连接节点
+                microphone.connect(analyser);
+                analyser.connect(scriptProcessor);
+                scriptProcessor.connect(audioContext.destination);
+                
+                // 设置音频处理回调
+                let audioData = [];
+                scriptProcessor.onaudioprocess = (e) => {
+                    if (isRecording) {
+                        const input = e.inputBuffer.getChannelData(0);
+                        audioData = audioData.concat(Array.from(input));
+                        
+                        // 实时绘制频谱
+                        drawRealTimeSpectrum();
+                    }
+                };
+                
+                // 开始录制
+                isRecording = true;
+                startButton.disabled = true;
+                stopButton.disabled = false;
+                resultStatus.innerHTML = '<span class="recording-indicator"></span> 正在录制... 请敲击皮带中央';
+                resultValue.textContent = '--';
+                resultDetails.style.display = 'none';
+                
+                // 设置自动停止
+                setTimeout(() => {
+                    if (isRecording) stopRecording(audioData);
+                }, bufferDuration * 1000);
+                
+            } catch (err) {
+                console.error('录音错误:', err);
+                let errorMessage = '无法访问麦克风: ';
+                
+                if (err.name === 'NotAllowedError') {
+                    errorMessage += '权限被拒绝。';
+                    if (!permissionRequested) {
+                        permissionModal.style.display = 'flex';
+                    } else {
+                        errorMessage += '请在浏览器设置中允许麦克风访问。';
+                    }
+                } else if (err.name === 'NotFoundError') {
+                    errorMessage += '未找到麦克风设备。请检查设备连接。';
+                } else if (err.name === 'NotSupportedError') {
+                    errorMessage += '浏览器不支持音频录制功能。';
+                } else {
+                    errorMessage += err.message;
+                }
+                
+                showError(errorMessage);
+                permissionRequested = true;
+            }
+        }
+        
+        // 停止录制
+        function stopRecording(audioData = []) {
+            isRecording = false;
+            startButton.disabled = false;
+            stopButton.disabled = true;
+            
+            // 断开音频节点
+            if (microphone) microphone.disconnect();
+            if (scriptProcessor) scriptProcessor.disconnect();
+            if (audioContext) audioContext.close();
+            
+            // 处理录制的音频数据
+            if (audioData.length === 0) {
+                showError('无音频数据，请重试');
+                return;
+            }
+            
+            // 分析频率
+            const frequency = analyzeFrequency(audioData);
+            
+            if (frequency && frequency > 20 && frequency < 1000) {
+                // 计算张力
+                const L = parseFloat(document.getElementById('spanLength').value);
+                const mu = parseFloat(document.getElementById('massDensity').value);
+                const tension = 4 * mu * Math.pow(L, 2) * Math.pow(frequency, 2);
+                
+                // 显示结果
+                resultStatus.textContent = '测量完成';
+                resultStatus.style.color = 'var(--success)';
+                resultValue.textContent = `${tension.toFixed(2)} N`;
+                
+                // 显示详细信息
+                frequencyValue.textContent = `${frequency.toFixed(2)} Hz`;
+                lengthValue.textContent = `${L} m`;
+                densityValue.textContent = `${mu} kg/m`;
+                timeValue.textContent = new Date().toLocaleTimeString();
+                resultDetails.style.display = 'grid';
+                
+                // 添加成功动画
+                resultValue.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    resultValue.style.transform = 'scale(1)';
+                }, 300);
+                
+            } else {
+                showError('未检测到有效频率，请重试');
+            }
+        }
+        
+        // 分析频率
+        function analyzeFrequency(audioData) {
+            const n = fftSize;
+            const real = new Float32Array(n);
+            const imag = new Float32Array(n);
+            
+            // 应用汉宁窗减少频谱泄漏
+            for (let i = 0; i < Math.min(n, audioData.length); i++) {
+                const window = 0.5 * (1 - Math.cos(2 * Math.PI * i / (n - 1)));
+                real[i] = audioData[i] * window;
+                imag[i] = 0;
+            }
+            
+            // 执行FFT
+            fft(real, imag);
+            
+            // 寻找最大幅度的频率
+            let maxMag = 0;
+            let maxIndex = 0;
+            
+            for (let i = 5; i < n / 2; i++) { // 从5开始忽略极低频
+                const mag = Math.sqrt(real[i] * real[i] + imag[i] * imag[i]);
+                if (mag > maxMag) {
+                    maxMag = mag;
+                    maxIndex = i;
+                }
+            }
+            
+            // 计算频率
+            const freqResolution = sampleRate / n;
+            return maxIndex * freqResolution;
+        }
+        
+        // FFT实现（Cooley-Tukey算法）
+        function fft(real, imag) {
+            const n = real.length;
+            if (n <= 1) return;
+            
+            // 分离偶数和奇数索引
+            const evenReal = new Float32Array(n / 2);
+            const evenImag = new Float32Array(n / 2);
+            const oddReal = new Float32Array(n / 2);
+            const oddImag = new Float32Array(n / 2);
+            
+            for (let i = 0; i < n / 2; i++) {
+                evenReal[i] = real[2 * i];
+                evenImag[i] = imag[2 * i];
+                oddReal[i] = real[2 * i + 1];
+                oddImag[i] = imag[2 * i + 1];
+            }
+            
+            // 递归计算
+            fft(evenReal, evenImag);
+            fft(oddReal, oddImag);
+            
+            // 合并结果
+            for (let k = 0; k < n / 2; k++) {
+                const theta = -2 * Math.PI * k / n;
+                const wr = Math.cos(theta);
+                const wi = Math.sin(theta);
+                
+                const tempReal = wr * oddReal[k] - wi * oddImag[k];
+                const tempImag = wr * oddImag[k] + wi * oddReal[k];
+                
+                real[k] = evenReal[k] + tempReal;
+                imag[k] = evenImag[k] + tempImag;
+                real[k + n / 2] = evenReal[k] - tempReal;
+                imag[k + n / 2] = evenImag[k] - tempImag;
+            }
+        }
+        
+        // 实时绘制频谱
+        function drawRealTimeSpectrum() {
+            if (!analyser) return;
+            
+            const dataArray = new Uint8Array(analyser.frequencyBinCount);
+            analyser.getByteFrequencyData(dataArray);
+            
+            const width = canvas.width / (window.devicePixelRatio || 1);
+            const height = canvas.height / (window.devicePixelRatio || 1);
+            
+            // 清除画布
+            canvasCtx.fillStyle = '#f8f9fa';
+            canvasCtx.fillRect(0, 0, width, height);
+            
+            // 绘制频谱线
+            canvasCtx.lineWidth = 2;
+            canvasCtx.strokeStyle = '#3498db';
+            canvasCtx.beginPath();
+            
+            const barWidth = width / dataArray.length;
+            let x = 0;
+            
+            for (let i = 0; i < dataArray.length; i++) {
+                const barHeight = (dataArray[i] / 255) * height;
+                
+                canvasCtx.moveTo(x, height);
+                canvasCtx.lineTo(x, height - barHeight);
+                
+                x += barWidth;
+            }
+            
+            canvasCtx.stroke();
+            
+            // 标记峰值
+            let maxIndex = 0;
+            let maxValue = 0;
+            
+            for (let i = 0; i < dataArray.length; i++) {
+                if (dataArray[i] > maxValue) {
+                    maxValue = dataArray[i];
+                    maxIndex = i;
+                }
+            }
+            
+            if (maxValue > 10) { // 只有明显峰值才标记
+                const freq = (maxIndex * sampleRate) / (2 * dataArray.length);
+                const xPos = (maxIndex / dataArray.length) * width;
+                const yPos = height - (maxValue / 255) * height;
+                
+                // 绘制峰值点
+                canvasCtx.fillStyle = '#e74c3c';
+                canvasCtx.beginPath();
+                canvasCtx.arc(xPos, yPos, 5, 0, 2 * Math.PI);
+                canvasCtx.fill();
+                
+                // 绘制频率标签
+                canvasCtx.fillStyle = '#2c3e50';
+                canvasCtx.font = '12px Arial';
+                canvasCtx.fillText(`${freq.toFixed(1)} Hz`, xPos + 8, yPos - 5);
+            }
+        }
+        
+        // 显示错误信息
+        function showError(message) {
+            resultStatus.innerHTML = message;
+            resultStatus.style.color = 'var(--danger)';
+            resultValue.textContent = '--';
+            resultDetails.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
