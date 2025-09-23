@@ -16,7 +16,7 @@
             --warning: #f39c12;
             --danger: #e74c3c;
             --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --border-radius: 12px;
+            --border-radius: 16px;
             --header-height: 60px;
         }
         
@@ -28,7 +28,7 @@
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
             line-height: 1.6;
             color: var(--dark);
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -50,7 +50,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 0 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.15);
             z-index: 1000;
         }
         
@@ -69,7 +69,7 @@
         .nav-tabs {
             display: flex;
             gap: 5px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.15);
             border-radius: 30px;
             padding: 5px;
             overflow-x: auto;
@@ -88,6 +88,7 @@
         .nav-tab.active {
             background: white;
             color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
         
         /* 主容器 */
@@ -117,9 +118,13 @@
             background: white;
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
-            padding: 15px;
-            margin-bottom: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
             transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:last-child {
+            margin-bottom: 0;
         }
         
         .card h2 {
@@ -138,8 +143,15 @@
         }
         
         /* 表单元素 */
-        .form-group {
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
             margin-bottom: 15px;
+        }
+        
+        .form-group {
+            margin-bottom: 0;
         }
         
         label {
@@ -154,9 +166,9 @@
             width: 100%;
             padding: 12px;
             border: 1px solid #ddd;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 1rem;
-            transition: border-color 0.3s;
+            transition: all 0.3s;
             background: #f8f9fa;
         }
         
@@ -164,64 +176,6 @@
             outline: none;
             border-color: var(--secondary);
             box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-        }
-        
-        /* 按钮样式 */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: var(--secondary);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.3s;
-            text-align: center;
-            width: 100%;
-        }
-        
-        .btn:hover {
-            background: #2980b9;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-        }
-        
-        .btn:active {
-            transform: translateY(0);
-        }
-        
-        .btn:disabled {
-            background: #bdc3c7;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-        
-        .btn-danger {
-            background: var(--danger);
-        }
-        
-        .btn-danger:hover {
-            background: #c0392b;
-        }
-        
-        .btn-success {
-            background: var(--success);
-        }
-        
-        .btn-success:hover {
-            background: #219653;
-        }
-        
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
         }
         
         /* 圆形测量按钮 */
@@ -232,8 +186,8 @@
         }
         
         .measure-button {
-            width: 120px;
-            height: 120px;
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--secondary), #2980b9);
             color: white;
@@ -243,7 +197,7 @@
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
             position: relative;
             overflow: hidden;
         }
@@ -258,12 +212,12 @@
         }
         
         .measure-button i {
-            font-size: 2rem;
+            font-size: 2.5rem;
             margin-bottom: 5px;
         }
         
         .measure-button-text {
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 600;
         }
         
@@ -280,8 +234,8 @@
             fill: none;
             stroke: rgba(255, 255, 255, 0.3);
             stroke-width: 4;
-            stroke-dasharray: 314;
-            stroke-dashoffset: 314;
+            stroke-dasharray: 440;
+            stroke-dashoffset: 440;
             transition: stroke-dashoffset 0.3s;
         }
         
@@ -292,34 +246,34 @@
         }
         
         .result-value {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             font-weight: 700;
             color: var(--secondary);
-            margin: 10px 0;
+            margin: 15px 0;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
         
         .result-details {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 15px;
+            margin-top: 20px;
         }
         
         .detail-item {
             background: white;
-            padding: 12px;
-            border-radius: 8px;
+            padding: 15px;
+            border-radius: 12px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
         
         .detail-label {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: #7f8c8d;
         }
         
         .detail-value {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 600;
             margin-top: 5px;
             color: var(--primary);
@@ -328,9 +282,9 @@
         /* 频谱图 */
         #frequencyCanvas {
             width: 100%;
-            height: 150px;
+            height: 180px;
             background: #f8f9fa;
-            border-radius: 8px;
+            border-radius: 12px;
             margin-top: 15px;
         }
         
@@ -340,17 +294,17 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
             background: #f8f9fa;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
         
         .recording-indicator {
             display: inline-block;
-            width: 10px;
-            height: 10px;
+            width: 12px;
+            height: 12px;
             background: var(--danger);
             border-radius: 50%;
             animation: pulse 1.5s infinite;
@@ -362,46 +316,23 @@
             100% { opacity: 1; }
         }
         
-        /* 使用说明 */
-        .instructions {
-            background: #f8f9fa;
-            border-radius: var(--border-radius);
+        /* 权限提示 */
+        .permission-hint {
+            background: #e8f4fc;
+            border-left: 4px solid var(--secondary);
             padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            font-size: 0.9rem;
         }
         
-        .instructions ol, .instructions ul {
-            padding-left: 20px;
-            margin: 10px 0;
-        }
-        
-        .instructions li {
+        .permission-hint h3 {
+            color: var(--secondary);
             margin-bottom: 8px;
-            font-size: 0.9rem;
-        }
-        
-        .step-card {
-            background: white;
-            border-radius: var(--border-radius);
-            padding: 12px;
-            margin-bottom: 12px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-        
-        .step-number {
-            width: 25px;
-            height: 25px;
-            background: var(--secondary);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            flex-shrink: 0;
-            font-size: 0.9rem;
+            gap: 8px;
+            font-size: 1rem;
         }
         
         /* 测量记录 */
@@ -411,9 +342,9 @@
         
         .record-item {
             background: white;
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 10px;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
             display: flex;
             justify-content: space-between;
@@ -431,7 +362,7 @@
         }
         
         .record-tension {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 600;
             color: var(--primary);
         }
@@ -452,6 +383,7 @@
             color: #7f8c8d;
             cursor: pointer;
             font-size: 1rem;
+            padding: 5px;
         }
         
         .record-btn:hover {
@@ -460,20 +392,23 @@
         
         .clear-records {
             text-align: center;
-            margin-top: 15px;
+            margin-top: 20px;
         }
         
         /* 张力参考表格 */
         .tension-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 15px 0;
-            font-size: 0.8rem;
+            margin: 20px 0;
+            font-size: 0.85rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            overflow: hidden;
         }
         
         .tension-table th, .tension-table td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 10px;
             text-align: center;
         }
         
@@ -487,19 +422,19 @@
         }
         
         .tension-note {
-            margin-top: 12px;
-            padding: 10px;
+            margin-top: 15px;
+            padding: 15px;
             background: #fff3cd;
-            border-radius: 8px;
-            font-size: 0.8rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
         }
         
         .tension-legend {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin: 12px 0;
-            font-size: 0.8rem;
+            gap: 12px;
+            margin: 15px 0;
+            font-size: 0.85rem;
         }
         
         .legend-item {
@@ -530,11 +465,53 @@
             background: #e2e3e5;
         }
         
+        /* 使用说明 */
+        .instructions {
+            background: #f8f9fa;
+            border-radius: var(--border-radius);
+            padding: 20px;
+        }
+        
+        .instructions ol, .instructions ul {
+            padding-left: 20px;
+            margin: 15px 0;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .step-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .step-number {
+            width: 30px;
+            height: 30px;
+            background: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+            font-size: 0.9rem;
+        }
+        
         /* 底部信息 */
         footer {
             text-align: center;
             margin-top: 30px;
-            padding: 15px;
+            padding: 20px;
             color: #7f8c8d;
             font-size: 0.8rem;
         }
@@ -546,28 +523,57 @@
             }
             
             .card {
-                padding: 12px;
-                margin-bottom: 12px;
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 10px;
             }
             
             .result-details {
                 grid-template-columns: 1fr;
             }
             
-            .btn-group {
-                flex-direction: column;
-            }
-            
             .tension-table {
-                font-size: 0.7rem;
+                font-size: 0.75rem;
             }
             
             .tension-table th, .tension-table td {
-                padding: 5px;
+                padding: 8px;
             }
             
             .result-value {
+                font-size: 2.2rem;
+            }
+            
+            .measure-button {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .measure-button i {
                 font-size: 2rem;
+            }
+            
+            .nav-tabs {
+                max-width: 65%;
+            }
+            
+            .nav-tab {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .container {
+                padding: 8px;
+            }
+            
+            .card {
+                padding: 12px;
             }
             
             .measure-button {
@@ -576,7 +582,11 @@
             }
             
             .measure-button i {
-                font-size: 1.5rem;
+                font-size: 1.8rem;
+            }
+            
+            .result-value {
+                font-size: 2rem;
             }
         }
         
@@ -626,23 +636,56 @@
             padding: 10px;
         }
         
-        /* 权限提示 */
-        .permission-hint {
-            background: #e8f4fc;
-            border-left: 4px solid var(--secondary);
-            padding: 10px;
-            margin: 15px 0;
-            border-radius: 0 var(--border-radius) var(--border-radius) 0;
-            font-size: 0.9rem;
+        /* 按钮样式 */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-align: center;
+            width: 100%;
         }
         
-        .permission-hint h3 {
-            color: var(--secondary);
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 1rem;
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+        }
+        
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+        
+        .btn-success {
+            background: var(--success);
+        }
+        
+        .btn-success:hover {
+            background: #219653;
         }
     </style>
 </head>
@@ -673,17 +716,20 @@
             <div class="card">
                 <h2><i class="fas fa-cog"></i> 参数设置</h2>
                 
-                <div class="form-group">
-                    <label for="spanLength">跨度长度 (mm)</label>
-                    <input type="number" id="spanLength" value="800" step="1" min="100">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="spanLength">跨度长度 (mm)</label>
+                        <input type="number" id="spanLength" value="800" step="1" min="100">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="massDensity">线性密度 (kg/m)</label>
+                        <input type="number" id="massDensity" value="0.01" step="0.001" min="0.001">
+                    </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="massDensity">线性密度 μ (kg/m)</label>
-                    <input type="number" id="massDensity" value="0.01" step="0.001" min="0.001">
-                    <div style="font-size: 0.8rem; color: #666; margin-top: 5px;">
-                        自行车同步带通常为 0.01-0.02 kg/m
-                    </div>
+                <div style="font-size: 0.8rem; color: #666; margin-top: 5px;">
+                    自行车同步带线性密度通常为 0.01-0.02 kg/m
                 </div>
             </div>
             
@@ -693,8 +739,8 @@
                 
                 <div class="measure-button-container">
                     <div class="measure-button" id="measureButton">
-                        <svg class="progress-ring" width="120" height="120">
-                            <circle class="progress-ring-circle" stroke="white" stroke-width="4" fill="transparent" r="50" cx="60" cy="60"/>
+                        <svg class="progress-ring" width="140" height="140">
+                            <circle class="progress-ring-circle" stroke="white" stroke-width="4" fill="transparent" r="65" cx="70" cy="70"/>
                         </svg>
                         <i class="fas fa-microphone"></i>
                         <div class="measure-button-text">开始测量</div>
@@ -1374,7 +1420,7 @@
         
         // 设置进度环
         function setProgress(percent) {
-            const circumference = 2 * Math.PI * 50;
+            const circumference = 2 * Math.PI * 65;
             const offset = circumference - percent * circumference;
             progressCircle.style.strokeDashoffset = offset;
         }
