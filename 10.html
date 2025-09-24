@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <title>皮带轮参数计算器</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 颜色方案 - 优化为更现代的美化，模拟APP风格：扁平化、无边框阴影，添加渐变 */
+        :root {
+            --primary: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            --secondary: #3b82f6; /* 蓝色 - 更明亮 */
+            --accent: #10b981; /* 青绿色 - 更活力 */
+            --background: #f8fafc; /* 更浅背景 */
+            --text: #1f2937; /* 深灰色 - 更清晰 */
+            --shadow: rgba(0, 0, 0, 0.08); /* 减少阴影以模拟APP */
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background: var(--background);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            width: 100vw;
+            overflow-x: hidden; /* 防止横向滚动 */
+            touch-action: manipulation; /* 优化触摸响应 */
+            -webkit-text-size-adjust: 100%; /* 防止iOS字体缩放 */
+            -webkit-tap-highlight-color: transparent; /* 去除点击高亮，模拟APP */
+        }
+
+        header {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 25px 0;
+            box-shadow: 0 2px 6px var(--shadow); /* 增强阴影 */
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8em;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        header h1 i {
+            font-size: 1.2em;
+        }
+
+        header p {
+            margin: 10px 0 0;
+            font-size: 1em;
+            opacity: 0.95;
+        }
+
+        .selectors {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            max-width: 100%;
+            padding: 25px 15px; /* 增加padding以合理布局 */
+            box-sizing: border-box;
+            gap: 12px; /* 增加间隙 */
+        }
+
+        .selector-column {
+            flex: 1;
+            max-width: 33%;
+            text-align: center;
+            background-color: var(--card-bg);
+            border-radius: 12px; /* 更大圆角 */
+            padding: 15px;
+            box-shadow: 0 4px 12px var(--shadow); /* 增强阴影 */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s;
+            border: 1px solid rgba(59, 130, 246, 0.1);
+        }
+
+        .selector-column:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px var(--shadow);
+        }
+
+        .selector-column:active {
+            transform: translateY(-2px) scale(0.98); /* 按压效果模拟APP */
+        }
+
+        .selector-label {
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--secondary);
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .selector-label i {
+            font-size: 1.1em;
+            color: var(--accent);
+        }
+
+        .wheel {
+            height: 360px; /* 增大选择框高度以显示约6个数字 (每个li约60px) */
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            perspective: 800px; /* 增强3D效果 */
+            border: 1px solid rgba(59, 130, 246, 0.2); /* 轻边框 */
+            border-radius: 10px;
+            background-color: var(--card-bg);
+            scrollbar-width: none; /* 隐藏滚动条 */
+            -ms-overflow-style: none;
+            touch-action: pan-y; /* 优化滑动 */
+            will-change: scroll-position; /* 优化滚动性能 */
+        }
+
+        .wheel::-webkit-scrollbar {
+            display: none; /* 隐藏WebKit滚动条 */
+        }
+
+        .wheel ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .wheel li {
+            scroll-snap-align: center;
+            padding: 15px 10px; /* 保持padding以匹配更大高度 */
+            font-size: 1.3em; /* 调整字体以适应显示6个 */
+            height: 60px; /* 固定高度以确保显示6个 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease-out, font-size 0.4s ease-out, color 0.3s;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+            border-bottom: 1px solid rgba(0,0,0,0.05); /* 添加分隔线 */
+            will-change: transform, opacity; /* 优化动画性能 */
+            user-select: none; /* 防止文本选中 */
+            -webkit-user-select: none;
+        }
+
+        .wheel li.dummy {
+            visibility: hidden;
+            height: 25px;
+        }
+
+        .wheel li.selected {
+            transform: scale(1.6) rotateX(0deg);
+            font-weight: bold;
+            color: var(--accent);
+            opacity: 1;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 增强阴影 */
+            animation: selectedBounce 0.6s ease-out; /* 延长动画 */
+        }
+
+        .wheel li:not(.selected):not(.dummy) {
+            transform: rotateX(35deg) scale(0.9);
+            opacity: 0.7;
+            font-size: 1em;
+            color: var(--text);
+        }
+
+        @keyframes selectedBounce {
+            0% {
+                transform: scale(1.6) rotateX(0deg) translateY(0);
+            }
+            50% {
+                transform: scale(1.8) rotateX(0deg) translateY(-8px);
+            }
+            100% {
+                transform: scale(1.6) rotateX(0deg) translateY(0);
+            }
+        }
+
+        .results {
+            width: 95%;
+            max-width: 600px;
+            padding: 25px;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px var(--shadow);
+            transition: all 0.3s ease-in-out;
+            border: 1px solid rgba(59, 130, 246, 0.1);
+        }
+
+        .results:hover {
+            box-shadow: 0 8px 20px var(--shadow);
+        }
+
+        .results:active {
+            transform: scale(0.99); /* 轻微按压 */
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: var(--background);
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            border: 1px solid rgba(16, 185, 129, 0.1);
+            gap: 10px;
+        }
+
+        .result-item:hover {
+            background-color: rgba(16, 185, 129, 0.05);
+        }
+
+        .result-item:active {
+            transform: scale(0.98);
+        }
+
+        .result-item span:first-child {
+            font-weight: 600;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .result-item span:first-child i {
+            font-size: 1.1em;
+            color: var(--accent);
+        }
+
+        .result-item span:last-child {
+            font-size: 1.2em;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .copy-template {
+            text-align: center;
+            margin-top: 25px;
+            padding-bottom: 20px; /* 底部间距 */
+        }
+
+        .copy-button {
+            background: linear-gradient(135deg, var(--secondary) 0%, #1d4ed8 100%);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+            max-width: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .copy-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .copy-button:active {
+            transform: scale(0.98);
+        }
+
+        .copy-button i {
+            font-size: 1.1em;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: var(--accent);
+            transition: opacity 0.5s;
+        }
+
+        /* 响应式设计 - 增强手机端适配，布局更合理，微信公众号兼容 */
+        @media (max-width: 768px) {
+            .selectors {
+                padding: 20px 10px;
+                gap: 10px;
+            }
+
+            .selector-column {
+                max-width: 33%;
+                padding: 12px;
+            }
+
+            .wheel {
+                height: 300px; /* 手机端调整高度以显示约6个 */
+            }
+
+            header h1 {
+                font-size: 1.6em;
+            }
+
+            .results {
+                width: 98%;
+                padding: 20px;
+                margin: 15px 0;
+            }
+
+            .selector-label {
+                font-size: 0.9em;
+            }
+
+            .wheel li {
+                font-size: 1.1em;
+                padding: 12px 8px;
+                height: 55px; /* 调整以适应手机 */
+            }
+
+            .wheel li.selected {
+                font-size: 1.3em;
+            }
+
+            .copy-template {
+                padding-bottom: 30px; /* 手机端底部更多间距 */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .selectors {
+                padding: 15px 5px;
+                gap: 8px;
+            }
+
+            .selector-column {
+                padding: 10px;
+            }
+
+            .wheel {
+                height: 280px;
+            }
+
+            header h1 {
+                font-size: 1.4em;
+            }
+
+            .wheel li {
+                height: 50px;
+                font-size: 1em;
+            }
+
+            .results {
+                margin-bottom: 0; /* 调整底部间距 */
+            }
+
+            .copy-template {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: var(--card-bg);
+                padding: 15px;
+                box-shadow: 0 -2px 10px var(--shadow);
+                margin: 0;
+                z-index: 5;
+            }
+
+            .copy-button {
+                max-width: none;
+                width: 100%;
+                margin: 0 auto;
+            }
+            
+            /* 为手机端添加安全区域支持 */
+            @supports(padding: max(0px)) {
+                .copy-template {
+                    padding-bottom: max(15px, env(safe-area-inset-bottom));
+                }
+            }
+        }
+
+        /* 添加全局动画 */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .selectors, .results {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><i class="fas fa-cogs"></i>皮带轮参数计算器</h1>
+        <p>选择皮带、前齿盘和后齿盘，实时计算中心距和齿比</p>
+    </header>
+
+    <div class="selectors">
+        <div class="selector-column">
+            <div class="selector-label"><i class="fas fa-link"></i>皮带</div>
+            <div class="wheel" id="belt-wheel">
+                <ul id="belt-list"></ul>
+            </div>
+        </div>
+        <div class="selector-column">
+            <div class="selector-label"><i class="fas fa-cog"></i>前齿盘</div>
+            <div class="wheel" id="front-wheel">
+                <ul id="front-list"></ul>
+            </div>
+        </div>
+        <div class="selector-column">
+            <div class="selector-label"><i class="fas fa-cog"></i>后齿盘</div>
+            <div class="wheel" id="rear-wheel">
+                <ul id="rear-list"></ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="results">
+        <div class="result-item" id="gear-ratio" onclick="copyToClipboard('gear-ratio')">
+            <span><i class="fas fa-balance-scale"></i>齿比：</span>
+            <span id="gear-ratio-value">0.00</span>
+        </div>
+        <div class="result-item" id="center-distance" onclick="copyToClipboard('center-distance')">
+            <span><i class="fas fa-ruler-horizontal"></i>中心距（mm）：</span>
+            <span id="center-distance-value">0.00</span>
+        </div>
+    </div>
+
+    <div class="copy-template">
+        <button class="copy-button" onclick="copyTemplate()"><i class="fas fa-copy"></i>复制完整参数</button>
+        <div class="feedback" id="feedback"></div>
+    </div>
+
+    <script>
+        // 数据整理（保持不变）
+        const beltData = [
+            75, 78, 91, 100, 102, 105, 106, 108, 109, 111,
+            113, 114, 115, 116, 117, 120, 121, 122, 124, 125,
+            126, 128, 130, 132, 134, 135, 136, 137, 139, 143,
+            146, 147, 151, 153, 156, 157, 158, 160, 162, 166,
+            168, 171, 172, 174, 177, 179, 181
+        ];
+
+        const frontGears = [
+            22, 24, 26, 28, 30, 32, 34, 36, 38, 39,
+            40, 42, 44, 45, 46, 48, 50, 52, 55, 58,
+            60, 63, 65, 70
+        ];
+
+        const rearGears = [
+            19, 20, 22, 24, 26, 28, 30, 32, 34, 36,
+            38, 39
+        ];
+
+        // 初始化选择
+        let selectedBelt = beltData[0];
+        let selectedFront = frontGears[0];
+        let selectedRear = rearGears[0];
+
+        // 填充轮盘列表 - 修复BUG：添加dummy类
+        function populateWheel(listId, data, selectedValue) {
+            const ul = document.getElementById(listId);
+            ul.innerHTML = '';
+            data.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                li.dataset.value = item;
+                if (item === selectedValue) {
+                    li.classList.add('selected');
+                }
+                li.addEventListener('click', () => selectItem(ul, li));
+                ul.appendChild(li);
+            });
+            // 添加额外的空项以支持滚动效果
+            for (let i = 0; i < 5; i++) {
+                const dummyTop = document.createElement('li');
+                dummyTop.classList.add('dummy');
+                dummyTop.style.visibility = 'hidden';
+                dummyTop.style.height = '25px';
+                ul.insertBefore(dummyTop, ul.firstChild);
+                const dummyBottom = document.createElement('li');
+                dummyBottom.classList.add('dummy');
+                dummyBottom.style.visibility = 'hidden';
+                dummyBottom.style.height = '25px';
+                ul.appendChild(dummyBottom);
+            }
+        }
+
+        // 选择项 - 修复BUG：排除dummy
+        function selectItem(ul, li) {
+            ul.querySelectorAll('li:not(.dummy)').forEach(l => l.classList.remove('selected'));
+            li.classList.add('selected');
+            const wheelId = ul.parentElement.id;
+            if (wheelId === 'belt-wheel') selectedBelt = parseInt(li.dataset.value);
+            else if (wheelId === 'front-wheel') selectedFront = parseInt(li.dataset.value);
+            else if (wheelId === 'rear-wheel') selectedRear = parseInt(li.dataset.value);
+            updateResults();
+        }
+
+        // 滚动事件处理（防抖） - 修复BUG：过滤dummy
+        let debounceTimer;
+        function handleScroll(wheel) {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                const items = Array.from(wheel.querySelectorAll('li:not(.dummy)'));
+                const wheelRect = wheel.getBoundingClientRect();
+                let closest = null;
+                let minDist = Infinity;
+                items.forEach(item => {
+                    const itemRect = item.getBoundingClientRect();
+                    const dist = Math.abs((itemRect.top + itemRect.height / 2) - (wheelRect.top + wheelRect.height / 2));
+                    if (dist < minDist) {
+                        minDist = dist;
+                        closest = item;
+                    }
+                });
+                if (closest) {
+                    selectItem(wheel.querySelector('ul'), closest);
+                    closest.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }, 50);
+        }
+
+        // 初始化轮盘
+        populateWheel('belt-list', beltData, selectedBelt);
+        populateWheel('front-list', frontGears, selectedFront);
+        populateWheel('rear-list', rearGears, selectedRear);
+
+        // 添加滚动监听
+        document.querySelectorAll('.wheel').forEach(wheel => {
+            wheel.addEventListener('scroll', () => handleScroll(wheel));
+        });
+
+        // 更新结果
+        function updateResults() {
+            // 齿比
+            const gearRatio = (selectedFront / selectedRear).toFixed(2);
+            document.getElementById('gear-ratio-value').textContent = gearRatio;
+
+            // 中心距
+            const pitch = 11; // 11M型皮带节距
+            const L = selectedBelt * pitch;
+            const smallTeeth = Math.min(selectedFront, selectedRear);
+            const largeTeeth = Math.max(selectedFront, selectedRear);
+            const R1 = (smallTeeth * pitch) / (2 * Math.PI);
+            const R2 = (largeTeeth * pitch) / (2 * Math.PI);
+            const piTerm = Math.PI * (R1 + R2);
+            const discriminant = Math.pow(L - piTerm, 2) - 8 * Math.pow(R2 - R1, 2);
+            if (discriminant < 0) {
+                document.getElementById('center-distance-value').textContent = 'Invalid';
+                return;
+            }
+            const sqrtTerm = Math.sqrt(discriminant);
+            const C = ((L - piTerm) + sqrtTerm) / 4;
+            document.getElementById('center-distance-value').textContent = C.toFixed(2);
+        }
+
+        // 初始更新
+        updateResults();
+
+        // 优化复制函数：添加fallback以修复复制不成功问题
+        function copyText(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                // 现代API
+                navigator.clipboard.writeText(text).then(() => {
+                    showFeedback('已复制！');
+                }).catch(() => {
+                    fallbackCopyTextToClipboard(text);
+                });
+            } else {
+                // Fallback for older browsers or non-secure contexts
+                fallbackCopyTextToClipboard(text);
+            }
+        }
+
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.position = "fixed";
+            textArea.style.opacity = "0";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                const successful = document.execCommand('copy');
+                const msg = successful ? '已复制！' : '复制失败';
+                showFeedback(msg);
+            } catch (err) {
+                showFeedback('复制失败');
+                console.error('Fallback: Oops, unable to copy', err);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        // 复制到剪贴板 - 更新调用
+        function copyToClipboard(id) {
+            let text;
+            if (id === 'gear-ratio') {
+                text = document.getElementById('gear-ratio-value').textContent;
+            } else if (id === 'center-distance') {
+                text = document.getElementById('center-distance-value').textContent;
+            }
+            if (text && text !== '0.00' && text !== 'Invalid') {
+                copyText(text);
+            } else {
+                showFeedback('无有效内容复制');
+            }
+        }
+
+        // 复制完整模板 - 更新调用
+        function copyTemplate() {
+            const template = `皮带: ${selectedBelt}T\n前齿盘: ${selectedFront}T\n后齿盘: ${selectedRear}T\n齿比: ${document.getElementById('gear-ratio-value').textContent}\n中心距: ${document.getElementById('center-distance-value').textContent} mm`;
+            copyText(template);
+        }
+
+        // 显示反馈
+        function showFeedback(message) {
+            const feedback = document.getElementById('feedback');
+            feedback.textContent = message;
+            feedback.style.opacity = 1;
+            setTimeout(() => { 
+                feedback.style.opacity = 0; 
+                feedback.textContent = ''; 
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
