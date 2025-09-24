@@ -138,6 +138,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            background-color: #f0f4f8; /* 添加背景色作为加载时的占位 */
         }
         
         .carousel-indicators {
@@ -230,6 +231,7 @@
             align-items: center;
             justify-content: center;
             background: #f0f4f8;
+            position: relative;
         }
         
         .tool-image img {
@@ -298,6 +300,7 @@
             height: auto;
             max-height: 90px;
             object-fit: cover;
+            background-color: #f0f4f8; /* 添加背景色作为加载时的占位 */
         }
         
         .specs-search {
@@ -447,6 +450,7 @@
             height: auto;
             max-height: 80px;
             object-fit: cover;
+            background-color: #f0f4f8; /* 添加背景色作为加载时的占位 */
         }
         
         /* 知识库内容区域 */
@@ -844,6 +848,29 @@
             font-size: 0.8rem;
             color: var(--accent);
         }
+        
+        /* 新增：图片加载优化 */
+        .image-placeholder {
+            background: linear-gradient(45deg, #f0f4f8 25%, #e2e8f0 25%, #e2e8f0 50%, #f0f4f8 50%, #f0f4f8 75%, #e2e8f0 75%, #e2e8f0);
+            background-size: 20px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #718096;
+            font-size: 0.8rem;
+        }
+        
+        /* 新增：图片加载失败样式 */
+        .image-error {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fed7d7;
+            color: #c53030;
+            font-size: 0.8rem;
+            text-align: center;
+            padding: 10px;
+        }
     </style>
 </head>
 <body>
@@ -855,20 +882,10 @@
                 <!-- 轮播图 -->
                 <div class="carousel" id="carousel">
                     <div class="carousel-inner" id="carouselInner">
-                        <div class="carousel-item">
-                            <img src="https://raw.githubusercontent.com/cadenqi/tools/main/images/banner1.jpg" alt="轮播图1">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="https://raw.githubusercontent.com/cadenqi/tools/main/images/banner2.jpg" alt="轮播图2" onerror="this.src='https://placehold.co/600x300/3498db/white?text=图片加载失败'">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="https://raw.githubusercontent.com/cadenqi/tools/main/images/banner3.jpg" alt="轮播图3" onerror="this.src='https://placehold.co/600x300/3498db/white?text=图片加载失败'">
-                        </div>
+                        <!-- 轮播图内容将通过JavaScript动态加载 -->
                     </div>
                     <div class="carousel-indicators" id="carouselIndicators">
-                        <div class="carousel-indicator active" data-index="0"></div>
-                        <div class="carousel-indicator" data-index="1"></div>
-                        <div class="carousel-indicator" data-index="2"></div>
+                        <!-- 指示器将通过JavaScript动态生成 -->
                     </div>
                 </div>
                 
@@ -907,7 +924,7 @@
             <!-- 固定顶部区域：广告 + 搜索 + 标签 -->
             <div class="specs-sticky-header">
                 <div class="specs-ad">
-                    <img src="https://raw.githubusercontent.com/cadenqi/tools/main/images/banner1.jpg" alt="赞助商广告">
+                    <!-- 广告图片将通过JavaScript动态加载 -->
                 </div>
                 
                 <div class="specs-search">
@@ -952,7 +969,7 @@
             <!-- 固定顶部区域：广告 -->
             <div class="knowledge-sticky-header">
                 <div class="knowledge-ad">
-                    <img src="https://placehold.co/600x200/9b59b6/white?text=知识库广告位" alt="知识库广告">
+                    <!-- 知识库广告图片将通过JavaScript动态加载 -->
                 </div>
             </div>
             
@@ -991,7 +1008,7 @@
                             </ul>
                             <div class="qrcode-container">
                                 <div class="qrcode">
-                                    <img src="https://placehold.co/150x150/3498db/white?text=公众号二维码" alt="公众号二维码">
+                                    <!-- 公众号二维码图片将通过JavaScript动态加载 -->
                                 </div>
                                 <div class="qrcode-text">扫码关注我们的公众号</div>
                             </div>
@@ -1050,6 +1067,60 @@
     </div>
 
     <script>
+        // ==================== 图片资源配置 ====================
+        // 使用多个CDN源确保图片可访问性
+        const imageResources = {
+            // 轮播图
+            carousel: [
+                {
+                    primary: "https://raw.githubusercontent.com/cadenqi/tools/main/images/banner1.jpg",
+                    fallback: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                    placeholder: "自行车工具集"
+                },
+                {
+                    primary: "https://raw.githubusercontent.com/cadenqi/tools/main/images/banner2.jpg",
+                    fallback: "https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                    placeholder: "专业工程计算"
+                },
+                {
+                    primary: "https://raw.githubusercontent.com/cadenqi/tools/main/images/banner3.jpg",
+                    fallback: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                    placeholder: "精准设计工具"
+                }
+            ],
+            // 广告图片
+            ads: {
+                specs: {
+                    primary: "https://raw.githubusercontent.com/cadenqi/tools/main/images/banner1.jpg",
+                    fallback: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                    placeholder: "选型表广告"
+                },
+                knowledge: {
+                    primary: "https://placehold.co/600x200/9b59b6/white?text=知识库广告位",
+                    fallback: "https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                    placeholder: "知识库广告"
+                },
+                qrcode: {
+                    primary: "https://placehold.co/150x150/3498db/white?text=公众号二维码",
+                    fallback: "https://via.placeholder.com/150x150/3498db/ffffff?text=二维码",
+                    placeholder: "公众号二维码"
+                }
+            },
+            // 工具图片
+            tools: [
+                "https://placehold.co/600x400/3498db/white?text=材质重量分析",
+                "https://placehold.co/600x400/1abc9c/white?text=皮带张力分析",
+                "https://placehold.co/600x400/e74c3c/white?text=RC设计计算器",
+                "https://placehold.co/600x400/f39c12/white?text=驱动系统换算",
+                "https://placehold.co/600x400/9b59b6/white?text=齿盘参数计算",
+                "https://placehold.co/600x400/e74c3c/white?text=皮带轮参数计算",
+                "https://placehold.co/600x400/2ecc71/white?text=皮带轮与齿盘换算",
+                "https://placehold.co/600x400/3498db/white?text=皮带长度计算",
+                "https://placehold.co/600x400/9b59b6/white?text=直线度检测分析",
+                "https://placehold.co/600x400/e74c3c/white?text=RC参数计算器"
+            ]
+        };
+
         // ==================== 工具数据配置 ====================
         // 按照ID从大到小排序，ID越大显示越靠前
         const toolsData = [
@@ -1058,7 +1129,7 @@
                 title: "材质重量分析",
                 category: "other",
                 description: "分析计算不同材质、形状的重量以及单价计算",
-                image: "https://placehold.co/600x400/3498db/white?text=空气动力学",
+                image: imageResources.tools[0],
                 link: "https://cadenqi.github.io/tools/8",
                 uses: 678
             },
@@ -1067,7 +1138,7 @@
                 title: "皮带张力分析",
                 category: "belt",
                 description: "分析自行车皮带张力数据，判断张力是否均匀合格",
-                image: "https://placehold.co/600x400/1abc9c/white?text=重量分析",
+                image: imageResources.tools[1],
                 link: "https://cadenqi.github.io/tools/7",
                 uses: 432
             },
@@ -1076,7 +1147,7 @@
                 title: "自行车RC设计计算器",
                 category: "other",
                 description: "基于不同条件来合理设计自行车的RC尺寸",
-                image: "https://placehold.co/600x400/e74c3c/white?text=性能模拟",
+                image: imageResources.tools[2],
                 link: "https://cadenqi.github.io/tools/6",
                 uses: 945
             },
@@ -1085,7 +1156,7 @@
                 title: "自行车驱动系统换算工具",
                 category: "other",
                 description: "将现有链条驱动系统平替链条为皮带系统，转换计算工具",
-                image: "https://placehold.co/600x400/f39c12/white?text=材料强度",
+                image: imageResources.tools[3],
                 link: "https://cadenqi.github.io/tools/5",
                 uses: 723
             },
@@ -1094,7 +1165,7 @@
                 title: "齿盘参数计算器",
                 category: "belt",
                 description: "计算12.7节距齿盘的外径等相关参数",
-                image: "https://placehold.co/600x400/9b59b6/white?text=同步带计算",
+                image: imageResources.tools[4],
                 link: "https://cadenqi.github.io/tools/4",
                 uses: 567
             },
@@ -1103,7 +1174,7 @@
                 title: "皮带轮参数计算器器",
                 category: "belt",
                 description: "可计算11M、10M、8M皮带轮的外径等数据",
-                image: "https://placehold.co/600x400/e74c3c/white?text=3D配置器",
+                image: imageResources.tools[5],
                 link: "https://cadenqi.github.io/tools/3",
                 uses: 856
             },
@@ -1112,7 +1183,7 @@
                 title: "皮带轮与齿盘换算器",
                 category: "belt",
                 description: "计算不同齿比下的速度、踏频关系，优化传动系统设计",
-                image: "https://placehold.co/600x400/2ecc71/white?text=传动计算",
+                image: imageResources.tools[6],
                 link: "https://cadenqi.github.io/tools/2",
                 uses: 892
             },
@@ -1121,7 +1192,7 @@
                 title: "自行车皮带长度计算器",
                 category: "belt",
                 description: "计算皮带驱动系统自行车皮带长度与选型参数等",
-                image: "https://placehold.co/600x400/3498db/white?text=几何计算",
+                image: imageResources.tools[7],
                 link: "https://cadenqi.github.io/tools/1",
                 uses: 1243
             },
@@ -1130,7 +1201,7 @@
                 title: "皮带系统直线度检测分析工具",
                 category: "belt",
                 description: "基于图像处理分析系统，对皮带系统的直线度检检验测量",
-                image: "https://placehold.co/600x400/9b59b6/white?text=电动助力",
+                image: imageResources.tools[8],
                 link: "https://cadenqi.github.io/tools/9",
                 uses: 523
             },
@@ -1139,7 +1210,7 @@
                 title: "皮带皮带轮RC参数计算器",
                 category: "belt",
                 description: "以皮带皮带轮为条件计算齿比以及RC值",
-                image: "https://placehold.co/600x400/e74c3c/white?text=链条寿命",
+                image: imageResources.tools[9],
                 link: "https://cadenqi.github.io/tools/10",
                 uses: 789
             }
@@ -1254,6 +1325,118 @@
             carouselIndex: 0
         };
 
+        // ==================== 图片加载优化函数 ====================
+        const imageLoader = {
+            // 创建具有备用源的图片元素
+            createImageWithFallback: function(primarySrc, fallbackSrc, alt, placeholderText) {
+                const img = document.createElement('img');
+                img.alt = alt;
+                
+                // 设置占位背景
+                img.style.backgroundColor = '#f0f4f8';
+                
+                // 创建图片加载Promise
+                const loadImage = (src) => {
+                    return new Promise((resolve, reject) => {
+                        const testImg = new Image();
+                        testImg.onload = () => resolve(src);
+                        testImg.onerror = () => reject(new Error(`Failed to load image: ${src}`));
+                        testImg.src = src;
+                    });
+                };
+                
+                // 尝试加载主源，失败后尝试备用源
+                loadImage(primarySrc)
+                    .then((src) => {
+                        img.src = src;
+                    })
+                    .catch(() => {
+                        console.warn(`Primary image failed, using fallback: ${primarySrc}`);
+                        return loadImage(fallbackSrc);
+                    })
+                    .then((src) => {
+                        img.src = src;
+                    })
+                    .catch(() => {
+                        console.error(`All image sources failed for: ${alt}`);
+                        // 显示错误占位符
+                        img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmNGY4Ii8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOHB4IiBmaWxsPSIjNzE4MDk2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+5Zu+54KH5Zu+5bCR5YaF5a65PC90ZXh0Pgo8L3N2Zz4=';
+                    });
+                
+                return img;
+            },
+            
+            // 初始化轮播图
+            initCarousel: function() {
+                const carouselInner = document.getElementById('carouselInner');
+                const indicatorsContainer = document.getElementById('carouselIndicators');
+                
+                // 清空现有内容
+                carouselInner.innerHTML = '';
+                indicatorsContainer.innerHTML = '';
+                
+                // 创建轮播项
+                imageResources.carousel.forEach((image, index) => {
+                    // 创建轮播项
+                    const carouselItem = document.createElement('div');
+                    carouselItem.className = 'carousel-item';
+                    
+                    // 创建图片
+                    const img = this.createImageWithFallback(
+                        image.primary, 
+                        image.fallback, 
+                        `轮播图${index + 1}`,
+                        image.placeholder
+                    );
+                    
+                    carouselItem.appendChild(img);
+                    carouselInner.appendChild(carouselItem);
+                    
+                    // 创建指示器
+                    const indicator = document.createElement('div');
+                    indicator.className = `carousel-indicator ${index === 0 ? 'active' : ''}`;
+                    indicator.setAttribute('data-index', index);
+                    indicatorsContainer.appendChild(indicator);
+                });
+            },
+            
+            // 初始化广告图片
+            initAds: function() {
+                // 选型表广告
+                const specsAd = document.querySelector('.specs-ad');
+                specsAd.innerHTML = '';
+                const specsImg = this.createImageWithFallback(
+                    imageResources.ads.specs.primary,
+                    imageResources.ads.specs.fallback,
+                    '赞助商广告',
+                    imageResources.ads.specs.placeholder
+                );
+                specsAd.appendChild(specsImg);
+                
+                // 知识库广告
+                const knowledgeAd = document.querySelector('.knowledge-ad');
+                knowledgeAd.innerHTML = '';
+                const knowledgeImg = this.createImageWithFallback(
+                    imageResources.ads.knowledge.primary,
+                    imageResources.ads.knowledge.fallback,
+                    '知识库广告',
+                    imageResources.ads.knowledge.placeholder
+                );
+                knowledgeAd.appendChild(knowledgeImg);
+                
+                // 公众号二维码
+                const qrcode = document.querySelector('.qrcode');
+                qrcode.innerHTML = '';
+                const qrcodeImg = this.createImageWithFallback(
+                    imageResources.ads.qrcode.primary,
+                    imageResources.ads.qrcode.fallback,
+                    '公众号二维码',
+                    imageResources.ads.qrcode.placeholder
+                );
+                qrcode.appendChild(qrcodeImg);
+            }
+        };
+
         // ==================== 链接处理器 ====================
         const linkHandler = {
             currentLink: null,
@@ -1352,7 +1535,11 @@
                 }
             }
             
-            // 初始化轮播图
+            // 初始化图片资源
+            imageLoader.initCarousel();
+            imageLoader.initAds();
+            
+            // 初始化轮播图功能
             initCarousel();
             
             // 渲染工具卡片
@@ -1678,7 +1865,7 @@
             
             card.innerHTML = `
                 <div class="tool-image">
-                    <img src="${tool.image}" alt="${tool.title}" onerror="this.src='https://placehold.co/600x400/718096/white?text=图片加载失败'">
+                    <img src="${tool.image}" alt="${tool.title}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmNGY4Ii8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOHB4IiBmaWxsPSIjNzE4MDk2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+5Zu+54KH5Zu+5bCR5YaF5a65PC90ZXh0Pgo8L3N2Zz4='">
                 </div>
                 <div class="tool-content">
                     <h3 class="tool-title">${tool.title}</h3>
