@@ -848,6 +848,17 @@
             font-size: 0.8rem;
             color: var(--accent);
         }
+        
+        /* 新增：图片加载优化 */
+        .image-placeholder {
+            background: linear-gradient(45deg, #f0f4f8 25%, #e2e8f0 25%, #e2e8f0 50%, #f0f4f8 50%, #f0f4f8 75%, #e2e8f0 75%, #e2e8f0);
+            background-size: 20px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #718096;
+            font-size: 0.8rem;
+        }
     </style>
 </head>
 <body>
@@ -1045,61 +1056,55 @@
 
     <script>
         // ==================== 图片资源配置 ====================
-        // 使用稳定的图片源
+        // 使用jsDelivr CDN作为备用方案，提高图片加载成功率
         const imageResources = {
-            // 轮播图 - 使用稳定的图片源
+            // 轮播图 - 使用jsDelivr CDN作为主要源，GitHub raw作为备用
             carousel: [
                 {
-                    src: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-                    alt: "自行车工具集"
+                    primary: "https://cdn.jsdelivr.net/gh/cadenqi/tools@main/images/banner1.jpg",
+                    fallback: "https://raw.githubusercontent.com/cadenqi/tools/main/images/banner1.jpg",
+                    alt: "轮播图1"
                 },
                 {
-                    src: "https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-                    alt: "专业工程计算"
+                    primary: "https://cdn.jsdelivr.net/gh/cadenqi/tools@main/images/banner2.jpg",
+                    fallback: "https://raw.githubusercontent.com/cadenqi/tools/main/images/banner2.jpg",
+                    alt: "轮播图2"
                 },
                 {
-                    src: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-                    alt: "精准设计工具"
+                    primary: "https://cdn.jsdelivr.net/gh/cadenqi/tools@main/images/banner3.jpg",
+                    fallback: "https://raw.githubusercontent.com/cadenqi/tools/main/images/banner3.jpg",
+                    alt: "轮播图3"
                 }
             ],
-            // 广告图片 - 使用稳定的图片源
+            // 广告图片 - 使用jsDelivr CDN作为主要源
             ads: {
                 specs: {
-                    src: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-                    alt: "选型表广告"
+                    primary: "https://cdn.jsdelivr.net/gh/cadenqi/tools@main/images/banner1.jpg",
+                    fallback: "https://raw.githubusercontent.com/cadenqi/tools/main/images/banner1.jpg",
+                    alt: "赞助商广告"
                 },
                 knowledge: {
-                    src: "https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                    primary: "https://placehold.co/600x200/9b59b6/white?text=知识库广告位",
+                    fallback: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgNjAwIDIwMCI+CiAgPHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI2YwZjRmOCIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMThweCIgZmlsbD0iIzcxODA5NiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPuW+ruS/oeaOkuihjOaOkuW6jzwvdGV4dD4KPC9zdmc+",
                     alt: "知识库广告"
                 },
                 qrcode: {
-                    src: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgMTUwIDE1MCI+CiAgPHJlY3Qgd2lkdGg9IjE1MCIgaGVpZ2h0PSIxNTAiIGZpbGw9IiNmMGY0ZjgiLz4KICA8dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0cHgiIGZpbGw9IiM3MTgwOTYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7lnKjkuo7lrabmoKHniYg8L3RleHQ+Cjwvc3ZnPg==",
+                    primary: "https://placehold.co/150x150/3498db/white?text=公众号二维码",
+                    fallback: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgMTUwIDE1MCI+CiAgPHJlY3Qgd2lkdGg9IjE1MCIgaGVpZ2h0PSIxNTAiIGZpbGw9IiNmMGY0ZjgiLz4KICA8dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0cHgiIGZpbGw9IiM3MTgwOTYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7lnKjkuo7lrabmoKHniYg8L3RleHQ+Cjwvc3ZnPg==",
                     alt: "公众号二维码"
                 }
-            },
-            // 工具图片 - 使用稳定的占位图
-            tools: [
-                "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=400&q=80",
-                "https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=400&q=80",
-                "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=400&q=80",
-                "https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=400&q=80",
-                "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=400&q=80",
-                "https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=400&q=80",
-                "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=400&q=80",
-                "https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=400&q=80",
-                "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=400&q=80",
-                "https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=400&q=80"
-            ]
+            }
         };
 
         // ==================== 工具数据配置 ====================
+        // 按照ID从大到小排序，ID越大显示越靠前
         const toolsData = [
             {
                 id: 8,
                 title: "材质重量分析",
                 category: "other",
                 description: "分析计算不同材质、形状的重量以及单价计算",
-                image: imageResources.tools[0],
+                image: "https://placehold.co/600x400/3498db/white?text=材质重量分析",
                 link: "https://cadenqi.github.io/tools/8",
                 uses: 678
             },
@@ -1108,7 +1113,7 @@
                 title: "皮带张力分析",
                 category: "belt",
                 description: "分析自行车皮带张力数据，判断张力是否均匀合格",
-                image: imageResources.tools[1],
+                image: "https://placehold.co/600x400/1abc9c/white?text=皮带张力分析",
                 link: "https://cadenqi.github.io/tools/7",
                 uses: 432
             },
@@ -1117,7 +1122,7 @@
                 title: "自行车RC设计计算器",
                 category: "other",
                 description: "基于不同条件来合理设计自行车的RC尺寸",
-                image: imageResources.tools[2],
+                image: "https://placehold.co/600x400/e74c3c/white?text=RC设计计算器",
                 link: "https://cadenqi.github.io/tools/6",
                 uses: 945
             },
@@ -1126,7 +1131,7 @@
                 title: "自行车驱动系统换算工具",
                 category: "other",
                 description: "将现有链条驱动系统平替链条为皮带系统，转换计算工具",
-                image: imageResources.tools[3],
+                image: "https://placehold.co/600x400/f39c12/white?text=驱动系统换算",
                 link: "https://cadenqi.github.io/tools/5",
                 uses: 723
             },
@@ -1135,16 +1140,16 @@
                 title: "齿盘参数计算器",
                 category: "belt",
                 description: "计算12.7节距齿盘的外径等相关参数",
-                image: imageResources.tools[4],
+                image: "https://placehold.co/600x400/9b59b6/white?text=齿盘参数计算",
                 link: "https://cadenqi.github.io/tools/4",
                 uses: 567
             },
             {
                 id: 3,
-                title: "皮带轮参数计算器器",
+                title: "皮带轮参数计算器",
                 category: "belt",
                 description: "可计算11M、10M、8M皮带轮的外径等数据",
-                image: imageResources.tools[5],
+                image: "https://placehold.co/600x400/e74c3c/white?text=皮带轮参数计算",
                 link: "https://cadenqi.github.io/tools/3",
                 uses: 856
             },
@@ -1153,7 +1158,7 @@
                 title: "皮带轮与齿盘换算器",
                 category: "belt",
                 description: "计算不同齿比下的速度、踏频关系，优化传动系统设计",
-                image: imageResources.tools[6],
+                image: "https://placehold.co/600x400/2ecc71/white?text=皮带轮与齿盘换算",
                 link: "https://cadenqi.github.io/tools/2",
                 uses: 892
             },
@@ -1162,7 +1167,7 @@
                 title: "自行车皮带长度计算器",
                 category: "belt",
                 description: "计算皮带驱动系统自行车皮带长度与选型参数等",
-                image: imageResources.tools[7],
+                image: "https://placehold.co/600x400/3498db/white?text=皮带长度计算",
                 link: "https://cadenqi.github.io/tools/1",
                 uses: 1243
             },
@@ -1171,7 +1176,7 @@
                 title: "皮带系统直线度检测分析工具",
                 category: "belt",
                 description: "基于图像处理分析系统，对皮带系统的直线度检检验测量",
-                image: imageResources.tools[8],
+                image: "https://placehold.co/600x400/9b59b6/white?text=直线度检测分析",
                 link: "https://cadenqi.github.io/tools/9",
                 uses: 523
             },
@@ -1180,7 +1185,7 @@
                 title: "皮带皮带轮RC参数计算器",
                 category: "belt",
                 description: "以皮带皮带轮为条件计算齿比以及RC值",
-                image: imageResources.tools[9],
+                image: "https://placehold.co/600x400/e74c3c/white?text=RC参数计算器",
                 link: "https://cadenqi.github.io/tools/10",
                 uses: 789
             }
@@ -1297,6 +1302,45 @@
 
         // ==================== 图片加载优化函数 ====================
         const imageLoader = {
+            // 创建具有备用源的图片元素
+            createImageWithFallback: function(primarySrc, fallbackSrc, alt) {
+                const img = document.createElement('img');
+                img.alt = alt;
+                
+                // 设置占位背景
+                img.style.backgroundColor = '#f0f4f8';
+                
+                // 创建图片加载Promise
+                const loadImage = (src) => {
+                    return new Promise((resolve, reject) => {
+                        const testImg = new Image();
+                        testImg.onload = () => resolve(src);
+                        testImg.onerror = () => reject(new Error(`Failed to load image: ${src}`));
+                        testImg.src = src;
+                    });
+                };
+                
+                // 尝试加载主源，失败后尝试备用源
+                loadImage(primarySrc)
+                    .then((src) => {
+                        img.src = src;
+                    })
+                    .catch(() => {
+                        console.warn(`Primary image failed, using fallback: ${primarySrc}`);
+                        return loadImage(fallbackSrc);
+                    })
+                    .then((src) => {
+                        img.src = src;
+                    })
+                    .catch(() => {
+                        console.error(`All image sources failed for: ${alt}`);
+                        // 显示错误占位符
+                        img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmNGY4Ii8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOHB4IiBmaWxsPSIjNzE4MDk2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+5Zu+54KH5Zu+5bCR5YaF5a65PC90ZXh0Pgo8L3N2Zz4=';
+                    });
+                
+                return img;
+            },
+            
             // 初始化轮播图
             initCarousel: function() {
                 const carouselInner = document.getElementById('carouselInner');
@@ -1313,13 +1357,11 @@
                     carouselItem.className = 'carousel-item';
                     
                     // 创建图片
-                    const img = document.createElement('img');
-                    img.src = image.src;
-                    img.alt = image.alt;
-                    img.onerror = function() {
-                        // 如果图片加载失败，使用占位图
-                        this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgODAwIDMwMCI+CiAgPHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI2YwZjRmOCIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMThweCIgZmlsbD0iIzcxODA5NiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPuWbvueCh+WbvuWwkeWGheWuuTwvdGV4dD4KPC9zdmc+';
-                    };
+                    const img = this.createImageWithFallback(
+                        image.primary, 
+                        image.fallback, 
+                        image.alt
+                    );
                     
                     carouselItem.appendChild(img);
                     carouselInner.appendChild(carouselItem);
@@ -1337,34 +1379,31 @@
                 // 选型表广告
                 const specsAd = document.querySelector('.specs-ad');
                 specsAd.innerHTML = '';
-                const specsImg = document.createElement('img');
-                specsImg.src = imageResources.ads.specs.src;
-                specsImg.alt = imageResources.ads.specs.alt;
-                specsImg.onerror = function() {
-                    this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjkwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgOTAiPgogIDxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmMGY0ZjgiLz4KICA8dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0cHgiIGZpbGw9IiM3MTgwOTYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7lgZrniLHmjpLooYw8L3RleHQ+Cjwvc3ZnPg==';
-                };
+                const specsImg = this.createImageWithFallback(
+                    imageResources.ads.specs.primary,
+                    imageResources.ads.specs.fallback,
+                    imageResources.ads.specs.alt
+                );
                 specsAd.appendChild(specsImg);
                 
                 // 知识库广告
                 const knowledgeAd = document.querySelector('.knowledge-ad');
                 knowledgeAd.innerHTML = '';
-                const knowledgeImg = document.createElement('img');
-                knowledgeImg.src = imageResources.ads.knowledge.src;
-                knowledgeImg.alt = imageResources.ads.knowledge.alt;
-                knowledgeImg.onerror = function() {
-                    this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjgwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgODAiPgogIDxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmMGY0ZjgiLz4KICA8dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0cHgiIGZpbGw9IiM3MTgwOTYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7lvq7kv6HmjpLooYw8L3RleHQ+Cjwvc3ZnPg==';
-                };
+                const knowledgeImg = this.createImageWithFallback(
+                    imageResources.ads.knowledge.primary,
+                    imageResources.ads.knowledge.fallback,
+                    imageResources.ads.knowledge.alt
+                );
                 knowledgeAd.appendChild(knowledgeImg);
                 
                 // 公众号二维码
                 const qrcode = document.querySelector('.qrcode');
                 qrcode.innerHTML = '';
-                const qrcodeImg = document.createElement('img');
-                qrcodeImg.src = imageResources.ads.qrcode.src;
-                qrcodeImg.alt = imageResources.ads.qrcode.alt;
-                qrcodeImg.onerror = function() {
-                    this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgMTUwIDE1MCI+CiAgPHJlY3Qgd2lkdGg9IjE1MCIgaGVpZ2h0PSIxNTAiIGZpbGw9IiNmMGY0ZjgiLz4KICA8dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0cHgiIGZpbGw9IiM3MTgwOTYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7lnKjkuo7lrabmoKHniYg8L3RleHQ+Cjwvc3ZnPg==';
-                };
+                const qrcodeImg = this.createImageWithFallback(
+                    imageResources.ads.qrcode.primary,
+                    imageResources.ads.qrcode.fallback,
+                    imageResources.ads.qrcode.alt
+                );
                 qrcode.appendChild(qrcodeImg);
             }
         };
@@ -1797,7 +1836,7 @@
             
             card.innerHTML = `
                 <div class="tool-image">
-                    <img src="${tool.image}" alt="${tool.title}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgNjAwIDQwMCI+CiAgPHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI2YwZjRmOCIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMThweCIgZmlsbD0iIzcxODA5NiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPuWbvueCh+WbvuWwkeWGheWuuTwvdGV4dD4KPC9zdmc+'">
+                    <img src="${tool.image}" alt="${tool.title}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmNGY4Ii8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOHB4IiBmaWxsPSIjNzE4MDk2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+5Zu+54KH5Zu+5bCR5YaF5a65PC90ZXh0Pgo8L3N2Zz4='">
                 </div>
                 <div class="tool-content">
                     <h3 class="tool-title">${tool.title}</h3>
