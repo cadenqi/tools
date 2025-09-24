@@ -599,7 +599,7 @@
 <body>
     <!-- 顶部标题栏 -->
     <header class="app-header">
-        <h1 class="app-title">自行车皮带长度计算器</h1>
+        <h1 class="app-title">JKaero工具箱|自行车皮带长度计算器</h1>
     </header>
     
     <!-- 主导航 -->
@@ -907,11 +907,11 @@
                 // 生成调整建议
                 let adjustmentNote = '';
                 if (beltTeethStandard > beltTeethCalculated) {
-                    adjustmentNote = `需采购 ${pitch}M-${beltTeethStandard} 皮带。理论中心距 ${centerDistance}mm 需略微增大以适应 ${beltTeethStandard} 齿皮带，建议设计预留±5mm调整量。`;
+                    adjustmentNote = `需采购 ${pitch}M-${beltTeethStandard} 皮带。理论中心距 ${centerDistance}mm 需略微增大以适应 ${beltTeethStandard} 齿皮带，建议设计预留±10mm调整量。`;
                 } else if (beltTeethStandard < beltTeethCalculated) {
-                    adjustmentNote = `需采购 ${pitch}M-${beltTeethStandard} 皮带。理论中心距 ${centerDistance}mm 需略微减小以适应 ${beltTeethStandard} 齿皮带，建议设计预留±5mm调整量。`;
+                    adjustmentNote = `需采购 ${pitch}M-${beltTeethStandard} 皮带。理论中心距 ${centerDistance}mm 需略微减小以适应 ${beltTeethStandard} 齿皮带，建议设计预留±10mm调整量。`;
                 } else {
-                    adjustmentNote = `需采购 ${pitch}M-${beltTeethStandard} 皮带。理论中心距 ${centerDistance}mm 与皮带完美匹配，建议设计预留±3mm调整量。`;
+                    adjustmentNote = `需采购 ${pitch}M-${beltTeethStandard} 皮带。理论中心距 ${centerDistance}mm 与皮带完美匹配，建议设计预留±10mm调整量。`;
                 }
                 
                 document.getElementById('adjustment-note').textContent = adjustmentNote;
