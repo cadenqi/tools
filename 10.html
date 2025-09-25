@@ -32,6 +32,7 @@
             min-height: 100vh;
             overflow-x: hidden;
             touch-action: manipulation;
+            padding-bottom: 50px; /* 为APP底部导航栏留出空间 */
         }
         
         .container {
@@ -69,7 +70,7 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            height: calc(100vh - 70px);
+            height: calc(100vh - 120px); /* 增加高度适应APP嵌入 */
             position: relative;
         }
         
@@ -123,6 +124,7 @@
             min-width: 140px;
             cursor: move;
             transition: transform 0.3s;
+            user-select: none;
         }
         
         .control-card.minimized {
@@ -193,7 +195,7 @@
             background: var(--secondary);
         }
         
-        .upload-btn, .ai-detect-btn, .toggle-guide-btn {
+        .upload-btn, .ai-detect-btn, .toggle-guide-btn, .rotate-btn {
             background: var(--primary);
             color: white;
             border: none;
@@ -220,7 +222,11 @@
             background: var(--accent);
         }
         
-        .upload-btn:active, .ai-detect-btn:active, .toggle-guide-btn:active {
+        .rotate-btn {
+            background: #9b59b6;
+        }
+        
+        .upload-btn:active, .ai-detect-btn:active, .toggle-guide-btn:active, .rotate-btn:active {
             transform: scale(0.98);
         }
         
@@ -239,7 +245,7 @@
             box-shadow: 0 -3px 10px rgba(0,0,0,0.2);
             z-index: 10;
             transition: transform 0.3s ease;
-            max-height: 30vh; /* 减小高度避免遮挡 */
+            max-height: 25vh; /* 进一步减小高度避免APP导航栏遮挡 */
             overflow-y: auto;
         }
         
@@ -383,6 +389,11 @@
             color: white;
             font-size: 0.6rem;
             flex-shrink: 0;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 5;
         }
         
         /* 帮助页面样式 */
@@ -446,7 +457,7 @@
         /* 横屏适配 */
         @media (orientation: landscape) {
             .main-content {
-                height: calc(100vh - 60px);
+                height: calc(100vh - 100px);
             }
             
             .controls-overlay {
@@ -459,7 +470,7 @@
             }
             
             .results-panel {
-                max-height: 40vh; /* 横屏时也减小高度 */
+                max-height: 35vh; /* 横屏时也减小高度 */
             }
             
             .measurement-results {
@@ -531,6 +542,9 @@
                         </button>
                         <button class="toggle-guide-btn" id="toggleGuideBtn">
                             <i class="fas fa-eye"></i> 辅助线
+                        </button>
+                        <button class="rotate-btn" id="rotateBtn">
+                            <i class="fas fa-redo"></i> 旋转图片
                         </button>
                     </div>
                 </div>
@@ -632,6 +646,7 @@
             const imageUpload = document.getElementById('imageUpload');
             const aiDetectBtn = document.getElementById('aiDetectBtn');
             const toggleGuideBtn = document.getElementById('toggleGuideBtn');
+            const rotateBtn = document.getElementById('rotateBtn');
             const resetBtn = document.getElementById('resetBtn');
             const helpBtn = document.getElementById('helpBtn');
             const closeHelp = document.getElementById('closeHelp');
@@ -670,6 +685,7 @@
             };
             
             let image = null;
+            let originalImage = null; // 保存原始图片用于旋转
             let scale = 1;
             let selectedPulley = pulleys.driver;
             let selectedCorner = null;
@@ -680,6 +696,7 @@
             let isControlMinimized = false;
             let isDraggingControl = false;
             let controlStartX = 0, controlStartY = 0;
+            let rotationAngle = 0; // 图片旋转角度（0, 90, 180, 270度）
             
             // 初始化事件监听 - 修复手机端无响应问题
             function initEventListeners() {
@@ -687,6 +704,7 @@
                 uploadButton.removeEventListener('click', handleUploadClick);
                 aiDetectBtn.removeEventListener('click', handleAiDetectClick);
                 toggleGuideBtn.removeEventListener('click', handleToggleGuideClick);
+                rotateBtn.removeEventListener('click', handleRotateClick);
                 resetBtn.removeEventListener('click', handleResetClick);
                 helpBtn.removeEventListener('click', handleHelpClick);
                 closeHelp.removeEventListener('click', handleCloseHelpClick);
@@ -714,6 +732,7 @@
                 uploadButton.addEventListener('click', handleUploadClick, { passive: true });
                 aiDetectBtn.addEventListener('click', handleAiDetectClick, { passive: true });
                 toggleGuideBtn.addEventListener('click', handleToggleGuideClick, { passive: true });
+                rotateBtn.addEventListener('click', handleRotateClick, { passive: true });
                 resetBtn.addEventListener('click', handleResetClick, { passive: true });
                 helpBtn.addEventListener('click', handleHelpClick, { passive: true });
                 closeHelp.addEventListener('click', handleCloseHelpClick, { passive: true });
@@ -754,6 +773,10 @@
             
             function handleToggleGuideClick() {
                 toggleGuide();
+            }
+            
+            function handleRotateClick() {
+                rotateImage();
             }
             
             function handleResetClick() {
@@ -806,14 +829,19 @@
                 
                 const reader = new FileReader();
                 reader.onload = function(event) {
-                    image = new Image();
-                    image.onload = function() {
-                        setupCanvas();
-                        autoDetectPulleys();
-                        draw();
+                    originalImage = new Image();
+                    originalImage.onload = function() {
+                        image = new Image();
+                        image.src = event.target.result; // 使用原始数据，不压缩
+                        image.onload = function() {
+                            setupCanvas();
+                            autoDetectPulleys();
+                            draw();
+                        };
                     };
-                    image.src = event.target.result;
+                    originalImage.src = event.target.result;
                 };
+                // 不使用压缩，保持原始质量
                 reader.readAsDataURL(file);
             }
             
@@ -821,15 +849,37 @@
             function setupCanvas() {
                 const container = canvas.parentElement;
                 const maxWidth = container.clientWidth;
-                const maxHeight = container.clientHeight - 50; // 为底部面板留出空间
+                const maxHeight = container.clientHeight - 60; // 为底部面板留出更多空间
                 
-                scale = Math.min(maxWidth / image.width, maxHeight / image.height, 1);
-                canvas.width = image.width * scale;
-                canvas.height = image.height * scale;
+                // 根据旋转角度调整画布尺寸
+                let imgWidth = image.width;
+                let imgHeight = image.height;
+                
+                if (rotationAngle === 90 || rotationAngle === 270) {
+                    // 旋转90或270度时，宽高互换
+                    [imgWidth, imgHeight] = [imgHeight, imgWidth];
+                }
+                
+                scale = Math.min(maxWidth / imgWidth, maxHeight / imgHeight, 1);
+                canvas.width = imgWidth * scale;
+                canvas.height = imgHeight * scale;
                 
                 // 显示Canvas，隐藏占位符
                 canvas.style.display = 'block';
                 placeholder.style.display = 'none';
+            }
+            
+            // 旋转图片
+            function rotateImage() {
+                if (!image) return;
+                
+                rotationAngle = (rotationAngle + 90) % 360;
+                
+                // 重新设置画布尺寸
+                setupCanvas();
+                
+                // 重新绘制
+                draw();
             }
             
             // 自动识别皮带轮位置和大小
@@ -920,9 +970,31 @@
             function draw() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 
-                // 绘制图片
+                // 绘制图片（考虑旋转）
                 if (image) {
-                    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+                    ctx.save();
+                    
+                    // 根据旋转角度变换画布
+                    if (rotationAngle !== 0) {
+                        ctx.translate(canvas.width / 2, canvas.height / 2);
+                        ctx.rotate(rotationAngle * Math.PI / 180);
+                        
+                        // 计算旋转后的图片位置
+                        let drawWidth, drawHeight;
+                        if (rotationAngle === 90 || rotationAngle === 270) {
+                            drawWidth = canvas.height;
+                            drawHeight = canvas.width;
+                        } else {
+                            drawWidth = canvas.width;
+                            drawHeight = canvas.height;
+                        }
+                        
+                        ctx.drawImage(image, -drawWidth / 2, -drawHeight / 2, drawWidth, drawHeight);
+                    } else {
+                        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+                    }
+                    
+                    ctx.restore();
                 }
                 
                 // 绘制水平辅助线
@@ -961,7 +1033,7 @@
                 ctx.fillText('水平辅助线', 10, centerY - 5);
             }
             
-            // 绘制单个皮带轮
+            // 绘制单个皮带轮 - 使用虚线边框
             function drawPulley(pulley) {
                 // 更新角点
                 updatePulleyCorners(pulley);
@@ -981,10 +1053,12 @@
                     pulley.color + '80' : pulley.color + '40';
                 ctx.fill();
                 
-                // 绘制边框
+                // 绘制虚线边框
                 ctx.strokeStyle = pulley.color;
                 ctx.lineWidth = pulley === selectedPulley ? 3 : 2;
+                ctx.setLineDash([5, 3]); // 虚线样式
                 ctx.stroke();
+                ctx.setLineDash([]); // 重置为实线
                 
                 // 绘制角点控制点
                 if (pulley === selectedPulley) {
@@ -1329,6 +1403,7 @@
             // 重置画布
             function resetCanvas() {
                 if (image) {
+                    rotationAngle = 0; // 重置旋转角度
                     autoDetectPulleys();
                     draw();
                 }
