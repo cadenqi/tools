@@ -1,10 +1,10 @@
 <!DOCTYPE html>
- 
-<头>
+<html lang="zh-CN">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>JKaero工具箱|自行车工程工具集</title>
-    <链接 关系="样式表" 链接="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         /* ===== 基础样式设置 ===== */
@@ -1050,215 +1050,533 @@
     </div>
 
     <script>
-        // ==================== 工具数据配置 ====================
-        // 按照ID从大到小排序，ID越大显示越靠前
-        const toolsData = [
-            {
-                id: 8,
-                title: "材质重量分析",
-                category: "other",
-                description: "分析计算不同材质、形状的重量以及单价计算",
-                image: "https://placehold.co/600x400/3498db/white?text=空气动力学",
-                link: "https://cadenqi.github.io/tools/8",
-                uses: 678
-            },
-            {
-                id: 7,
-                title: "JKaero|皮带张力频率分析",
-                category: "belt",
-                description: "分析自行车皮带张力数据，判断张力是否均匀合格",
-                image: "https://placehold.co/600x400/1abc9c/white?text=重量分析",
-                link: "https://cadenqi.github.io/tools/7",
-                uses: 432
-            },
-            {
-                id: 6,
-                title: "自行车RC设计计算器",
-                category: "other",
-                description: "基于不同条件来合理设计自行车的RC尺寸",
-                image: "https://placehold.co/600x400/e74c3c/white?text=性能模拟",
-                link: "https://cadenqi.github.io/tools/6",
-                uses: 945
-            },
-            {
-                id: 5,
-                title: "自行车驱动系统换算工具",
-                category: "other",
-                description: "将现有链条驱动系统平替链条为皮带系统，转换计算工具",
-                image: "https://placehold.co/600x400/f39c12/white?text=材料强度",
-                link: "https://cadenqi.github.io/tools/5",
-                uses: 723
-            },
-            {
-                id: 4,
-                title: "齿盘参数计算器",
-                category: "chain",
-                description: "计算12.7节距齿盘的外径等相关参数",
-                image: "https://placehold.co/600x400/9b59b6/white?text=同步带计算",
-                link: "https://cadenqi.github.io/tools/4",
-                uses: 567
-            },
-            {
-                id: 3,
-                title: "皮带轮参数计算器器",
-                category: "belt",
-                description: "可计算11M、10M、8M皮带轮的外径等数据",
-                image: "https://placehold.co/600x400/e74c3c/white?text=3D配置器",
-                link: "https://cadenqi.github.io/tools/3",
-                uses: 856
-            },
-            {
-                id: 2,
-                title: "皮带轮与齿盘换算器",
-                category: "belt",
-                description: "计算不同齿比下的速度、踏频关系，优化传动系统设计",
-                image: "https://placehold.co/600x400/2ecc71/white?text=传动计算",
-                link: "https://cadenqi.github.io/tools/2",
-                uses: 892
-            },
-            {
-                id: 1,
-                title: "自行车皮带长度计算器",
-                category: "belt",
-                description: "计算皮带驱动系统自行车皮带长度与选型参数等",
-                image: "https://placehold.co/600x400/3498db/white?text=几何计算",
-                link: "https://cadenqi.github.io/tools/1",
-                uses: 1243
-            },
-            {
-                id: 9,
-                title: "皮带系统直线度检测分析工具",
-                category: "belt",
-                description: "基于图像处理分析系统，对皮带系统的直线度检检验测量",
-                image: "https://placehold.co/600x400/9b59b6/white?text=电动助力",
-                link: "https://cadenqi.github.io/tools/9",
-                uses: 523
-            },
-            {
-                id: 10,
-                title: "皮带皮带轮RC参数计算器",
-                category: "belt",
-                description: "以皮带皮带轮为条件计算齿比以及RC值",
-                image: "https://placehold.co/600x400/e74c3c/white?text=链条寿命",
-                link: "https://cadenqi.github.io/tools/10",
-                uses: 789
-            }
-        ];
+        // ==================== 模块化重构：JKaero工具箱应用 ====================
+        
+        /**
+         * 数据管理模块 - 负责管理工具、规格和知识库数据
+         */
+        const DataManager = {
+            // 工具数据配置（按ID从大到小排序，ID越大显示越靠前）
+            toolsData: [
+                {
+                    id: 10,
+                    title: "皮带皮带轮RC参数计算器",
+                    category: "belt",
+                    description: "以皮带皮带轮为条件计算齿比以及RC值",
+                    image: "https://placehold.co/600x400/e74c3c/white?text=链条寿命",
+                    link: "https://cadenqi.github.io/tools/10",
+                    uses: 789
+                },
+                {
+                    id: 9,
+                    title: "皮带系统直线度检测分析工具",
+                    category: "belt",
+                    description: "基于图像处理分析系统，对皮带系统的直线度检检验测量",
+                    image: "https://placehold.co/600x400/9b59b6/white?text=电动助力",
+                    link: "https://cadenqi.github.io/tools/9",
+                    uses: 523
+                },
+                {
+                    id: 8,
+                    title: "材质重量分析",
+                    category: "other",
+                    description: "分析计算不同材质、形状的重量以及单价计算",
+                    image: "https://placehold.co/600x400/3498db/white?text=空气动力学",
+                    link: "https://cadenqi.github.io/tools/8",
+                    uses: 678
+                },
+                {
+                    id: 7,
+                    title: "JKaero|皮带张力频率分析",
+                    category: "belt",
+                    description: "分析自行车皮带张力数据，判断张力是否均匀合格",
+                    image: "https://placehold.co/600x400/1abc9c/white?text=重量分析",
+                    link: "https://cadenqi.github.io/tools/7",
+                    uses: 432
+                },
+                {
+                    id: 6,
+                    title: "自行车RC设计计算器",
+                    category: "other",
+                    description: "基于不同条件来合理设计自行车的RC尺寸",
+                    image: "https://placehold.co/600x400/e74c3c/white?text=性能模拟",
+                    link: "https://cadenqi.github.io/tools/6",
+                    uses: 945
+                },
+                {
+                    id: 5,
+                    title: "自行车驱动系统换算工具",
+                    category: "other",
+                    description: "将现有链条驱动系统平替链条为皮带系统，转换计算工具",
+                    image: "https://placehold.co/600x400/f39c12/white?text=材料强度",
+                    link: "https://cadenqi.github.io/tools/5",
+                    uses: 723
+                },
+                {
+                    id: 4,
+                    title: "齿盘参数计算器",
+                    category: "chain",
+                    description: "计算12.7节距齿盘的外径等相关参数",
+                    image: "https://placehold.co/600x400/9b59b6/white?text=同步带计算",
+                    link: "https://cadenqi.github.io/tools/4",
+                    uses: 567
+                },
+                {
+                    id: 3,
+                    title: "皮带轮参数计算器器",
+                    category: "belt",
+                    description: "可计算11M、10M、8M皮带轮的外径等数据",
+                    image: "https://placehold.co/600x400/e74c3c/white?text=3D配置器",
+                    link: "https://cadenqi.github.io/tools/3",
+                    uses: 856
+                },
+                {
+                    id: 2,
+                    title: "皮带轮与齿盘换算器",
+                    category: "belt",
+                    description: "计算不同齿比下的速度、踏频关系，优化传动系统设计",
+                    image: "https://placehold.co/600x400/2ecc71/white?text=传动计算",
+                    link: "https://cadenqi.github.io/tools/2",
+                    uses: 892
+                },
+                {
+                    id: 1,
+                    title: "自行车皮带长度计算器",
+                    category: "belt",
+                    description: "计算皮带驱动系统自行车皮带长度与选型参数等",
+                    image: "https://placehold.co/600x400/3498db/white?text=几何计算",
+                    link: "https://cadenqi.github.io/tools/1",
+                    uses: 1243
+                }
+            ],
 
-        // ==================== 规格数据配置 ====================
-        const specsData = {
-            "11M": [
-                { model: "11M-825-12", spec: "75", applicable: "825" },
-                { model: "11M-858-12", spec: "78", applicable: "858" },
-                { model: "11M-1001-12", spec: "91", applicable: "1001" },
-                { model: "11M-1100-12", spec: "100", applicable: "1100" },
-                { model: "11M-1122-12", spec: "102", applicable: "1122" },
-                { model: "11M-1155-12", spec: "105", applicable: "1155" },
-                { model: "11M-1166-12", spec: "106", applicable: "1166" },
-                { model: "11M-1188-12", spec: "108", applicable: "1188" },
-                { model: "11M-1199-12", spec: "109", applicable: "1199" },
-                { model: "11M-1221-12", spec: "111", applicable: "1221" },
-                { model: "11M-1243-12", spec: "113", applicable: "1243" },
-                { model: "11M-1254-12", spec: "114", applicable: "1254" },
-                { model: "11M-1265-12", spec: "115", applicable: "1265" },
-                { model: "11M-1276-12", spec: "116", applicable: "1276" },
-                { model: "11M-1287-12", spec: "117", applicable: "1287" },
-                { model: "11M-1320-12", spec: "120", applicable: "1320" },
-                { model: "11M-1331-12", spec: "121", applicable: "1331" },
-                { model: "11M-1342-12", spec: "122", applicable: "1342" },
-                { model: "11M-1364-12", spec: "124", applicable: "1364" },
-                { model: "11M-1375-12", spec: "125", applicable: "1375" },
-                { model: "11M-1386-12", spec: "126", applicable: "1386" },
-                { model: "11M-1408-12", spec: "128", applicable: "1408" },
-                { model: "11M-1430-12", spec: "130", applicable: "1430" },
-                { model: "11M-1452-12", spec: "132", applicable: "1452" },
-                { model: "11M-1474-12", spec: "134", applicable: "1474" },
-                { model: "11M-1485-12", spec: "135", applicable: "1485" },
-                { model: "11M-1496-12", spec: "136", applicable: "1496" },
-                { model: "11M-1507-12", spec: "137", applicable: "1507" },
-                { model: "11M-1529-12", spec: "139", applicable: "1529" },
-                { model: "11M-1573-12", spec: "143", applicable: "1573" },
-                { model: "11M-1606-12", spec: "146", applicable: "1606" },
-                { model: "11M-1617-12", spec: "147", applicable: "1617" },
-                { model: "11M-1661-12", spec: "151", applicable: "1661" },
-                { model: "11M-1683-12", spec: "153", applicable: "1683" },
-                { model: "11M-1716-12", spec: "156", applicable: "1716" },
-                { model: "11M-1727-12", spec: "157", applicable: "1727" },
-                { model: "11M-1738-12", spec: "158", applicable: "1738" },
-                { model: "11M-1760-12", spec: "160", applicable: "1760" },
-                { model: "11M-1782-12", spec: "162", applicable: "1782" },
-                { model: "11M-1826-12", spec: "166", applicable: "1826" },
-                { model: "11M-1848-12", spec: "168", applicable: "1848" },
-                { model: "11M-1881-12", spec: "171", applicable: "1881" },
-                { model: "11M-1892-12", spec: "172", applicable: "1892" },
-                { model: "11M-1914-12", spec: "174", applicable: "1914" },
-                { model: "11M-1947-12", spec: "177", applicable: "1947" },
-                { model: "11M-1969-12", spec: "179", applicable: "1969" },
-                { model: "11M-1991-12", spec: "181", applicable: "1991" }
+            // 规格数据配置
+            specsData: {
+                "11M": [
+                    { model: "11M-825-12", spec: "75", applicable: "825" },
+                    { model: "11M-858-12", spec: "78", applicable: "858" },
+                    { model: "11M-1001-12", spec: "91", applicable: "1001" },
+                    { model: "11M-1100-12", spec: "100", applicable: "1100" },
+                    { model: "11M-1122-12", spec: "102", applicable: "1122" },
+                    { model: "11M-1155-12", spec: "105", applicable: "1155" },
+                    { model: "11M-1166-12", spec: "106", applicable: "1166" },
+                    { model: "11M-1188-12", spec: "108", applicable: "1188" },
+                    { model: "11M-1199-12", spec: "109", applicable: "1199" },
+                    { model: "11M-1221-12", spec: "111", applicable: "1221" },
+                    { model: "11M-1243-12", spec: "113", applicable: "1243" },
+                    { model: "11M-1254-12", spec: "114", applicable: "1254" },
+                    { model: "11M-1265-12", spec: "115", applicable: "1265" },
+                    { model: "11M-1276-12", spec: "116", applicable: "1276" },
+                    { model: "11M-1287-12", spec: "117", applicable: "1287" },
+                    { model: "11M-1320-12", spec: "120", applicable: "1320" },
+                    { model: "11M-1331-12", spec: "121", applicable: "1331" },
+                    { model: "11M-1342-12", spec: "122", applicable: "1342" },
+                    { model: "11M-1364-12", spec: "124", applicable: "1364" },
+                    { model: "11M-1375-12", spec: "125", applicable: "1375" },
+                    { model: "11M-1386-12", spec: "126", applicable: "1386" },
+                    { model: "11M-1408-12", spec: "128", applicable: "1408" },
+                    { model: "11M-1430-12", spec: "130", applicable: "1430" },
+                    { model: "11M-1452-12", spec: "132", applicable: "1452" },
+                    { model: "11M-1474-12", spec: "134", applicable: "1474" },
+                    { model: "11M-1485-12", spec: "135", applicable: "1485" },
+                    { model: "11M-1496-12", spec: "136", applicable: "1496" },
+                    { model: "11M-1507-12", spec: "137", applicable: "1507" },
+                    { model: "11M-1529-12", spec: "139", applicable: "1529" },
+                    { model: "11M-1573-12", spec: "143", applicable: "1573" },
+                    { model: "11M-1606-12", spec: "146", applicable: "1606" },
+                    { model: "11M-1617-12", spec: "147", applicable: "1617" },
+                    { model: "11M-1661-12", spec: "151", applicable: "1661" },
+                    { model: "11M-1683-12", spec: "153", applicable: "1683" },
+                    { model: "11M-1716-12", spec: "156", applicable: "1716" },
+                    { model: "11M-1727-12", spec: "157", applicable: "1727" },
+                    { model: "11M-1738-12", spec: "158", applicable: "1738" },
+                    { model: "11M-1760-12", spec: "160", applicable: "1760" },
+                    { model: "11M-1782-12", spec: "162", applicable: "1782" },
+                    { model: "11M-1826-12", spec: "166", applicable: "1826" },
+                    { model: "11M-1848-12", spec: "168", applicable: "1848" },
+                    { model: "11M-1881-12", spec: "171", applicable: "1881" },
+                    { model: "11M-1892-12", spec: "172", applicable: "1892" },
+                    { model: "11M-1914-12", spec: "174", applicable: "1914" },
+                    { model: "11M-1947-12", spec: "177", applicable: "1947" },
+                    { model: "11M-1969-12", spec: "179", applicable: "1969" },
+                    { model: "11M-1991-12", spec: "181", applicable: "1991" }
+                ],
+                "10M": [
+                    { model: "10M-001", spec: "10速", applicable: "示例数据" },
+                    { model: "10M-002", spec: "10速", applicable: "示例数据" },
+                    { model: "10M-003", spec: "10速", applicable: "示例数据" },
+                    { model: "10M-004", spec: "10速", applicable: "示例数据" },
+                    { model: "10M-005", spec: "10速", applicable: "示例数据" }
+                ],
+                "8M": [
+                    { model: "8M-001", spec: "8速", applicable: "示例数据" },
+                    { model: "8M-002", spec: "8极", applicable: "示例数据" },
+                    { model: "8M-003", spec: "8速", applicable: "示例数据" },
+                    { model: "8M-004", spec: "8速", applicable: "示例数据" },
+                    { model: "8M-005", spec: "8速", applicable: "示例数据" }
+                ]
+            },
+
+            // 知识库数据配置
+            knowledgeData: [
+                {
+                    title: "自行车车架几何指南",
+                    description: "深入了解自行车车架几何参数的含义及其对骑行体验的影响",
+                    link: "https://www.szjiankun.com/15.html"
+                },
+                {
+                    title: "传动系统维护技巧",
+                    description: "学习如何正确维护和调整自行车的传动系统，延长使用寿命",
+                    link: "https://www.szjiankun.com/15.html"
+                },
+                {
+                    title: "材料科学与自行车设计",
+                    description: "探索不同材料在自行车制造中的应用及其特性比较",
+                    link: "https://www.szjiankun.com/15.html"
+                },
+                {
+                    title: "空气动力学原理",
+                    description: "了解空气动力学如何影响自行车性能及降低风阻的方法",
+                    link: "https://www.szjiankun.com/15.html"
+                },
+                {
+                    title: "自行车fitting指南",
+                    description: "如何正确调整自行车以适应个人身体尺寸，提升舒适度和效率",
+                    link: "https://www.szjiankun.com/15.html"
+                },
+                {
+                    title: "轮胎选择与维护",
+                    description: "根据骑行条件选择合适的轮胎并学习正确的维护方法",
+                    link: "https://www.szjiankun.com/15.html"
+                }
             ],
-            "10M": [
-                { model: "10M-001", spec: "10速", applicable: "示例数据" },
-                { model: "10M-002", spec: "10速", applicable: "示例数据" },
-                { model: "10M-003", spec: "10速", applicable: "示例数据" },
-                { model: "10M-004", spec: "10速", applicable: "示例数据" },
-                { model: "10M-005", spec: "10速", applicable: "示例数据" }
-            ],
-            "8M": [
-                { model: "8M-001", spec: "8速", applicable: "示例数据" },
-                { model: "8M-002", spec: "8极", applicable: "示例数据" },
-                { model: "8M-003", spec: "8速", applicable: "示例数据" },
-                { model: "8M-004", spec: "8速", applicable: "示例数据" },
-                { model: "8M-005", spec: "8速", applicable: "示例数据" }
-            ]
+
+            /**
+             * 获取排序后的工具数据（按ID从大到小）
+             */
+            getSortedTools: function() {
+                return [...this.toolsData].sort((a, b) => b.id - a.id);
+            },
+
+            /**
+             * 根据分类获取工具数据
+             * @param {string} category - 工具分类
+             */
+            getToolsByCategory: function(category) {
+                if (category === 'all') {
+                    return this.getSortedTools();
+                }
+                return this.getSortedTools().filter(tool => tool.category === category);
+            },
+
+            /**
+             * 根据规格类型获取规格数据
+             * @param {string} specType - 规格类型
+             */
+            getSpecsByType: function(specType) {
+                return this.specsData[specType] || [];
+            },
+
+            /**
+             * 获取所有知识库数据
+             */
+            getAllKnowledge: function() {
+                return this.knowledgeData;
+            }
         };
 
-        // ==================== 知识库数据配置 ====================
-        const knowledgeData = [
-            {
-                title: "自行车车架几何指南",
-                description: "深入了解自行车车架几何参数的含义及其对骑行体验的影响",
-                link: "https://www.szjiankun.com/15.html"
+        /**
+         * 状态管理模块 - 负责管理应用状态和本地存储
+         */
+        const StateManager = {
+            // 当前应用状态
+            currentState: {
+                activeTool: null,
+                activeCategory: 'all',
+                activeSpecTab: '11M',
+                carouselIndex: 0
             },
-            {
-                title: "传动系统维护技巧",
-                description: "学习如何正确维护和调整自行车的传动系统，延长使用寿命",
-                link: "https://www.szjiankun.com/15.html"
-            },
-            {
-                title: "材料科学与自行车设计",
-                description: "探索不同材料在自行车制造中的应用及其特性比较",
-                link: "https://www.szjiankun.com/15.html"
-            },
-            {
-                title: "空气动力学原理",
-                description: "了解空气动力学如何影响自行车性能及降低风阻的方法",
-                link: "https://www.szjiankun.com/15.html"
-            },
-            {
-                title: "自行车fitting指南",
-                description: "如何正确调整自行车以适应个人身体尺寸，提升舒适度和效率",
-                link: "https://www.szjiankun.com/15.html"
-            },
-            {
-                title: "轮胎选择与维护",
-                description: "根据骑行条件选择合适的轮胎并学习正确的维护方法",
-                link: "https://www.szjiankun.com/15.html"
-            }
-        ];
 
-        // ==================== 状态管理 ====================
-        let currentState = {
-            activeTool: null,
-            activeCategory: 'all',
-            activeSpecTab: '11M',
-            carouselIndex: 0
+            /**
+             * 初始化状态（从本地存储恢复）
+             */
+            init: function() {
+                const savedState = localStorage.getItem('bikeToolsState');
+                if (savedState) {
+                    try {
+                        this.currentState = {...this.currentState, ...JSON.parse(savedState)};
+                    } catch (e) {
+                        console.error("恢复状态失败:", e);
+                    }
+                }
+            },
+
+            /**
+             * 更新状态并保存到本地存储
+             * @param {object} newState - 新的状态对象
+             */
+            updateState: function(newState) {
+                this.currentState = {...this.currentState, ...newState};
+                this.saveState();
+            },
+
+            /**
+             * 保存状态到本地存储
+             */
+            saveState: function() {
+                try {
+                    localStorage.setItem('bikeToolsState', JSON.stringify(this.currentState));
+                } catch (e) {
+                    console.error("保存状态失败:", e);
+                }
+            },
+
+            /**
+             * 获取当前状态
+             */
+            getState: function() {
+                return this.currentState;
+            }
         };
 
-        // ==================== 链接处理器 ====================
-        const linkHandler = {
+        /**
+         * 视图渲染模块 - 负责渲染页面内容
+         */
+        const ViewRenderer = {
+            /**
+             * 渲染工具卡片
+             * @param {string} category - 工具分类
+             */
+            renderTools: function(category) {
+                const toolGrid = document.getElementById('toolGrid');
+                
+                // 先显示加载指示器
+                toolGrid.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+                
+                // 模拟加载延迟
+                setTimeout(() => {
+                    toolGrid.innerHTML = '';
+                    
+                    const tools = DataManager.getToolsByCategory(category);
+                    
+                    if (tools.length === 0) {
+                        toolGrid.innerHTML = '<div class="search-result">暂无工具数据</div>';
+                        return;
+                    }
+                    
+                    tools.forEach(tool => {
+                        toolGrid.appendChild(this.createToolCard(tool));
+                    });
+                }, 500);
+            },
+
+            /**
+             * 创建工具卡片DOM元素
+             * @param {object} tool - 工具数据对象
+             */
+            createToolCard: function(tool) {
+                const card = document.createElement('div');
+                card.className = 'tool-card';
+                card.setAttribute('data-category', tool.category);
+                card.setAttribute('data-link', tool.link);
+                card.setAttribute('data-title', tool.title);
+                
+                card.innerHTML = `
+                    <div class="tool-image">
+                        <img src="${tool.image}" alt="${tool.title}" onerror="this.src='https://placehold.co/600x400/718096/white?text=图片加载失败'">
+                    </div>
+                    <div class="tool-content">
+                        <h3 class="tool-title">${tool.title}</h3>
+                        <p class="tool-desc">${tool.description}</p>
+                    </div>
+                `;
+                
+                return card;
+            },
+
+            /**
+             * 按分类过滤工具显示
+             * @param {string} category - 工具分类
+             */
+            filterToolsByCategory: function(category) {
+                const toolCards = document.querySelectorAll('.tool-card');
+                
+                toolCards.forEach(card => {
+                    if (category === 'all' || card.getAttribute('data-category') === category) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            },
+
+            /**
+             * 渲染规格表
+             * @param {string} specType - 规格类型
+             */
+            renderSpecs: function(specType) {
+                const tbody = document.querySelector('#specsTable tbody');
+                
+                // 先显示加载指示器
+                tbody.innerHTML = '<tr><td colspan="3"><div class="loading"><div class="spinner"></div></div></td></tr>';
+                
+                // 模拟加载延迟
+                setTimeout(() => {
+                    tbody.innerHTML = '';
+                    
+                    const specs = DataManager.getSpecsByType(specType);
+                    
+                    if (specs.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="3" class="search-result">暂无数据</td></tr>`;
+                        return;
+                    }
+                    
+                    specs.forEach(spec => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${spec.model}</td>
+                            <td>${spec.spec}</td>
+                            <td>${spec.applicable}</td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                    
+                    // 清空搜索框
+                    document.getElementById('specSearchInput').value = '';
+                }, 500);
+            },
+
+            /**
+             * 渲染知识库内容
+             */
+            renderKnowledge: function() {
+                const knowledgeGrid = document.getElementById('knowledgeGrid');
+                
+                // 先显示加载指示器
+                knowledgeGrid.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+                
+                // 模拟加载延迟
+                setTimeout(() => {
+                    knowledgeGrid.innerHTML = '';
+                    
+                    const knowledgeItems = DataManager.getAllKnowledge();
+                    
+                    knowledgeItems.forEach(knowledge => {
+                        knowledgeGrid.appendChild(this.createKnowledgeCard(knowledge));
+                    });
+                }, 500);
+            },
+
+            /**
+             * 创建知识库卡片DOM元素
+             * @param {object} knowledge - 知识库数据对象
+             */
+            createKnowledgeCard: function(knowledge) {
+                const card = document.createElement('div');
+                card.className = 'knowledge-card';
+                card.setAttribute('data-link', knowledge.link);
+                card.setAttribute('data-title', knowledge.title);
+                
+                // 检测链接类型
+                let linkType = '网页';
+                let iconClass = 'fas fa-external-link-alt';
+                
+                if (knowledge.link.toLowerCase().endsWith('.pdf')) {
+                    linkType = 'PDF';
+                    iconClass = 'fas fa-file-pdf';
+                } else if (/(\.jpg|\.jpeg|\.png|\.gif|\.bmp|\.webp)$/i.test(knowledge.link)) {
+                    linkType = '图片';
+                    iconClass = 'fas fa-image';
+                }
+                
+                card.innerHTML = `
+                    <div class="link-type-indicator">${linkType}</div>
+                    <h3 class="knowledge-title">${knowledge.title} <i class="fas fa-external-link-alt external-link-icon"></i></h3>
+                    <p class="knowledge-desc">${knowledge.description}</p>
+                `;
+                
+                return card;
+            }
+        };
+
+        /**
+         * 轮播图模块 - 负责轮播图功能
+         */
+        const CarouselManager = {
+            currentIndex: 0,
+            intervalId: null,
+
+            /**
+             * 初始化轮播图
+             */
+            init: function() {
+                this.currentIndex = StateManager.getState().carouselIndex;
+                this.updateCarousel();
+                this.startAutoPlay();
+                this.bindIndicatorEvents();
+            },
+
+            /**
+             * 更新轮播图显示
+             */
+            updateCarousel: function() {
+                const carouselInner = document.getElementById('carouselInner');
+                const indicators = document.querySelectorAll('.carousel-indicator');
+                
+                carouselInner.style.transform = `translateX(-${this.currentIndex * 100}%)`;
+                
+                // 更新指示器
+                indicators.forEach((indicator, index) => {
+                    if (index === this.currentIndex) {
+                        indicator.classList.add('active');
+                    } else {
+                        indicator.classList.remove('active');
+                    }
+                });
+            },
+
+            /**
+             * 启动自动轮播
+             */
+            startAutoPlay: function() {
+                this.intervalId = setInterval(() => {
+                    this.currentIndex = (this.currentIndex + 1) % 3;
+                    this.updateCarousel();
+                    StateManager.updateState({carouselIndex: this.currentIndex});
+                }, 3000);
+            },
+
+            /**
+             * 绑定指示器点击事件
+             */
+            bindIndicatorEvents: function() {
+                const indicators = document.querySelectorAll('.carousel-indicator');
+                
+                indicators.forEach(indicator => {
+                    indicator.addEventListener('click', () => {
+                        const index = parseInt(indicator.getAttribute('data-index'));
+                        this.currentIndex = index;
+                        this.updateCarousel();
+                        StateManager.updateState({carouselIndex: this.currentIndex});
+                        
+                        // 重置自动轮播计时器
+                        clearInterval(this.intervalId);
+                        this.startAutoPlay();
+                    });
+                });
+            }
+        };
+
+        /**
+         * 链接处理模块 - 负责处理外部链接、PDF和图片链接
+         */
+        const LinkHandler = {
             currentLink: null,
             currentTitle: null,
             
+            /**
+             * 初始化链接处理器
+             */
             init: function() {
                 // 绑定链接处理事件
                 document.getElementById('cancelLink').addEventListener('click', this.hide.bind(this));
@@ -1266,7 +1584,11 @@
                 document.getElementById('closePdfPreview').addEventListener('click', this.closePdfPreview.bind(this));
             },
             
-            // 处理链接点击
+            /**
+             * 处理链接点击
+             * @param {string} url - 链接URL
+             * @param {string} title - 链接标题
+             */
             handleLink: function(url, title) {
                 this.currentLink = url;
                 this.currentTitle = title;
@@ -1281,18 +1603,28 @@
                 }
             },
             
-            // 检查是否为PDF链接
+            /**
+             * 检查是否为PDF链接
+             * @param {string} url - 链接URL
+             */
             isPdfLink: function(url) {
                 return url.toLowerCase().endsWith('.pdf');
             },
             
-            // 检查是否为图片链接
+            /**
+             * 检查是否为图片链接
+             * @param {string} url - 链接URL
+             */
             isImageLink: function(url) {
                 const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'];
                 return imageExtensions.some(ext => url.toLowerCase().endsWith(ext));
             },
             
-            // 显示外部链接警告
+            /**
+             * 显示外部链接警告
+             * @param {string} url - 链接URL
+             * @param {string} title - 链接标题
+             */
             showExternalLinkWarning: function(url, title) {
                 document.getElementById('linkHandlerTitle').textContent = `打开外部链接`;
                 document.getElementById('linkHandlerMessage').textContent = 
@@ -1300,7 +1632,11 @@
                 document.getElementById('linkHandler').style.display = 'flex';
             },
             
-            // 打开PDF预览
+            /**
+             * 打开PDF预览
+             * @param {string} url - PDF链接URL
+             * @param {string} title - PDF标题
+             */
             openPdfPreview: function(url, title) {
                 document.getElementById('pdfTitle').textContent = title;
                 document.getElementById('pdfFrame').src = 
@@ -1309,13 +1645,19 @@
                 document.body.style.overflow = 'hidden';
             },
             
-            // 打开图片预览（简单实现）
+            /**
+             * 打开图片预览
+             * @param {string} url - 图片链接URL
+             * @param {string} title - 图片标题
+             */
             openImagePreview: function(url, title) {
                 // 可以扩展为全屏图片查看器
                 window.open(url, '_blank');
             },
             
-            // 打开链接（用户确认后）
+            /**
+             * 打开链接（用户确认后）
+             */
             openLink: function() {
                 if (this.currentLink) {
                     window.open(this.currentLink, '_blank');
@@ -1323,14 +1665,18 @@
                 this.hide();
             },
             
-            // 关闭PDF预览
+            /**
+             * 关闭PDF预览
+             */
             closePdfPreview: function() {
                 document.getElementById('pdfPreview').style.display = 'none';
                 document.getElementById('pdfFrame').src = '';
                 document.body.style.overflow = 'auto';
             },
             
-            // 隐藏链接处理器
+            /**
+             * 隐藏链接处理器
+             */
             hide: function() {
                 document.getElementById('linkHandler').style.display = 'none';
                 this.currentLink = null;
@@ -1338,448 +1684,284 @@
             }
         };
 
-        // ==================== 初始化 ====================
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log("DOM内容已加载，开始初始化...");
-            
-            // 从本地存储恢复状态
-            const savedState = localStorage.getItem('bikeToolsState');
-            if (savedState) {
-                try {
-                    currentState = {...currentState, ...JSON.parse(savedState)};
-                } catch (e) {
-                    console.error("恢复状态失败:", e);
-                }
-            }
-            
-            // 初始化轮播图
-            initCarousel();
-            
-            // 渲染工具卡片
-            renderTools();
-            
-            // 渲染规格表
-            renderSpecs(currentState.activeSpecTab);
-            
-            // 渲染知识库
-            renderKnowledge();
-            
-            // 初始化链接处理器
-            linkHandler.init();
-            
-            // 底部导航切换
-            const navItems = document.querySelectorAll('.nav-item');
-            const pages = document.querySelectorAll('.page');
-            const toolDisplay = document.getElementById('toolDisplay');
-            const closeTool = document.getElementById('closeTool');
-            
-            // 页面切换函数
-            function switchPage(pageId) {
-                pages.forEach(page => {
-                    page.classList.remove('active');
-                    if (page.id === pageId) {
-                        setTimeout(() => {
-                            page.classList.add('active');
-                        }, 50);
-                    }
-                });
-                
-                // 更新导航项状态
-                navItems.forEach(item => {
-                    if (item.getAttribute('data-page') === pageId) {
-                        item.classList.add('active');
-                    } else {
-                        item.classList.remove('active');
-                    }
-                });
-                
-                // 保存状态
-                saveState();
-            }
-            
-            navItems.forEach(item => {
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetPage = this.getAttribute('data-page');
-                    
-                    // 如果工具页面打开，先关闭工具
-                    if (toolDisplay.style.display === 'flex') {
-                        closeToolDisplay();
-                        setTimeout(() => switchPage(targetPage), 100);
-                    } else {
-                        // 直接切换页面
-                        switchPage(targetPage);
-                    }
-                });
-            });
-            
-            // 工具分类过滤
-            const categoryButtons = document.querySelectorAll('.category-btn');
-            
-            // 设置当前激活的分类
-            const activeCategoryBtn = document.querySelector(`.category-btn[data-category="${currentState.activeCategory}"]`);
-            if (activeCategoryBtn) {
-                categoryButtons.forEach(btn => btn.classList.remove('active'));
-                activeCategoryBtn.classList.add('active');
-                filterToolsByCategory(currentState.activeCategory);
-            }
-            
-            categoryButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    // 移除所有按钮的active类
-                    categoryButtons.forEach(btn => btn.classList.remove('active'));
-                    // 为当前点击的按钮添加active类
-                    this.classList.add('active');
-                    
-                    const category = this.getAttribute('data-category');
-                    currentState.activeCategory = category;
-                    
-                    // 显示或隐藏工具卡片
-                    filterToolsByCategory(category);
-                    
-                    // 保存状态
-                    saveState();
-                });
-            });
-            
-            // 规格表切换
-            const specsTabs = document.querySelectorAll('.specs-tab');
-            
-            // 设置当前激活的规格标签
-            const activeSpecTab = document.querySelector(`.specs-tab[data-spec="${currentState.activeSpecTab}"]`);
-            if (activeSpecTab) {
-                specsTabs.forEach(t => t.classList.remove('active'));
-                activeSpecTab.classList.add('active');
-            }
-            
-            specsTabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    // 移除所有标签的active类
-                    specsTabs.forEach(t => t.classList.remove('active'));
-                    // 为当前点击的标签添加active类
-                    this.classList.add('active');
-                    
-                    const specType = this.getAttribute('data-spec');
-                    currentState.activeSpecTab = specType;
-                    
-                    // 渲染对应规格表
-                    renderSpecs(specType);
-                    
-                    // 保存状态
-                    saveState();
-                });
-            });
-            
-            // 规格搜索功能
-            const specSearchBtn = document.getElementById('specSearchBtn');
-            const specSearchInput = document.getElementById('specSearchInput');
-            
-            specSearchBtn.addEventListener('click', performSpecSearch);
-            specSearchInput.addEventListener('keyup', function(event) {
-                if (event.key === 'Enter') {
-                    performSpecSearch();
-                }
-            });
-            
-            function performSpecSearch() {
-                const searchTerm = specSearchInput.value.trim().toLowerCase();
-                const activeTab = document.querySelector('.specs-tab.active').getAttribute('data-spec');
-                const tableRows = document.querySelectorAll('#specsTable tbody tr');
-                
-                if (searchTerm === '') {
-                    // 如果搜索为空，重新渲染当前规格表
-                    renderSpecs(activeTab);
-                    return;
-                }
-                
-                let found = false;
-                
-                tableRows.forEach(row => {
-                    const model = row.cells[0].textContent.toLowerCase();
-                    const spec = row.cells[1].textContent.toLowerCase();
-                    const applicable = row.cells[2].textContent.toLowerCase();
-                    
-                    if (model.includes(searchTerm) || spec.includes(searchTerm) || applicable.includes(searchTerm)) {
-                        row.style.display = '';
-                        found = true;
-                    } else {
-                        row.style.display = 'none';
-                    }
-                });
-                
-                // 显示搜索结果提示
-                if (!found) {
-                    const tbody = document.querySelector('#specsTable tbody');
-                    tbody.innerHTML = `<tr><td colspan="3" class="search-result">未找到匹配的规格</td></tr>`;
-                }
-            }
-            
-            // 工具展示功能
-            const toolFrame = document.getElementById('toolFrame');
-            
-            // 工具卡片点击事件
-            document.addEventListener('click', function(e) {
-                // 工具卡片点击
-                if (e.target.closest('.tool-card')) {
-                    const card = e.target.closest('.tool-card');
-                    const toolLink = card.getAttribute('data-link');
-                    const toolTitle = card.getAttribute('data-title');
-                    
-                    openToolDisplay(toolLink, toolTitle);
-                }
-                
-                // 知识卡片点击 - 修改为使用链接处理器
-                if (e.target.closest('.knowledge-card')) {
-                    e.preventDefault();
-                    const card = e.target.closest('.knowledge-card');
-                    const knowledgeLink = card.getAttribute('data-link');
-                    const knowledgeTitle = card.getAttribute('data-title');
-                    
-                    linkHandler.handleLink(knowledgeLink, knowledgeTitle);
-                }
-            });
-            
-            // 关闭工具
-            closeTool.addEventListener('click', closeToolDisplay);
-            
-            // ESC键关闭工具
-            document.addEventListener('keydown', function(event) {
-                if (event.key === 'Escape' && toolDisplay.style.display === 'flex') {
-                    closeToolDisplay();
-                }
-            });
-            
-            function openToolDisplay(url, title) {
+        /**
+         * 工具展示模块 - 负责工具iframe展示功能
+         */
+        const ToolDisplayManager = {
+            /**
+             * 打开工具展示
+             * @param {string} url - 工具URL
+             * @param {string} title - 工具标题
+             */
+            openToolDisplay: function(url, title) {
                 document.title = title; // 修改页面标题
-                toolFrame.src = url;
-                toolDisplay.style.display = 'flex';
-                closeTool.style.display = 'flex';
+                document.getElementById('toolFrame').src = url;
+                document.getElementById('toolDisplay').style.display = 'flex';
+                document.getElementById('closeTool').style.display = 'flex';
                 document.body.style.overflow = 'hidden';
                 
                 // 保存当前打开的工具
-                currentState.activeTool = {url, title};
-                saveState();
-            }
+                StateManager.updateState({activeTool: {url, title}});
+            },
             
-            function closeToolDisplay() {
-                toolDisplay.style.display = 'none';
-                toolFrame.src = 'about:blank';
-                closeTool.style.display = 'none';
-                document.title = "自行车工程工具集"; // 恢复页面标题
+            /**
+             * 关闭工具展示
+             */
+            closeToolDisplay: function() {
+                document.getElementById('toolDisplay').style.display = 'none';
+                document.getElementById('toolFrame').src = 'about:blank';
+                document.getElementById('closeTool').style.display = 'none';
+                document.title = "JKaero工具箱|自行车工程工具集"; // 恢复页面标题
                 document.body.style.overflow = 'auto';
                 
                 // 清除当前打开的工具
-                currentState.activeTool = null;
-                saveState();
+                StateManager.updateState({activeTool: null});
             }
-            
-            // 恢复之前打开的工具（如果有）
-            if (currentState.activeTool) {
-                openToolDisplay(currentState.activeTool.url, currentState.activeTool.title);
-            }
-            
-            console.log("初始化完成！");
-        });
+        };
 
-        // 保存状态到本地存储
-        function saveState() {
-            try {
-                localStorage.setItem('bikeToolsState', JSON.stringify(currentState));
-            } catch (e) {
-                console.error("保存状态失败:", e);
-            }
-        }
-
-        // ==================== 功能函数 ====================
-        // 初始化轮播图
-        function initCarousel() {
-            const carouselInner = document.getElementById('carouselInner');
-            const indicators = document.querySelectorAll('.carousel-indicator');
-            let currentIndex = currentState.carouselIndex;
-            let carouselInterval;
+        /**
+         * 事件绑定模块 - 负责绑定所有事件监听器
+         */
+        const EventBinder = {
+            /**
+             * 初始化所有事件绑定
+             */
+            init: function() {
+                this.bindNavigationEvents();
+                this.bindToolEvents();
+                this.bindSpecsEvents();
+                this.bindKnowledgeEvents();
+                this.bindGlobalEvents();
+            },
             
-            // 启动自动轮播
-            function startCarousel() {
-                carouselInterval = setInterval(() => {
-                    currentIndex = (currentIndex + 1) % 3;
-                    updateCarousel();
-                    currentState.carouselIndex = currentIndex;
-                    saveState();
-                }, 3000);
-            }
-            
-            // 更新轮播图显示
-            function updateCarousel() {
-                carouselInner.style.transform = `translateX(-${currentIndex * 100}%)`;
+            /**
+             * 绑定导航相关事件
+             */
+            bindNavigationEvents: function() {
+                const navItems = document.querySelectorAll('.nav-item');
+                const pages = document.querySelectorAll('.page');
                 
-                // 更新指示器
-                indicators.forEach((indicator, index) => {
-                    if (index === currentIndex) {
-                        indicator.classList.add('active');
-                    } else {
-                        indicator.classList.remove('active');
+                navItems.forEach(item => {
+                    item.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        
+                        const targetPage = item.getAttribute('data-page');
+                        
+                        // 如果工具页面打开，先关闭工具
+                        if (document.getElementById('toolDisplay').style.display === 'flex') {
+                            ToolDisplayManager.closeToolDisplay();
+                            setTimeout(() => this.switchPage(targetPage), 100);
+                        } else {
+                            // 直接切换页面
+                            this.switchPage(targetPage);
+                        }
+                    });
+                });
+                
+                // 页面切换函数
+                this.switchPage = function(pageId) {
+                    pages.forEach(page => {
+                        page.classList.remove('active');
+                        if (page.id === pageId) {
+                            setTimeout(() => {
+                                page.classList.add('active');
+                            }, 50);
+                        }
+                    });
+                    
+                    // 更新导航项状态
+                    navItems.forEach(item => {
+                        if (item.getAttribute('data-page') === pageId) {
+                            item.classList.add('active');
+                        } else {
+                            item.classList.remove('active');
+                        }
+                    });
+                };
+            },
+            
+            /**
+             * 绑定工具相关事件
+             */
+            bindToolEvents: function() {
+                // 工具分类过滤
+                const categoryButtons = document.querySelectorAll('.category-btn');
+                
+                // 设置当前激活的分类
+                const currentCategory = StateManager.getState().activeCategory;
+                const activeCategoryBtn = document.querySelector(`.category-btn[data-category="${currentCategory}"]`);
+                if (activeCategoryBtn) {
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    activeCategoryBtn.classList.add('active');
+                    ViewRenderer.filterToolsByCategory(currentCategory);
+                }
+                
+                categoryButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        // 移除所有按钮的active类
+                        categoryButtons.forEach(btn => btn.classList.remove('active'));
+                        // 为当前点击的按钮添加active类
+                        this.classList.add('active');
+                        
+                        const category = this.getAttribute('data-category');
+                        StateManager.updateState({activeCategory: category});
+                        
+                        // 显示或隐藏工具卡片
+                        ViewRenderer.filterToolsByCategory(category);
+                    });
+                });
+                
+                // 工具卡片点击事件
+                document.addEventListener('click', (e) => {
+                    if (e.target.closest('.tool-card')) {
+                        const card = e.target.closest('.tool-card');
+                        const toolLink = card.getAttribute('data-link');
+                        const toolTitle = card.getAttribute('data-title');
+                        
+                        ToolDisplayManager.openToolDisplay(toolLink, toolTitle);
+                    }
+                });
+            },
+            
+            /**
+             * 绑定规格表相关事件
+             */
+            bindSpecsEvents: function() {
+                // 规格表切换
+                const specsTabs = document.querySelectorAll('.specs-tab');
+                
+                // 设置当前激活的规格标签
+                const currentSpecTab = StateManager.getState().activeSpecTab;
+                const activeSpecTab = document.querySelector(`.specs-tab[data-spec="${currentSpecTab}"]`);
+                if (activeSpecTab) {
+                    specsTabs.forEach(t => t.classList.remove('active'));
+                    activeSpecTab.classList.add('active');
+                }
+                
+                specsTabs.forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        // 移除所有标签的active类
+                        specsTabs.forEach(t => t.classList.remove('active'));
+                        // 为当前点击的标签添加active类
+                        this.classList.add('active');
+                        
+                        const specType = this.getAttribute('data-spec');
+                        StateManager.updateState({activeSpecTab: specType});
+                        
+                        // 渲染对应规格表
+                        ViewRenderer.renderSpecs(specType);
+                    });
+                });
+                
+                // 规格搜索功能
+                const specSearchBtn = document.getElementById('specSearchBtn');
+                const specSearchInput = document.getElementById('specSearchInput');
+                
+                specSearchBtn.addEventListener('click', this.performSpecSearch);
+                specSearchInput.addEventListener('keyup', (event) => {
+                    if (event.key === 'Enter') {
+                        this.performSpecSearch();
+                    }
+                });
+                
+                // 搜索函数
+                this.performSpecSearch = function() {
+                    const searchTerm = specSearchInput.value.trim().toLowerCase();
+                    const activeTab = document.querySelector('.specs-tab.active').getAttribute('data-spec');
+                    const tableRows = document.querySelectorAll('#specsTable tbody tr');
+                    
+                    if (searchTerm === '') {
+                        // 如果搜索为空，重新渲染当前规格表
+                        ViewRenderer.renderSpecs(activeTab);
+                        return;
+                    }
+                    
+                    let found = false;
+                    
+                    tableRows.forEach(row => {
+                        const model = row.cells[0].textContent.toLowerCase();
+                        const spec = row.cells[1].textContent.toLowerCase();
+                        const applicable = row.cells[2].textContent.toLowerCase();
+                        
+                        if (model.includes(searchTerm) || spec.includes(searchTerm) || applicable.includes(searchTerm)) {
+                            row.style.display = '';
+                            found = true;
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                    
+                    // 显示搜索结果提示
+                    if (!found) {
+                        const tbody = document.querySelector('#specsTable tbody');
+                        tbody.innerHTML = `<tr><td colspan="3" class="search-result">未找到匹配的规格</td></tr>`;
+                    }
+                };
+            },
+            
+            /**
+             * 绑定知识库相关事件
+             */
+            bindKnowledgeEvents: function() {
+                // 知识卡片点击事件
+                document.addEventListener('click', (e) => {
+                    if (e.target.closest('.knowledge-card')) {
+                        e.preventDefault();
+                        const card = e.target.closest('.knowledge-card');
+                        const knowledgeLink = card.getAttribute('data-link');
+                        const knowledgeTitle = card.getAttribute('data-title');
+                        
+                        LinkHandler.handleLink(knowledgeLink, knowledgeTitle);
+                    }
+                });
+            },
+            
+            /**
+             * 绑定全局事件
+             */
+            bindGlobalEvents: function() {
+                // 关闭工具按钮
+                document.getElementById('closeTool').addEventListener('click', ToolDisplayManager.closeToolDisplay);
+                
+                // ESC键关闭工具
+                document.addEventListener('keydown', (event) => {
+                    if (event.key === 'Escape' && document.getElementById('toolDisplay').style.display === 'flex') {
+                        ToolDisplayManager.closeToolDisplay();
                     }
                 });
             }
-            
-            // 初始化显示
-            updateCarousel();
-            
-            // 点击指示器切换
-            indicators.forEach(indicator => {
-                indicator.addEventListener('click', function() {
-                    const index = parseInt(this.getAttribute('data-index'));
-                    currentIndex = index;
-                    updateCarousel();
-                    currentState.carouselIndex = currentIndex;
-                    saveState();
-                    
-                    // 重置自动轮播计时器
-                    clearInterval(carouselInterval);
-                    startCarousel();
-                });
-            });
-            
-            // 启动自动轮播
-            startCarousel();
-        }
-        
-        // 渲染工具卡片
-        function renderTools() {
-            const toolGrid = document.getElementById('toolGrid');
-            
-            // 先显示加载指示器
-            toolGrid.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
-            
-            // 模拟加载延迟
-            setTimeout(() => {
-                toolGrid.innerHTML = '';
-                
-                // 按照ID从大到小排序
-                const sortedTools = [...toolsData].sort((a, b) => b.id - a.id);
-                
-                sortedTools.forEach(tool => {
-                    toolGrid.appendChild(createToolCard(tool));
-                });
-                
-                // 应用当前分类过滤
-                filterToolsByCategory(currentState.activeCategory);
-            }, 800);
-        }
-        
-        // 创建工具卡片
-        function createToolCard(tool) {
-            const card = document.createElement('div');
-            card.className = 'tool-card';
-            card.setAttribute('data-category', tool.category);
-            card.setAttribute('data-link', tool.link);
-            card.setAttribute('data-title', tool.title);
-            
-            card.innerHTML = `
-                <div class="tool-image">
-                    <img src="${tool.image}" alt="${tool.title}" onerror="this.src='https://placehold.co/600x400/718096/white?text=图片加载失败'">
-                </div>
-                <div class="tool-content">
-                    <h3 class="tool-title">${tool.title}</h3>
-                    <p class="tool-desc">${tool.description}</p>
-                </div>
-            `;
-            
-            return card;
-        }
-        
-        // 按分类过滤工具
-        function filterToolsByCategory(category) {
-            const toolCards = document.querySelectorAll('.tool-card');
-            
-            toolCards.forEach(card => {
-                if (category === 'all' || card.getAttribute('data-category') === category) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
-        
-        // 渲染规格表
-        function renderSpecs(specType) {
-            const tbody = document.querySelector('#specsTable tbody');
-            
-            // 先显示加载指示器
-            tbody.innerHTML = '<tr><td colspan="3"><div class="loading"><div class="spinner"></div></div></td></tr>';
-            
-            // 模拟加载延迟
-            setTimeout(() => {
-                tbody.innerHTML = '';
-                
-                const specs = specsData[specType] || [];
-                
-                if (specs.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="3" class="search-result">暂无数据</td></tr>`;
-                    return;
-                }
-                
-                <.样式>spec => {
-                    /* ===== 基础样式设置 ===== */ row = document.createElement('tr');
-        :根目录.{ = `
-                        <td>${spec.--主要}</td>
-                        <td>${spec.--次要}</td>
-                        <td>${spec.-- accent}</td>
-                    `;
-                    --暗: #2d3748;appendChild(row);
-                --: #d3748
-            --: #f7fafc;);
-            
-            
-            --/* ===== 基础样式设置 ===== */-height：56px;'specSearchInput')value = '';
+        };
 
-        
-        
-        } renderKnowledge() {
-            const knowledgeGrid = document.getElementById('knowledgeGrid');
-
+        /**
+         * 主应用初始化函数
+         */
+        function initApp() {
+            console.log("DOM内容已加载，开始初始化...");
             
-            边距：0;'<div class="loading"><div class="spinner"></div></div>';
+            // 初始化状态管理器
+            StateManager.init();
             
+            // 初始化各模块
+            CarouselManager.init();
+            LinkHandler.init();
+            EventBinder.init();
             
-            }(() => {
-                knowledgeGrid.innerHTML = '';
-                
-                knowledge
-                    行高: };(createKnowledgeCard(knowledge))
-                )
-
-        
-        
-        
-        -webkit-tap-highlight-color：透明;(knowledge){
-        .}{ = document.createElement('div');
-            最大宽度：100 = %;
-            身体;{'data-link', link);
-            , )
+            // 渲染初始内容
+            ViewRenderer.renderTools(StateManager.getState().activeCategory);
+            ViewRenderer.renderSpecs(StateManager.getState().activeSpecTab);
+            ViewRenderer.renderKnowledge();
             
-            // 检测链接类型
-            /* ===== 页面容器 ===== */ linkType = '网页';
-        .页面 { = 'fas fa-external-link-alt';
-            
-            最小高度：计算(.100.vh - 变量(--nav-height));(){
-                } = 'PDF';
-                iconClass = 'fas fa-file-pdf';
-        .页面.活动 { (/(\.jpg|\.jpeg|\.png|\.gif|\.bmp|\.webp)$/i.test(knowledge.link)) {
-                显示：块级元素;
-                ;
+            // 恢复之前打开的工具（如果有）
+            const activeTool = StateManager.getState().activeTool;
+            if (activeTool) {
+                ToolDisplayManager.openToolDisplay(activeTool.url, activeTool.title);
             }
             
-            @关键帧.淡入 = {
-                <div class="link-type-indicator">${linkType}</div>
-                <h3 class="knowledge-title">${knowledge.} <i class="fas fa-external-link-alt external-link-icon"></i></h3>
-                <p class="knowledge-desc">${knowledge.}}</p>
-            `;
-            
-        .底部导航 {;
-        
-    script>
+            console.log("初始化完成！");
+        }
+
+        // 当DOM内容加载完成后初始化应用
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
 </body>
-    </html>
-    
+</html>
