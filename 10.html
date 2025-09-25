@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="format-detection" content="telephone=no">
-    <title>皮带轮参数计算器</title>
+    <title>11M皮带系统选型计算器</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* 颜色方案 - 优化为更现代的美化，模拟APP风格：扁平化、无边框阴影，添加渐变 */
@@ -35,6 +35,7 @@
             touch-action: manipulation; /* 优化触摸响应 */
             -webkit-text-size-adjust: 100%; /* 防止iOS字体缩放 */
             -webkit-tap-highlight-color: transparent; /* 去除点击高亮，模拟APP */
+            padding-bottom: 20px; /* 为底部导航栏留出空间 */
         }
 
         header {
@@ -42,7 +43,7 @@
             background: var(--primary);
             color: white;
             text-align: center;
-            padding: 25px 0;
+            padding: 15px 0; /* 减少顶部标题高度 */
             box-shadow: 0 2px 6px var(--shadow); /* 增强阴影 */
             position: sticky;
             top: 0;
@@ -51,7 +52,7 @@
 
         header h1 {
             margin: 0;
-            font-size: 1.8em;
+            font-size: 1.6em; /* 稍微减小标题字体 */
             letter-spacing: 0.5px;
             display: flex;
             align-items: center;
@@ -60,12 +61,12 @@
         }
 
         header h1 i {
-            font-size: 1.2em;
+            font-size: 1.1em;
         }
 
         header p {
-            margin: 10px 0 0;
-            font-size: 1em;
+            margin: 8px 0 0; /* 调整副标题边距 */
+            font-size: 0.9em; /* 减小副标题字体 */
             opacity: 0.95;
         }
 
@@ -74,7 +75,7 @@
             justify-content: space-around;
             width: 100%;
             max-width: 100%;
-            padding: 25px 15px; /* 增加padding以合理布局 */
+            padding: 20px 15px; /* 调整选择器区域间距 */
             box-sizing: border-box;
             gap: 12px; /* 增加间隙 */
         }
@@ -117,7 +118,7 @@
         }
 
         .wheel {
-            height: 360px; /* 增大选择框高度以显示约6个数字 (每个li约60px) */
+            height: 320px; /* 稍微减小高度以适应新布局 */
             overflow-y: scroll;
             scroll-snap-type: y mandatory;
             perspective: 800px; /* 增强3D效果 */
@@ -201,7 +202,7 @@
             padding: 25px;
             background-color: var(--card-bg);
             border-radius: 12px;
-            margin: 20px 0;
+            margin: 15px 0; /* 调整结果区域间距 */
             box-shadow: 0 4px 12px var(--shadow);
             transition: all 0.3s ease-in-out;
             border: 1px solid rgba(59, 130, 246, 0.1);
@@ -258,8 +259,10 @@
 
         .copy-template {
             text-align: center;
-            margin-top: 25px;
-            padding-bottom: 20px; /* 底部间距 */
+            margin-top: 20px;
+            padding-bottom: 10px; /* 减少底部间距 */
+            width: 95%;
+            max-width: 600px;
         }
 
         .copy-button {
@@ -273,7 +276,6 @@
             font-weight: 600;
             transition: transform 0.2s, box-shadow 0.2s;
             width: 100%;
-            max-width: 220px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -303,7 +305,7 @@
         /* 响应式设计 - 增强手机端适配，布局更合理，微信公众号兼容 */
         @media (max-width: 768px) {
             .selectors {
-                padding: 20px 10px;
+                padding: 15px 10px;
                 gap: 10px;
             }
 
@@ -313,17 +315,17 @@
             }
 
             .wheel {
-                height: 300px; /* 手机端调整高度以显示约6个 */
+                height: 280px; /* 手机端调整高度 */
             }
 
             header h1 {
-                font-size: 1.6em;
+                font-size: 1.4em;
             }
 
             .results {
                 width: 98%;
                 padding: 20px;
-                margin: 15px 0;
+                margin: 10px 0;
             }
 
             .selector-label {
@@ -333,7 +335,7 @@
             .wheel li {
                 font-size: 1.1em;
                 padding: 12px 8px;
-                height: 55px; /* 调整以适应手机 */
+                height: 50px; /* 调整以适应手机 */
             }
 
             .wheel li.selected {
@@ -341,13 +343,21 @@
             }
 
             .copy-template {
-                padding-bottom: 30px; /* 手机端底部更多间距 */
+                margin-top: 15px;
+                padding-bottom: 5px;
+            }
+            
+            /* 为手机端添加安全区域支持 */
+            @supports(padding: max(0px)) {
+                body {
+                    padding-bottom: max(20px, env(safe-area-inset-bottom));
+                }
             }
         }
 
         @media (max-width: 480px) {
             .selectors {
-                padding: 15px 5px;
+                padding: 12px 5px;
                 gap: 8px;
             }
 
@@ -356,45 +366,46 @@
             }
 
             .wheel {
-                height: 280px;
+                height: 250px;
             }
 
+            header {
+                padding: 12px 0; /* 手机端进一步减小标题高度 */
+            }
+            
             header h1 {
-                font-size: 1.4em;
+                font-size: 1.3em;
+            }
+            
+            header p {
+                font-size: 0.85em;
+                margin: 5px 0 0;
             }
 
             .wheel li {
-                height: 50px;
+                height: 45px;
                 font-size: 1em;
             }
 
             .results {
-                margin-bottom: 0; /* 调整底部间距 */
-            }
-
-            .copy-template {
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                background: var(--card-bg);
+                margin: 8px 0;
                 padding: 15px;
-                box-shadow: 0 -2px 10px var(--shadow);
-                margin: 0;
-                z-index: 5;
-            }
-
-            .copy-button {
-                max-width: none;
-                width: 100%;
-                margin: 0 auto;
             }
             
-            /* 为手机端添加安全区域支持 */
-            @supports(padding: max(0px)) {
-                .copy-template {
-                    padding-bottom: max(15px, env(safe-area-inset-bottom));
-                }
+            .copy-template {
+                margin-top: 12px;
+            }
+            
+            /* 移除固定定位，改为正常布局 */
+            .copy-template {
+                position: relative;
+                bottom: auto;
+                left: auto;
+                right: auto;
+                background: transparent;
+                padding: 0;
+                box-shadow: none;
+                margin-top: 12px;
             }
         }
 
@@ -404,14 +415,14 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .selectors, .results {
+        .selectors, .results, .copy-template {
             animation: fadeInUp 0.6s ease-out;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1><i class="fas fa-cogs"></i>皮带轮参数计算器</h1>
+        <h1><i class="fas fa-cogs"></i>11M皮带系统选型计算器</h1>
         <p>选择皮带、前齿盘和后齿盘，实时计算中心距和齿比</p>
     </header>
 
