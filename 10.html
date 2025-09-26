@@ -1,1426 +1,662 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>JKaero|皮带直线度检测工具</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <title>皮带轮参数计算器</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* 颜色方案 - 优化为更现代的美化，模拟APP风格：扁平化、无边框阴影，添加渐变 */
         :root {
-            --primary: #3498db;
-            --secondary: #e74c3c;
-            --accent: #2ecc71;
-            --warning: #f39c12;
-            --dark: #2c3e50;
-            --light: #f8f9fa;
-            --gray: #7f8c8d;
+            --primary: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            --secondary: #3b82f6; /* 蓝色 - 更明亮 */
+            --accent: #10b981; /* 青绿色 - 更活力 */
+            --background: #f8fafc; /* 更浅背景 */
+            --text: #1f2937; /* 深灰色 - 更清晰 */
+            --shadow: rgba(0, 0, 0, 0.08); /* 减少阴影以模拟APP */
+            --card-bg: #ffffff;
         }
-        
-        * {
-            box-sizing: border-box;
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background: var(--background);
+            color: var(--text);
             margin: 0;
             padding: 0;
-            -webkit-tap-highlight-color: transparent;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            color: #333;
-            line-height: 1.6;
-            padding: 0;
-            min-height: 100vh;
-            overflow-x: hidden;
-            touch-action: manipulation;
-            padding-bottom: 50px; /* 为APP底部导航栏留出空间 */
-        }
-        
-        .container {
-            max-width: 100%;
-            margin: 0 auto;
-            background: white;
-            min-height: 100vh;
-            position: relative;
             display: flex;
             flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            width: 100vw;
+            overflow-x: hidden; /* 防止横向滚动 */
+            touch-action: manipulation; /* 优化触摸响应 */
+            -webkit-text-size-adjust: 100%; /* 防止iOS字体缩放 */
+            -webkit-tap-highlight-color: transparent; /* 去除点击高亮，模拟APP */
+            padding-bottom: 20px; /* 为底部导航栏留出空间 */
         }
-        
+
         header {
-            background: linear-gradient(90deg, var(--dark), #4a6491);
-            color: white;
-            padding: 8px 15px;
-            text-align: center;
-            flex-shrink: 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: relative;
-            z-index: 20;
-        }
-        
-        h1 {
-            font-size: 1.1rem;
-            margin-bottom: 3px;
-        }
-        
-        .subtitle {
-            font-size: 0.7rem;
-            opacity: 0.9;
-        }
-        
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            height: calc(100vh - 120px); /* 增加高度适应APP嵌入 */
-            position: relative;
-        }
-        
-        .canvas-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            overflow: hidden;
-            background: #f0f0f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             width: 100%;
-            touch-action: none;
-        }
-        
-        #beltCanvas {
-            max-width: 100%;
-            max-height: 100%;
-            display: none;
-            touch-action: none;
-        }
-        
-        .placeholder-text {
-            color: var(--gray);
-            font-size: 0.9rem;
+            background: var(--primary);
+            color: white;
             text-align: center;
-            padding: 20px;
-        }
-        
-        .controls-overlay {
-            position: absolute;
-            top: 5px;
-            left: 5px;
+            padding: 15px 0; /* 减少顶部标题高度 */
+            box-shadow: 0 2px 6px var(--shadow); /* 增强阴影 */
+            position: sticky;
+            top: 0;
             z-index: 10;
-            pointer-events: none;
         }
-        
-        .controls-overlay > * {
-            pointer-events: auto;
-        }
-        
-        .control-card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 8px;
-            padding: 8px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-            backdrop-filter: blur(5px);
-            min-width: 140px;
-            cursor: move;
-            transition: transform 0.3s;
-            user-select: none;
-        }
-        
-        .control-card.minimized {
-            transform: scale(0.9);
-            opacity: 0.8;
-        }
-        
-        .control-title {
-            font-size: 0.8rem;
-            margin-bottom: 6px;
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: move;
-            padding: 5px;
-            margin: -5px;
-            border-radius: 5px;
-        }
-        
-        .control-title:hover {
-            background: rgba(0,0,0,0.05);
-        }
-        
-        .minimize-btn {
-            background: none;
-            border: none;
-            font-size: 0.7rem;
-            cursor: pointer;
-            color: var(--gray);
-            padding: 2px 6px;
-            width: 20px;
-            height: 20px;
+
+        header h1 {
+            margin: 0;
+            font-size: 1.6em; /* 稍微减小标题字体 */
+            letter-spacing: 0.5px;
             display: flex;
             align-items: center;
             justify-content: center;
-            pointer-events: auto;
+            gap: 10px;
         }
-        
-        .pulley-selector {
+
+        header h1 i {
+            font-size: 1.1em;
+        }
+
+        header p {
+            margin: 8px 0 0; /* 调整副标题边距 */
+            font-size: 0.9em; /* 减小副标题字体 */
+            opacity: 0.95;
+        }
+
+        .selectors {
             display: flex;
-            gap: 5px;
-            margin-bottom: 8px;
+            justify-content: space-around;
+            width: 100%;
+            max-width: 100%;
+            padding: 20px 15px; /* 调整选择器区域间距 */
+            box-sizing: border-box;
+            gap: 12px; /* 增加间隙 */
         }
-        
-        .pulley-btn {
+
+        .selector-column {
             flex: 1;
-            padding: 6px 4px;
-            border: none;
-            border-radius: 4px;
-            background: #eee;
-            font-size: 0.7rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            pointer-events: auto;
+            max-width: 33%;
+            text-align: center;
+            background-color: var(--card-bg);
+            border-radius: 12px; /* 更大圆角 */
+            padding: 15px;
+            box-shadow: 0 4px 12px var(--shadow); /* 增强阴影 */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s;
+            border: 1px solid rgba(59, 130, 246, 0.1);
         }
-        
-        .pulley-btn.active {
-            background: var(--primary);
-            color: white;
+
+        .selector-column:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px var(--shadow);
         }
-        
-        .pulley-btn.driver.active {
-            background: var(--primary);
+
+        .selector-column:active {
+            transform: translateY(-2px) scale(0.98); /* 按压效果模拟APP */
         }
-        
-        .pulley-btn.driven.active {
-            background: var(--secondary);
-        }
-        
-        .upload-btn, .ai-detect-btn, .toggle-guide-btn, .rotate-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.75rem;
-            transition: all 0.3s;
+
+        .selector-label {
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--secondary);
+            font-size: 1em;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
-            width: 100%;
-            margin-bottom: 5px;
-            touch-action: manipulation;
-            pointer-events: auto;
         }
-        
-        .ai-detect-btn {
-            background: var(--warning);
+
+        .selector-label i {
+            font-size: 1.1em;
+            color: var(--accent);
         }
-        
-        .toggle-guide-btn {
-            background: var(--accent);
+
+        .wheel {
+            height: 320px; /* 稍微减小高度以适应新布局 */
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            perspective: 800px; /* 增强3D效果 */
+            border: 1px solid rgba(59, 130, 246, 0.2); /* 轻边框 */
+            border-radius: 10px;
+            background-color: var(--card-bg);
+            scrollbar-width: none; /* 隐藏滚动条 */
+            -ms-overflow-style: none;
+            touch-action: pan-y; /* 优化滑动 */
+            will-change: scroll-position; /* 优化滚动性能 */
         }
-        
-        .rotate-btn {
-            background: #9b59b6;
+
+        .wheel::-webkit-scrollbar {
+            display: none; /* 隐藏WebKit滚动条 */
         }
-        
-        .upload-btn:active, .ai-detect-btn:active, .toggle-guide-btn:active, .rotate-btn:active {
-            transform: scale(0.98);
-        }
-        
-        input[type="file"] {
-            display: none;
-        }
-        
-        .results-panel {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 10px 10px 0 0;
-            padding: 10px;
-            box-shadow: 0 -3px 10px rgba(0,0,0,0.2);
-            z-index: 10;
-            transition: transform 0.3s ease;
-            max-height: 25vh; /* 进一步减小高度避免APP导航栏遮挡 */
-            overflow-y: auto;
-        }
-        
-        .results-panel.collapsed {
-            transform: translateY(calc(100% - 40px));
-        }
-        
-        .panel-handle {
-            width: 100%;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border-bottom: 1px solid #eee;
-            margin-bottom: 10px;
-            touch-action: manipulation;
-        }
-        
-        .handle-icon {
-            width: 30px;
-            height: 4px;
-            background: #ccc;
-            border-radius: 2px;
-        }
-        
-        .measurement-results {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 10px;
-        }
-        
-        .result-item {
-            flex: 1;
-            padding: 8px;
-            border-radius: 6px;
-            position: relative;
-            overflow: hidden;
-            background: #f8f9fa;
-            text-align: center;
-            min-height: 70px;
+
+        .wheel ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            align-items: center;
         }
-        
-        .result-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: var(--primary);
-        }
-        
-        .result-item.angle::before {
-            background: var(--secondary);
-        }
-        
-        .result-item.parallel::before {
-            background: var(--warning);
-        }
-        
-        .result-title {
-            font-weight: bold;
-            margin-bottom: 3px;
-            color: var(--dark);
-            font-size: 0.75rem;
-        }
-        
-        .result-value {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: var(--primary);
-            margin-bottom: 2px;
-        }
-        
-        .result-item.angle .result-value {
-            color: var(--secondary);
-        }
-        
-        .result-item.parallel .result-value {
-            color: var(--warning);
-        }
-        
-        .result-direction {
-            color: var(--gray);
-            font-style: italic;
-            font-size: 0.65rem;
-        }
-        
-        .adjustment-suggestion {
-            background: #d4edda;
-            color: #155724;
-            padding: 8px;
-            border-radius: 6px;
-            margin-bottom: 10px;
-            font-size: 0.75rem;
-            border-left: 3px solid var(--accent);
-        }
-        
-        .bottom-controls {
-            display: flex;
-            gap: 8px;
-        }
-        
-        .control-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: all 0.3s;
+
+        .wheel li {
+            scroll-snap-align: center;
+            padding: 15px 10px; /* 保持padding以匹配更大高度 */
+            font-size: 1.3em; /* 调整字体以适应显示6个 */
+            height: 60px; /* 固定高度以确保显示6个 */
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
-            flex: 1;
-            touch-action: manipulation;
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease-out, font-size 0.4s ease-out, color 0.3s;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+            border-bottom: 1px solid rgba(0,0,0,0.05); /* 添加分隔线 */
+            will-change: transform, opacity; /* 优化动画性能 */
+            user-select: none; /* 防止文本选中 */
+            -webkit-user-select: none;
         }
-        
-        .control-btn.reset {
-            background: var(--secondary);
+
+        .wheel li.dummy {
+            visibility: hidden;
+            height: 25px;
         }
-        
-        .control-btn.help {
-            background: var(--dark);
+
+        .wheel li.selected {
+            transform: scale(1.6) rotateX(0deg);
+            font-weight: bold;
+            color: var(--accent);
+            opacity: 1;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 增强阴影 */
+            animation: selectedBounce 0.6s ease-out; /* 延长动画 */
         }
-        
-        .control-btn:active {
+
+        .wheel li:not(.selected):not(.dummy) {
+            transform: rotateX(35deg) scale(0.9);
+            opacity: 0.7;
+            font-size: 1em;
+            color: var(--text);
+        }
+
+        @keyframes selectedBounce {
+            0% {
+                transform: scale(1.6) rotateX(0deg) translateY(0);
+            }
+            50% {
+                transform: scale(1.8) rotateX(0deg) translateY(-8px);
+            }
+            100% {
+                transform: scale(1.6) rotateX(0deg) translateY(0);
+            }
+        }
+
+        .results {
+            width: 95%;
+            max-width: 600px;
+            padding: 25px;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            margin: 15px 0; /* 调整结果区域间距 */
+            box-shadow: 0 4px 12px var(--shadow);
+            transition: all 0.3s ease-in-out;
+            border: 1px solid rgba(59, 130, 246, 0.1);
+        }
+
+        .results:hover {
+            box-shadow: 0 8px 20px var(--shadow);
+        }
+
+        .results:active {
+            transform: scale(0.99); /* 轻微按压 */
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: var(--background);
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            border: 1px solid rgba(16, 185, 129, 0.1);
+            gap: 10px;
+        }
+
+        .result-item:hover {
+            background-color: rgba(16, 185, 129, 0.05);
+        }
+
+        .result-item:active {
             transform: scale(0.98);
         }
-        
-        footer {
-            text-align: center;
-            padding: 5px 15px;
-            background: var(--dark);
-            color: white;
-            font-size: 0.6rem;
-            flex-shrink: 0;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 5;
+
+        .result-item span:first-child {
+            font-weight: 600;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        
-        /* 帮助页面样式 */
-        .help-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
+
+        .result-item span:first-child i {
+            font-size: 1.1em;
+            color: var(--accent);
+        }
+
+        .result-item span:last-child {
+            font-size: 1.2em;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .copy-template {
+            text-align: center;
+            margin-top: 20px;
+            padding-bottom: 10px; /* 减少底部间距 */
+            width: 95%;
+            max-width: 600px;
+        }
+
+        .copy-button {
+            background: linear-gradient(135deg, var(--secondary) 0%, #1d4ed8 100%);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
             width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 1000;
+            display: flex;
             align-items: center;
             justify-content: center;
+            gap: 8px;
         }
-        
-        .help-content {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            max-width: 90%;
-            max-height: 80%;
-            overflow-y: auto;
-            position: relative;
+
+        .copy-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         }
-        
-        .close-help {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--gray);
+
+        .copy-button:active {
+            transform: scale(0.98);
         }
-        
-        .help-title {
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-            color: var(--dark);
-            text-align: center;
+
+        .copy-button i {
+            font-size: 1.1em;
         }
-        
-        .help-section {
-            margin-bottom: 15px;
+
+        .feedback {
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: var(--accent);
+            transition: opacity 0.5s;
         }
-        
-        .help-section-title {
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: var(--dark);
-            font-size: 1rem;
-        }
-        
-        .help-section p {
-            margin-bottom: 10px;
-            font-size: 0.9rem;
-        }
-        
-        /* 横屏适配 */
-        @media (orientation: landscape) {
-            .main-content {
-                height: calc(100vh - 100px);
+
+        /* 响应式设计 - 增强手机端适配，布局更合理，微信公众号兼容 */
+        @media (max-width: 768px) {
+            .selectors {
+                padding: 15px 10px;
+                gap: 10px;
+            }
+
+            .selector-column {
+                max-width: 33%;
+                padding: 12px;
+            }
+
+            .wheel {
+                height: 280px; /* 手机端调整高度 */
+            }
+
+            header h1 {
+                font-size: 1.4em;
+            }
+
+            .results {
+                width: 98%;
+                padding: 20px;
+                margin: 10px 0;
+            }
+
+            .selector-label {
+                font-size: 0.9em;
+            }
+
+            .wheel li {
+                font-size: 1.1em;
+                padding: 12px 8px;
+                height: 50px; /* 调整以适应手机 */
+            }
+
+            .wheel li.selected {
+                font-size: 1.3em;
+            }
+
+            .copy-template {
+                margin-top: 15px;
+                padding-bottom: 5px;
             }
             
-            .controls-overlay {
-                top: 10px;
-                left: 10px;
-            }
-            
-            .control-card {
-                min-width: 160px;
-            }
-            
-            .results-panel {
-                max-height: 35vh; /* 横屏时也减小高度 */
-            }
-            
-            .measurement-results {
-                flex-wrap: wrap;
-            }
-            
-            .result-item {
-                flex: 1 0 30%;
-                min-width: 100px;
+            /* 为手机端添加安全区域支持 */
+            @supports(padding: max(0px)) {
+                body {
+                    padding-bottom: max(20px, env(safe-area-inset-bottom));
+                }
             }
         }
-        
-        /* 响应式调整 */
-        @media (max-width: 767px) {
-            .controls-overlay {
-                flex-direction: column;
-                align-items: flex-start;
+
+        @media (max-width: 480px) {
+            .selectors {
+                padding: 12px 5px;
+                gap: 8px;
+            }
+
+            .selector-column {
+                padding: 10px;
+            }
+
+            .wheel {
+                height: 250px;
+            }
+
+            header {
+                padding: 12px 0; /* 手机端进一步减小标题高度 */
             }
             
-            .control-card {
-                min-width: 130px;
+            header h1 {
+                font-size: 1.3em;
+            }
+            
+            header p {
+                font-size: 0.85em;
+                margin: 5px 0 0;
+            }
+
+            .wheel li {
+                height: 45px;
+                font-size: 1em;
+            }
+
+            .results {
+                margin: 8px 0;
+                padding: 15px;
+            }
+            
+            .copy-template {
+                margin-top: 12px;
+            }
+            
+            /* 移除固定定位，改为正常布局 */
+            .copy-template {
+                position: relative;
+                bottom: auto;
+                left: auto;
+                right: auto;
+                background: transparent;
+                padding: 0;
+                box-shadow: none;
+                margin-top: 12px;
             }
         }
-        
-        @media (max-width: 360px) {
-            .control-card {
-                min-width: 120px;
-            }
-            
-            h1 {
-                font-size: 1rem;
-            }
-            
-            .subtitle {
-                font-size: 0.65rem;
-            }
-            
-            .result-item {
-                min-width: 90px;
-            }
+
+        /* 添加全局动画 */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .selectors, .results, .copy-template {
+            animation: fadeInUp 0.6s ease-out;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1><i class="fas fa-ruler-combined"></i> 皮带直线度检测工具</h1>
-            <p class="subtitle">基于图像分析的皮带传动系统不对齐检测</p>
-        </header>
-        
-        <div class="main-content">
-            <div class="canvas-container">
-                <div class="controls-overlay">
-                    <div class="control-card" id="controlCard">
-                        <div class="control-title" id="controlTitle">
-                            <span><i class="fas fa-edit"></i> 编辑模式</span>
-                            <button class="minimize-btn" id="minimizeBtn">−</button>
-                        </div>
-                        <div class="pulley-selector">
-                            <button class="pulley-btn driver active" id="driverBtn">驱动轮</button>
-                            <button class="pulley-btn driven" id="drivenBtn">从动轮</button>
-                        </div>
-                        <input type="file" id="imageUpload" accept="image/*" capture="environment">
-                        <button class="upload-btn" id="uploadButton">
-                            <i class="fas fa-upload"></i> 上传图片
-                        </button>
-                        <button class="ai-detect-btn" id="aiDetectBtn">
-                            <i class="fas fa-magic"></i> AI自动检测
-                        </button>
-                        <button class="toggle-guide-btn" id="toggleGuideBtn">
-                            <i class="fas fa-eye"></i> 辅助线
-                        </button>
-                        <button class="rotate-btn" id="rotateBtn">
-                            <i class="fas fa-redo"></i> 旋转图片
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="placeholder-text" id="placeholder">
-                    <i class="fas fa-image" style="font-size: 2.5rem; margin-bottom: 10px; opacity: 0.5;"></i>
-                    <p>请上传皮带系统图片以开始分析</p>
-                </div>
-                <canvas id="beltCanvas"></canvas>
-            </div>
-            
-            <div class="results-panel" id="resultsPanel">
-                <div class="panel-handle" id="panelHandle">
-                    <div class="handle-icon"></div>
-                </div>
-                
-                <div class="measurement-results">
-                    <div class="result-item">
-                        <div class="result-title"><i class="fas fa-angle-double-right"></i> 不对齐角度</div>
-                        <div class="result-value" id="misalignmentValue">0°</div>
-                        <div class="result-direction" id="misalignmentDirection">未检测</div>
-                    </div>
-                    <div class="result-item angle">
-                        <div class="result-title"><i class="fas fa-angle-right"></i> 夹角</div>
-                        <div class="result-value" id="angleValue">0°</div>
-                        <div class="result-direction" id="angleDirection">未检测</div>
-                    </div>
-                    <div class="result-item parallel">
-                        <div class="result-title"><i class="fas fa-arrows-alt-h"></i> 平行度</div>
-                        <div class="result-value" id="parallelValue">0mm</div>
-                        <div class="result-direction" id="parallelDirection">未检测</div>
-                    </div>
-                </div>
-                
-                <div id="adjustmentSuggestion" class="adjustment-suggestion" style="display: none;">
-                    <strong>AI建议：</strong> <span id="suggestionText"></span>
-                </div>
-                
-                <div class="bottom-controls">
-                    <button class="control-btn reset" id="resetBtn">
-                        <i class="fas fa-redo"></i> 重置
-                    </button>
-                    <button class="control-btn help" id="helpBtn">
-                        <i class="fas fa-question-circle"></i> 使用帮助
-                    </button>
-                </div>
+    <header>
+        <h1><i class="fas fa-cogs"></i>皮带轮参数计算器</h1>
+        <p>选择皮带、前齿盘和后齿盘，实时计算中心距和齿比</p>
+    </header>
+
+    <div class="selectors">
+        <div class="selector-column">
+            <div class="selector-label"><i class="fas fa-link"></i>皮带</div>
+            <div class="wheel" id="belt-wheel">
+                <ul id="belt-list"></ul>
             </div>
         </div>
-        
-        <footer>
-            <p>皮带直线度检测工具 &copy; 2025 | 基于图像分析的测量系统</p>
-        </footer>
+        <div class="selector-column">
+            <div class="selector-label"><i class="fas fa-cog"></i>前齿盘</div>
+            <div class="wheel" id="front-wheel">
+                <ul id="front-list"></ul>
+            </div>
+        </div>
+        <div class="selector-column">
+            <div class="selector-label"><i class="fas fa-cog"></i>后齿盘</div>
+            <div class="wheel" id="rear-wheel">
+                <ul id="rear-list"></ul>
+            </div>
+        </div>
     </div>
 
-    <!-- 帮助页面 -->
-    <div class="help-modal" id="helpModal">
-        <div class="help-content">
-            <button class="close-help" id="closeHelp">&times;</button>
-            <h2 class="help-title">使用说明</h2>
-            
-            <div class="help-section">
-                <div class="help-section-title">基本操作</div>
-                <p>1. 点击"上传图片"按钮选择皮带系统图片或直接拍照</p>
-                <p>2. 选择要编辑的皮带轮（驱动轮或从动轮）</p>
-                <p>3. 拖动方框四个角点调整大小和形状</p>
-                <p>4. 拖动方框中心点移动位置</p>
-                <p>5. 查看底部实时更新的测量结果</p>
-            </div>
-            
-            <div class="help-section">
-                <div class="help-section-title">测量原理</div>
-                <p><strong>不对齐角度：</strong>驱动轮轴线与通过驱动轮和从动轮中心连线的轴线之间的夹角。理想值为0°。</p>
-                <p><strong>夹角：</strong>驱动轮和从动轮两个轴线之间的角度差。理想值为0°（平行）。</p>
-                <p><strong>平行度：</strong>两个皮带轮轴线之间的垂直距离偏差。理想值为0mm。</p>
-            </div>
-            
-            <div class="help-section">
-                <div class="help-section-title">AI辅助功能</div>
-                <p>点击"AI自动检测"按钮，系统将尝试自动识别皮带轮位置和大小。</p>
-                <p>AI会根据当前测量结果提供调整建议，帮助您优化皮带系统对齐。</p>
-            </div>
-            
-            <div class="help-section">
-                <div class="help-section-title">注意事项</div>
-                <p>• 确保上传的图片清晰，皮带轮轮廓可见</p>
-                <p>• 尽量从正上方或正下方拍摄皮带系统</p>
-                <p>• 调整方框时，尽量使其与皮带轮边缘对齐</p>
-                <p>• 测量结果为近似值，实际应用请结合专业工具验证</p>
-            </div>
+    <div class="results">
+        <div class="result-item" id="gear-ratio" onclick="copyToClipboard('gear-ratio')">
+            <span><i class="fas fa-balance-scale"></i>齿比：</span>
+            <span id="gear-ratio-value">0.00</span>
         </div>
+        <div class="result-item" id="center-distance" onclick="copyToClipboard('center-distance')">
+            <span><i class="fas fa-ruler-horizontal"></i>中心距（mm）：</span>
+            <span id="center-distance-value">0.00</span>
+        </div>
+    </div>
+
+    <div class="copy-template">
+        <button class="copy-button" onclick="copyTemplate()"><i class="fas fa-copy"></i>复制完整参数</button>
+        <div class="feedback" id="feedback"></div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // 获取DOM元素
-            const canvas = document.getElementById('beltCanvas');
-            const ctx = canvas.getContext('2d');
-            const uploadButton = document.getElementById('uploadButton');
-            const imageUpload = document.getElementById('imageUpload');
-            const aiDetectBtn = document.getElementById('aiDetectBtn');
-            const toggleGuideBtn = document.getElementById('toggleGuideBtn');
-            const rotateBtn = document.getElementById('rotateBtn');
-            const resetBtn = document.getElementById('resetBtn');
-            const helpBtn = document.getElementById('helpBtn');
-            const closeHelp = document.getElementById('closeHelp');
-            const helpModal = document.getElementById('helpModal');
-            const placeholder = document.getElementById('placeholder');
-            const misalignmentValue = document.getElementById('misalignmentValue');
-            const misalignmentDirection = document.getElementById('misalignmentDirection');
-            const angleValue = document.getElementById('angleValue');
-            const angleDirection = document.getElementById('angleDirection');
-            const parallelValue = document.getElementById('parallelValue');
-            const parallelDirection = document.getElementById('parallelDirection');
-            const adjustmentSuggestion = document.getElementById('adjustmentSuggestion');
-            const suggestionText = document.getElementById('suggestionText');
-            const driverBtn = document.getElementById('driverBtn');
-            const drivenBtn = document.getElementById('drivenBtn');
-            const resultsPanel = document.getElementById('resultsPanel');
-            const panelHandle = document.getElementById('panelHandle');
-            const controlCard = document.getElementById('controlCard');
-            const minimizeBtn = document.getElementById('minimizeBtn');
-            const controlTitle = document.getElementById('controlTitle');
-            
-            // 皮带轮矩形对象
-            const pulleys = {
-                driver: {
-                    x: 0, y: 0, width: 80, height: 40, angle: 0,
-                    color: '#3498db', name: '驱动轮',
-                    corners: [],
-                    fixedAngle: true
-                },
-                driven: {
-                    x: 0, y: 0, width: 80, height: 40, angle: 0,
-                    color: '#e74c3c', name: '从动轮',
-                    corners: [],
-                    fixedAngle: true
+        // 数据整理（保持不变）
+        const beltData = [
+            75, 78, 91, 100, 102, 105, 106, 108, 109, 111,
+            113, 114, 115, 116, 117, 120, 121, 122, 124, 125,
+            126, 128, 130, 132, 134, 135, 136, 137, 139, 143,
+            146, 147, 151, 153, 156, 157, 158, 160, 162, 166,
+            168, 171, 172, 174, 177, 179, 181
+        ];
+
+        const frontGears = [
+            22, 24, 26, 28, 30, 32, 34, 36, 38, 39,
+            40, 42, 44, 45, 46, 48, 50, 52, 55, 58,
+            60, 63, 65, 70
+        ];
+
+        const rearGears = [
+            19, 20, 22, 24, 26, 28, 30, 32, 34, 36,
+            38, 39
+        ];
+
+        // 初始化选择
+        let selectedBelt = beltData[0];
+        let selectedFront = frontGears[0];
+        let selectedRear = rearGears[0];
+
+        // 填充轮盘列表 - 修复BUG：添加dummy类
+        function populateWheel(listId, data, selectedValue) {
+            const ul = document.getElementById(listId);
+            ul.innerHTML = '';
+            data.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                li.dataset.value = item;
+                if (item === selectedValue) {
+                    li.classList.add('selected');
                 }
-            };
-            
-            let image = null;
-            let originalImage = null; // 保存原始图片用于旋转
-            let scale = 1;
-            let selectedPulley = pulleys.driver;
-            let selectedCorner = null;
-            let isDragging = false;
-            let lastX = 0, lastY = 0;
-            let showHorizontalGuide = true;
-            let isPanelCollapsed = false;
-            let isControlMinimized = false;
-            let isDraggingControl = false;
-            let controlStartX = 0, controlStartY = 0;
-            let rotationAngle = 0; // 图片旋转角度（0, 90, 180, 270度）
-            
-            // 初始化事件监听 - 修复手机端无响应问题
-            function initEventListeners() {
-                // 清除现有事件监听器
-                uploadButton.removeEventListener('click', handleUploadClick);
-                aiDetectBtn.removeEventListener('click', handleAiDetectClick);
-                toggleGuideBtn.removeEventListener('click', handleToggleGuideClick);
-                rotateBtn.removeEventListener('click', handleRotateClick);
-                resetBtn.removeEventListener('click', handleResetClick);
-                helpBtn.removeEventListener('click', handleHelpClick);
-                closeHelp.removeEventListener('click', handleCloseHelpClick);
-                panelHandle.removeEventListener('click', handlePanelHandleClick);
-                minimizeBtn.removeEventListener('click', handleMinimizeClick);
-                driverBtn.removeEventListener('click', handleDriverClick);
-                drivenBtn.removeEventListener('click', handleDrivenClick);
-                imageUpload.removeEventListener('change', handleImageUpload);
-                controlTitle.removeEventListener('mousedown', startControlDrag);
-                controlTitle.removeEventListener('touchstart', startControlDrag);
-                document.removeEventListener('mousemove', dragControl);
-                document.removeEventListener('touchmove', dragControl);
-                document.removeEventListener('mouseup', stopControlDrag);
-                document.removeEventListener('touchend', stopControlDrag);
-                canvas.removeEventListener('mousedown', handleMouseDown);
-                canvas.removeEventListener('touchstart', handleTouchStart);
-                canvas.removeEventListener('mousemove', handleMouseMove);
-                canvas.removeEventListener('touchmove', handleTouchMove);
-                canvas.removeEventListener('mouseup', handleMouseUp);
-                canvas.removeEventListener('touchend', handleTouchEnd);
-                canvas.removeEventListener('mouseleave', handleMouseUp);
-                helpModal.removeEventListener('click', handleHelpModalClick);
-                
-                // 重新绑定事件 - 使用更可靠的方式
-                uploadButton.addEventListener('click', handleUploadClick, { passive: true });
-                aiDetectBtn.addEventListener('click', handleAiDetectClick, { passive: true });
-                toggleGuideBtn.addEventListener('click', handleToggleGuideClick, { passive: true });
-                rotateBtn.addEventListener('click', handleRotateClick, { passive: true });
-                resetBtn.addEventListener('click', handleResetClick, { passive: true });
-                helpBtn.addEventListener('click', handleHelpClick, { passive: true });
-                closeHelp.addEventListener('click', handleCloseHelpClick, { passive: true });
-                panelHandle.addEventListener('click', handlePanelHandleClick, { passive: true });
-                minimizeBtn.addEventListener('click', handleMinimizeClick, { passive: true });
-                driverBtn.addEventListener('click', handleDriverClick, { passive: true });
-                drivenBtn.addEventListener('click', handleDrivenClick, { passive: true });
-                imageUpload.addEventListener('change', handleImageUpload, { passive: true });
-                
-                // 控制面板拖动事件 - 只绑定到标题栏
-                controlTitle.addEventListener('mousedown', startControlDrag, { passive: true });
-                controlTitle.addEventListener('touchstart', startControlDrag, { passive: true });
-                
-                // 画布事件 - 使用更可靠的事件绑定
-                canvas.addEventListener('mousedown', handleMouseDown, { passive: true });
-                canvas.addEventListener('touchstart', handleTouchStart, { passive: false }); // 需要preventDefault
-                canvas.addEventListener('mousemove', handleMouseMove, { passive: true });
-                canvas.addEventListener('touchmove', handleTouchMove, { passive: false }); // 需要preventDefault
-                canvas.addEventListener('mouseup', handleMouseUp, { passive: true });
-                canvas.addEventListener('touchend', handleTouchEnd, { passive: true });
-                canvas.addEventListener('mouseleave', handleMouseUp, { passive: true });
-                
-                // 帮助模态框外部点击关闭
-                helpModal.addEventListener('click', handleHelpModalClick, { passive: true });
-                
-                // 确保画布可以接收事件
-                canvas.style.pointerEvents = 'auto';
-            }
-            
-            // 事件处理函数
-            function handleUploadClick() {
-                imageUpload.click();
-            }
-            
-            function handleAiDetectClick() {
-                alert("AI自动检测功能开发中，敬请期待！");
-            }
-            
-            function handleToggleGuideClick() {
-                toggleGuide();
-            }
-            
-            function handleRotateClick() {
-                rotateImage();
-            }
-            
-            function handleResetClick() {
-                resetCanvas();
-            }
-            
-            function handleHelpClick() {
-                helpModal.style.display = 'flex';
-            }
-            
-            function handleCloseHelpClick() {
-                helpModal.style.display = 'none';
-            }
-            
-            function handlePanelHandleClick() {
-                toggleResultsPanel();
-            }
-            
-            function handleMinimizeClick() {
-                toggleControlMinimize();
-            }
-            
-            function handleDriverClick() {
-                selectedPulley = pulleys.driver;
-                driverBtn.classList.add('active');
-                drivenBtn.classList.remove('active');
-                draw();
-            }
-            
-            function handleDrivenClick() {
-                selectedPulley = pulleys.driven;
-                drivenBtn.classList.add('active');
-                driverBtn.classList.remove('active');
-                draw();
-            }
-            
-            function handleHelpModalClick(e) {
-                if (e.target === helpModal) {
-                    helpModal.style.display = 'none';
-                }
-            }
-            
-            // 初始化事件监听
-            initEventListeners();
-            
-            // 处理图片上传
-            function handleImageUpload(e) {
-                const file = e.target.files[0];
-                if (!file) return;
-                
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    originalImage = new Image();
-                    originalImage.onload = function() {
-                        image = new Image();
-                        image.src = event.target.result; // 使用原始数据，不压缩
-                        image.onload = function() {
-                            setupCanvas();
-                            autoDetectPulleys();
-                            draw();
-                        };
-                    };
-                    originalImage.src = event.target.result;
-                };
-                // 不使用压缩，保持原始质量
-                reader.readAsDataURL(file);
-            }
-            
-            // 设置画布 - 增大图片显示区域
-            function setupCanvas() {
-                const container = canvas.parentElement;
-                const maxWidth = container.clientWidth;
-                const maxHeight = container.clientHeight - 60; // 为底部面板留出更多空间
-                
-                // 根据旋转角度调整画布尺寸
-                let imgWidth = image.width;
-                let imgHeight = image.height;
-                
-                if (rotationAngle === 90 || rotationAngle === 270) {
-                    // 旋转90或270度时，宽高互换
-                    [imgWidth, imgHeight] = [imgHeight, imgWidth];
-                }
-                
-                scale = Math.min(maxWidth / imgWidth, maxHeight / imgHeight, 1);
-                canvas.width = imgWidth * scale;
-                canvas.height = imgHeight * scale;
-                
-                // 显示Canvas，隐藏占位符
-                canvas.style.display = 'block';
-                placeholder.style.display = 'none';
-            }
-            
-            // 旋转图片
-            function rotateImage() {
-                if (!image) return;
-                
-                rotationAngle = (rotationAngle + 90) % 360;
-                
-                // 重新设置画布尺寸
-                setupCanvas();
-                
-                // 重新绘制
-                draw();
-            }
-            
-            // 自动识别皮带轮位置和大小
-            function autoDetectPulleys() {
-                // 简单的自动识别逻辑
-                pulleys.driver.x = canvas.width * 0.3;
-                pulleys.driver.y = canvas.height * 0.5;
-                pulleys.driver.width = Math.min(canvas.width, canvas.height) * 0.2; // 增大默认尺寸
-                pulleys.driver.height = pulleys.driver.width / 2;
-                
-                pulleys.driven.x = canvas.width * 0.7;
-                pulleys.driven.y = canvas.height * 0.5;
-                pulleys.driven.width = Math.min(canvas.width, canvas.height) * 0.2; // 增大默认尺寸
-                pulleys.driven.height = pulleys.driven.width / 2;
-                
-                // 更新角点
-                updatePulleyCorners(pulleys.driver);
-                updatePulleyCorners(pulleys.driven);
-            }
-            
-            // 更新皮带轮角点
-            function updatePulleyCorners(pulley) {
-                const halfWidth = pulley.width / 2;
-                const halfHeight = pulley.height / 2;
-                
-                // 计算旋转后的四个角点
-                pulley.corners = [
-                    { x: pulley.x - halfWidth, y: pulley.y - halfHeight },
-                    { x: pulley.x + halfWidth, y: pulley.y - halfHeight },
-                    { x: pulley.x + halfWidth, y: pulley.y + halfHeight },
-                    { x: pulley.x - halfWidth, y: pulley.y + halfHeight }
-                ];
-                
-                // 应用旋转
-                for (let i = 0; i < pulley.corners.length; i++) {
-                    const corner = pulley.corners[i];
-                    const dx = corner.x - pulley.x;
-                    const dy = corner.y - pulley.y;
-                    
-                    corner.x = pulley.x + dx * Math.cos(pulley.angle) - dy * Math.sin(pulley.angle);
-                    corner.y = pulley.y + dx * Math.sin(pulley.angle) + dy * Math.cos(pulley.angle);
-                }
-            }
-            
-            // 从角点更新皮带轮属性
-            function updatePulleyFromCorners(pulley) {
-                // 计算中心点
-                pulley.x = (pulley.corners[0].x + pulley.corners[1].x + pulley.corners[2].x + pulley.corners[3].x) / 4;
-                pulley.y = (pulley.corners[0].y + pulley.corners[1].y + pulley.corners[2].y + pulley.corners[3].y) / 4;
-                
-                // 计算宽度和高度
-                const width1 = Math.sqrt(
-                    Math.pow(pulley.corners[1].x - pulley.corners[0].x, 2) + 
-                    Math.pow(pulley.corners[1].y - pulley.corners[0].y, 2)
-                );
-                
-                const width2 = Math.sqrt(
-                    Math.pow(pulley.corners[2].x - pulley.corners[3].x, 2) + 
-                    Math.pow(pulley.corners[2].y - pulley.corners[3].y, 2)
-                );
-                
-                pulley.width = (width1 + width2) / 2;
-                
-                const height1 = Math.sqrt(
-                    Math.pow(pulley.corners[3].x - pulley.corners[0].x, 2) + 
-                    Math.pow(pulley.corners[3].y - pulley.corners[0].y, 2)
-                );
-                
-                const height2 = Math.sqrt(
-                    Math.pow(pulley.corners[2].x - pulley.corners[1].x, 2) + 
-                    Math.pow(pulley.corners[2].y - pulley.corners[1].y, 2)
-                );
-                
-                pulley.height = (height1 + height2) / 2;
-                
-                // 如果固定角度，则保持水平
-                if (pulley.fixedAngle) {
-                    pulley.angle = 0;
-                } else {
-                    // 计算角度（使用第一条边）
-                    const dx = pulley.corners[1].x - pulley.corners[0].x;
-                    const dy = pulley.corners[1].y - pulley.corners[0].y;
-                    pulley.angle = Math.atan2(dy, dx);
-                }
-            }
-            
-            // 绘制场景
-            function draw() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
-                // 绘制图片（考虑旋转）
-                if (image) {
-                    ctx.save();
-                    
-                    // 根据旋转角度变换画布
-                    if (rotationAngle !== 0) {
-                        ctx.translate(canvas.width / 2, canvas.height / 2);
-                        ctx.rotate(rotationAngle * Math.PI / 180);
-                        
-                        // 计算旋转后的图片位置
-                        let drawWidth, drawHeight;
-                        if (rotationAngle === 90 || rotationAngle === 270) {
-                            drawWidth = canvas.height;
-                            drawHeight = canvas.width;
-                        } else {
-                            drawWidth = canvas.width;
-                            drawHeight = canvas.height;
-                        }
-                        
-                        ctx.drawImage(image, -drawWidth / 2, -drawHeight / 2, drawWidth, drawHeight);
-                    } else {
-                        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-                    }
-                    
-                    ctx.restore();
-                }
-                
-                // 绘制水平辅助线
-                if (showHorizontalGuide) {
-                    drawHorizontalGuide();
-                }
-                
-                // 绘制皮带轮
-                for (const key in pulleys) {
-                    drawPulley(pulleys[key]);
-                }
-                
-                // 绘制中心连线
-                drawCenterLine();
-                
-                // 更新测量结果
-                updateMeasurements();
-            }
-            
-            // 绘制水平辅助线
-            function drawHorizontalGuide() {
-                const centerY = (pulleys.driver.y + pulleys.driven.y) / 2;
-                
-                ctx.beginPath();
-                ctx.moveTo(0, centerY);
-                ctx.lineTo(canvas.width, centerY);
-                ctx.strokeStyle = 'rgba(255, 255, 0, 0.5)';
-                ctx.lineWidth = 1;
-                ctx.setLineDash([5, 5]);
-                ctx.stroke();
-                ctx.setLineDash([]);
-                
-                // 绘制标签
-                ctx.fillStyle = 'rgba(255, 255, 0, 0.8)';
-                ctx.font = '12px Arial';
-                ctx.fillText('水平辅助线', 10, centerY - 5);
-            }
-            
-            // 绘制单个皮带轮 - 使用虚线边框
-            function drawPulley(pulley) {
-                // 更新角点
-                updatePulleyCorners(pulley);
-                
-                // 绘制矩形边框
-                ctx.beginPath();
-                ctx.moveTo(pulley.corners[0].x, pulley.corners[0].y);
-                
-                for (let i = 1; i < pulley.corners.length; i++) {
-                    ctx.lineTo(pulley.corners[i].x, pulley.corners[i].y);
-                }
-                
-                ctx.closePath();
-                
-                // 填充矩形
-                ctx.fillStyle = pulley === selectedPulley ? 
-                    pulley.color + '80' : pulley.color + '40';
-                ctx.fill();
-                
-                // 绘制虚线边框
-                ctx.strokeStyle = pulley.color;
-                ctx.lineWidth = pulley === selectedPulley ? 3 : 2;
-                ctx.setLineDash([5, 3]); // 虚线样式
-                ctx.stroke();
-                ctx.setLineDash([]); // 重置为实线
-                
-                // 绘制角点控制点
-                if (pulley === selectedPulley) {
-                    for (let i = 0; i < pulley.corners.length; i++) {
-                        ctx.beginPath();
-                        ctx.arc(pulley.corners[i].x, pulley.corners[i].y, 8, 0, Math.PI * 2);
-                        ctx.fillStyle = pulley.color;
-                        ctx.fill();
-                        ctx.strokeStyle = 'white';
-                        ctx.lineWidth = 2;
-                        ctx.stroke();
-                    }
-                }
-                
-                // 绘制中心点
-                ctx.beginPath();
-                ctx.arc(pulley.x, pulley.y, 6, 0, Math.PI * 2);
-                ctx.fillStyle = pulley.color;
-                ctx.fill();
-                
-                // 绘制标签
-                ctx.fillStyle = pulley.color;
-                ctx.font = '14px Arial';
-                ctx.fillText(pulley.name, pulley.x - 20, pulley.y - pulley.height/2 - 10);
-                
-                // 如果固定角度，绘制锁定图标
-                if (pulley.fixedAngle) {
-                    ctx.fillStyle = 'green';
-                    ctx.font = '12px Arial';
-                    ctx.fillText('锁定', pulley.x + pulley.width/2 + 5, pulley.y);
-                }
-            }
-            
-            // 绘制中心连线
-            function drawCenterLine() {
-                ctx.beginPath();
-                ctx.moveTo(pulleys.driver.x, pulleys.driver.y);
-                ctx.lineTo(pulleys.driven.x, pulleys.driven.y);
-                ctx.strokeStyle = '#2ecc71';
-                ctx.lineWidth = 2;
-                ctx.setLineDash([5, 5]);
-                ctx.stroke();
-                ctx.setLineDash([]);
-            }
-            
-            // 触摸事件处理
-            function handleTouchStart(e) {
-                e.preventDefault();
-                const touch = e.touches[0];
-                const rect = canvas.getBoundingClientRect();
-                const x = touch.clientX - rect.left;
-                const y = touch.clientY - rect.top;
-                
-                startDrag(x, y);
-            }
-            
-            function handleTouchMove(e) {
-                e.preventDefault();
-                if (!isDragging) return;
-                
-                const touch = e.touches[0];
-                const rect = canvas.getBoundingClientRect();
-                const x = touch.clientX - rect.left;
-                const y = touch.clientY - rect.top;
-                
-                drag(x, y);
-            }
-            
-            function handleTouchEnd() {
-                endDrag();
-            }
-            
-            // 鼠标事件处理
-            function handleMouseDown(e) {
-                const rect = canvas.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                startDrag(x, y);
-            }
-            
-            function handleMouseMove(e) {
-                if (!isDragging) return;
-                
-                const rect = canvas.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                drag(x, y);
-            }
-            
-            function handleMouseUp() {
-                endDrag();
-            }
-            
-            // 开始拖动
-            function startDrag(x, y) {
-                // 检查是否点击了角点
-                for (let i = 0; i < selectedPulley.corners.length; i++) {
-                    const corner = selectedPulley.corners[i];
-                    const distance = Math.sqrt((x - corner.x)**2 + (y - corner.y)**2);
-                    
-                    if (distance < 15) {
-                        selectedCorner = i;
-                        isDragging = true;
-                        lastX = x;
-                        lastY = y;
-                        return;
-                    }
-                }
-                
-                // 检查是否点击了中心点
-                const centerDistance = Math.sqrt((x - selectedPulley.x)**2 + (y - selectedPulley.y)**2);
-                if (centerDistance < 20) {
-                    selectedCorner = 'center';
-                    isDragging = true;
-                    lastX = x;
-                    lastY = y;
-                    return;
-                }
-                
-                // 检查是否点击了锁定图标
-                const lockDistance = Math.sqrt(
-                    (x - (selectedPulley.x + selectedPulley.width/2 + 10))**2 + 
-                    (y - selectedPulley.y)**2
-                );
-                if (lockDistance < 15) {
-                    // 切换锁定状态
-                    selectedPulley.fixedAngle = !selectedPulley.fixedAngle;
-                    if (selectedPulley.fixedAngle) {
-                        selectedPulley.angle = 0;
-                    }
-                    draw();
-                    return;
-                }
-            }
-            
-            // 拖动处理
-            function drag(x, y) {
-                const dx = x - lastX;
-                const dy = y - lastY;
-                
-                if (selectedCorner === 'center') {
-                    // 移动整个矩形
-                    selectedPulley.x += dx;
-                    selectedPulley.y += dy;
-                    
-                    // 更新所有角点
-                    for (let i = 0; i < selectedPulley.corners.length; i++) {
-                        selectedPulley.corners[i].x += dx;
-                        selectedPulley.corners[i].y += dy;
-                    }
-                } else if (selectedCorner !== null) {
-                    // 移动选中的角点
-                    selectedPulley.corners[selectedCorner].x = x;
-                    selectedPulley.corners[selectedCorner].y = y;
-                    
-                    // 如果固定角度，调整相邻角点以保持矩形
-                    if (selectedPulley.fixedAngle) {
-                        const oppositeCorner = (selectedCorner + 2) % 4;
-                        selectedPulley.corners[oppositeCorner].x = 2 * selectedPulley.x - x;
-                        selectedPulley.corners[oppositeCorner].y = 2 * selectedPulley.y - y;
-                        
-                        // 调整相邻角点
-                        const prevCorner = (selectedCorner + 3) % 4;
-                        const nextCorner = (selectedCorner + 1) % 4;
-                        
-                        if (selectedCorner % 2 === 0) { // 左上或右下角
-                            selectedPulley.corners[prevCorner].x = x;
-                            selectedPulley.corners[prevCorner].y = 2 * selectedPulley.y - y;
-                            
-                            selectedPulley.corners[nextCorner].x = 2 * selectedPulley.x - x;
-                            selectedPulley.corners[nextCorner].y = y;
-                        } else { // 右上或左下角
-                            selectedPulley.corners[prevCorner].x = 2 * selectedPulley.x - x;
-                            selectedPulley.corners[prevCorner].y = y;
-                            
-                            selectedPulley.corners[nextCorner].x = x;
-                            selectedPulley.corners[nextCorner].y = 2 * selectedPulley.y - y;
-                        }
-                    }
-                    
-                    // 更新皮带轮属性
-                    updatePulleyFromCorners(selectedPulley);
-                }
-                
-                lastX = x;
-                lastY = y;
-                
-                draw();
-            }
-            
-            // 结束拖动
-            function endDrag() {
-                isDragging = false;
-                selectedCorner = null;
-            }
-            
-            // 更新测量结果
-            function updateMeasurements() {
-                // 计算中心连线角度
-                const dx = pulleys.driven.x - pulleys.driver.x;
-                const dy = pulleys.driven.y - pulleys.driver.y;
-                const centerLineAngle = Math.atan2(dy, dx);
-                
-                // 计算不对齐角度（驱动轮轴线与中心连线的夹角）
-                let misalignment = pulleys.driver.angle - centerLineAngle;
-                misalignment = (misalignment * 180 / Math.PI) % 360;
-                if (misalignment > 180) misalignment -= 360;
-                if (misalignment < -180) misalignment += 360;
-                
-                // 计算夹角（两个皮带轮轴线的角度差）
-                let angleDiff = pulleys.driver.angle - pulleys.driven.angle;
-                angleDiff = (angleDiff * 180 / Math.PI) % 360;
-                if (angleDiff > 180) angleDiff -= 360;
-                if (angleDiff < -180) angleDiff += 360;
-                
-                // 计算平行度（两个皮带轮轴线之间的垂直距离）
-                const driverNormalX = -Math.sin(pulleys.driver.angle);
-                const driverNormalY = Math.cos(pulleys.driver.angle);
-                const parallelOffset = Math.abs(
-                    (pulleys.driven.x - pulleys.driver.x) * driverNormalX + 
-                    (pulleys.driven.y - pulleys.driver.y) * driverNormalY
-                );
-                
-                // 更新显示
-                misalignmentValue.textContent = Math.abs(misalignment).toFixed(1) + '°';
-                misalignmentDirection.textContent = misalignment > 0 ? '向右偏' : misalignment < 0 ? '向左偏' : '完美对齐';
-                
-                angleValue.textContent = Math.abs(angleDiff).toFixed(1) + '°';
-                angleDirection.textContent = angleDiff > 0 ? '驱动轮偏右' : angleDiff < 0 ? '驱动轮偏左' : '轴线平行';
-                
-                parallelValue.textContent = parallelOffset.toFixed(1) + 'mm';
-                parallelDirection.textContent = parallelOffset > 5 ? '需调整' : '良好';
-                
-                // AI调整建议
-                let suggestion = '';
-                if (Math.abs(misalignment) > 2) {
-                    suggestion += `旋转驱动轮 ${Math.abs(misalignment).toFixed(1)}° 向${misalignment > 0 ? '左' : '右'}。`;
-                }
-                if (Math.abs(angleDiff) > 1) {
-                    suggestion += `调整从动轮角度 ${Math.abs(angleDiff).toFixed(1)}°。`;
-                }
-                if (parallelOffset > 5) {
-                    suggestion += `移动从动轮 ${parallelOffset.toFixed(1)}mm 垂直对齐。`;
-                }
-                
-                if (suggestion) {
-                    suggestionText.textContent = suggestion;
-                    adjustmentSuggestion.style.display = 'block';
-                } else {
-                    adjustmentSuggestion.style.display = 'none';
-                }
-            }
-            
-            // 切换辅助线显示
-            function toggleGuide() {
-                showHorizontalGuide = !showHorizontalGuide;
-                toggleGuideBtn.innerHTML = showHorizontalGuide ? 
-                    '<i class="fas fa-eye"></i> 辅助线' : 
-                    '<i class="fas fa-eye-slash"></i> 辅助线';
-                draw();
-            }
-            
-            // 切换结果面板
-            function toggleResultsPanel() {
-                isPanelCollapsed = !isPanelCollapsed;
-                if (isPanelCollapsed) {
-                    resultsPanel.classList.add('collapsed');
-                } else {
-                    resultsPanel.classList.remove('collapsed');
-                }
-            }
-            
-            // 切换控制面板最小化
-            function toggleControlMinimize() {
-                isControlMinimized = !isControlMinimized;
-                if (isControlMinimized) {
-                    controlCard.classList.add('minimized');
-                    minimizeBtn.textContent = '+';
-                } else {
-                    controlCard.classList.remove('minimized');
-                    minimizeBtn.textContent = '−';
-                }
-            }
-            
-            // 控制面板拖动功能 - 只拖动标题栏
-            function startControlDrag(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                isDraggingControl = true;
-                
-                if (e.type === 'touchstart') {
-                    controlStartX = e.touches[0].clientX - controlCard.offsetLeft;
-                    controlStartY = e.touches[0].clientY - controlCard.offsetTop;
-                    
-                    document.addEventListener('touchmove', dragControl, { passive: false });
-                    document.addEventListener('touchend', stopControlDrag, { passive: true });
-                } else {
-                    controlStartX = e.clientX - controlCard.offsetLeft;
-                    controlStartY = e.clientY - controlCard.offsetTop;
-                    
-                    document.addEventListener('mousemove', dragControl, { passive: true });
-                    document.addEventListener('mouseup', stopControlDrag, { passive: true });
-                }
-            }
-            
-            function dragControl(e) {
-                if (!isDraggingControl) return;
-                
-                e.preventDefault();
-                e.stopPropagation();
-                
-                let clientX, clientY;
-                if (e.type === 'touchmove') {
-                    clientX = e.touches[0].clientX;
-                    clientY = e.touches[0].clientY;
-                } else {
-                    clientX = e.clientX;
-                    clientY = e.clientY;
-                }
-                
-                const newX = clientX - controlStartX;
-                const newY = clientY - controlStartY;
-                
-                // 限制控制面板在可视区域内
-                const maxX = window.innerWidth - controlCard.offsetWidth;
-                const maxY = window.innerHeight - controlCard.offsetHeight;
-                
-                controlCard.style.left = Math.max(5, Math.min(newX, maxX)) + 'px';
-                controlCard.style.top = Math.max(5, Math.min(newY, maxY)) + 'px';
-            }
-            
-            function stopControlDrag() {
-                isDraggingControl = false;
-                document.removeEventListener('mousemove', dragControl);
-                document.removeEventListener('touchmove', dragControl);
-                document.removeEventListener('mouseup', stopControlDrag);
-                document.removeEventListener('touchend', stopControlDrag);
-            }
-            
-            // 重置画布
-            function resetCanvas() {
-                if (image) {
-                    rotationAngle = 0; // 重置旋转角度
-                    autoDetectPulleys();
-                    draw();
-                }
-            }
-            
-            // 页面加载完成后重新初始化事件监听
-            window.addEventListener('load', function() {
-                initEventListeners();
+                li.addEventListener('click', () => selectItem(ul, li));
+                ul.appendChild(li);
             });
-            
-            // 页面可见性变化时重新初始化事件监听
-            document.addEventListener('visibilitychange', function() {
-                if (!document.hidden) {
-                    setTimeout(initEventListeners, 100);
+            // 添加额外的空项以支持滚动效果
+            for (let i = 0; i < 5; i++) {
+                const dummyTop = document.createElement('li');
+                dummyTop.classList.add('dummy');
+                dummyTop.style.visibility = 'hidden';
+                dummyTop.style.height = '25px';
+                ul.insertBefore(dummyTop, ul.firstChild);
+                const dummyBottom = document.createElement('li');
+                dummyBottom.classList.add('dummy');
+                dummyBottom.style.visibility = 'hidden';
+                dummyBottom.style.height = '25px';
+                ul.appendChild(dummyBottom);
+            }
+        }
+
+        // 选择项 - 修复BUG：排除dummy
+        function selectItem(ul, li) {
+            ul.querySelectorAll('li:not(.dummy)').forEach(l => l.classList.remove('selected'));
+            li.classList.add('selected');
+            const wheelId = ul.parentElement.id;
+            if (wheelId === 'belt-wheel') selectedBelt = parseInt(li.dataset.value);
+            else if (wheelId === 'front-wheel') selectedFront = parseInt(li.dataset.value);
+            else if (wheelId === 'rear-wheel') selectedRear = parseInt(li.dataset.value);
+            updateResults();
+        }
+
+        // 滚动事件处理（防抖） - 修复BUG：过滤dummy
+        let debounceTimer;
+        function handleScroll(wheel) {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                const items = Array.from(wheel.querySelectorAll('li:not(.dummy)'));
+                const wheelRect = wheel.getBoundingClientRect();
+                let closest = null;
+                let minDist = Infinity;
+                items.forEach(item => {
+                    const itemRect = item.getBoundingClientRect();
+                    const dist = Math.abs((itemRect.top + itemRect.height / 2) - (wheelRect.top + wheelRect.height / 2));
+                    if (dist < minDist) {
+                        minDist = dist;
+                        closest = item;
+                    }
+                });
+                if (closest) {
+                    selectItem(wheel.querySelector('ul'), closest);
+                    closest.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
-            });
+            }, 50);
+        }
+
+        // 初始化轮盘
+        populateWheel('belt-list', beltData, selectedBelt);
+        populateWheel('front-list', frontGears, selectedFront);
+        populateWheel('rear-list', rearGears, selectedRear);
+
+        // 添加滚动监听
+        document.querySelectorAll('.wheel').forEach(wheel => {
+            wheel.addEventListener('scroll', () => handleScroll(wheel));
         });
+
+        // 更新结果
+        function updateResults() {
+            // 齿比
+            const gearRatio = (selectedFront / selectedRear).toFixed(2);
+            document.getElementById('gear-ratio-value').textContent = gearRatio;
+
+            // 中心距
+            const pitch = 11; // 11M型皮带节距
+            const L = selectedBelt * pitch;
+            const smallTeeth = Math.min(selectedFront, selectedRear);
+            const largeTeeth = Math.max(selectedFront, selectedRear);
+            const R1 = (smallTeeth * pitch) / (2 * Math.PI);
+            const R2 = (largeTeeth * pitch) / (2 * Math.PI);
+            const piTerm = Math.PI * (R1 + R2);
+            const discriminant = Math.pow(L - piTerm, 2) - 8 * Math.pow(R2 - R1, 2);
+            if (discriminant < 0) {
+                document.getElementById('center-distance-value').textContent = 'Invalid';
+                return;
+            }
+            const sqrtTerm = Math.sqrt(discriminant);
+            const C = ((L - piTerm) + sqrtTerm) / 4;
+            document.getElementById('center-distance-value').textContent = C.toFixed(2);
+        }
+
+        // 初始更新
+        updateResults();
+
+        // 优化复制函数：添加fallback以修复复制不成功问题
+        function copyText(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                // 现代API
+                navigator.clipboard.writeText(text).then(() => {
+                    showFeedback('已复制！');
+                }).catch(() => {
+                    fallbackCopyTextToClipboard(text);
+                });
+            } else {
+                // Fallback for older browsers or non-secure contexts
+                fallbackCopyTextToClipboard(text);
+            }
+        }
+
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.position = "fixed";
+            textArea.style.opacity = "0";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                const successful = document.execCommand('copy');
+                const msg = successful ? '已复制！' : '复制失败';
+                showFeedback(msg);
+            } catch (err) {
+                showFeedback('复制失败');
+                console.error('Fallback: Oops, unable to copy', err);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        // 复制到剪贴板 - 更新调用
+        function copyToClipboard(id) {
+            let text;
+            if (id === 'gear-ratio') {
+                text = document.getElementById('gear-ratio-value').textContent;
+            } else if (id === 'center-distance') {
+                text = document.getElementById('center-distance-value').textContent;
+            }
+            if (text && text !== '0.00' && text !== 'Invalid') {
+                copyText(text);
+            } else {
+                showFeedback('无有效内容复制');
+            }
+        }
+
+        // 复制完整模板 - 更新调用
+        function copyTemplate() {
+            const template = `皮带: ${selectedBelt}T\n前齿盘: ${selectedFront}T\n后齿盘: ${selectedRear}T\n齿比: ${document.getElementById('gear-ratio-value').textContent}\n中心距: ${document.getElementById('center-distance-value').textContent} mm`;
+            copyText(template);
+        }
+
+        // 显示反馈
+        function showFeedback(message) {
+            const feedback = document.getElementById('feedback');
+            feedback.textContent = message;
+            feedback.style.opacity = 1;
+            setTimeout(() => { 
+                feedback.style.opacity = 0; 
+                feedback.textContent = ''; 
+            }, 2000);
+        }
     </script>
 </body>
 </html>
