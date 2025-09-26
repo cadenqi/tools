@@ -1210,11 +1210,6 @@
                 window.addEventListener('beforeunload', () => {
                     this.savePageState();
                 });
-                
-                // 监听页面加载完成
-                window.addEventListener('load', () => {
-                    this.restorePageState();
-                });
             },
             
             /**
@@ -1380,7 +1375,7 @@
                 }
             ],
 
-            // 规格数据配置
+            // 规格数据配置 - 更新8M系列数据
             specsData: {
                 "11M": [
                     { model: "11M-825-12", spec: "75", applicable: "825" },
@@ -1439,11 +1434,65 @@
                     { model: "10M-005", spec: "10速", applicable: "示例数据" }
                 ],
                 "8M": [
-                    { model: "8M-001", spec: "8速", applicable: "示例数据" },
-                    { model: "8M-002", spec: "8极", applicable: "示例数据" },
-                    { model: "8M-003", spec: "8速", applicable: "示例数据" },
-                    { model: "8M-004", spec: "8极", applicable: "示例数据" },
-                    { model: "8M-005", spec: "8速", applicable: "示例数据" }
+                    { model: "8M-800-12", spec: "100", applicable: "800" },
+                    { model: "8M-824-12", spec: "103", applicable: "824" },
+                    { model: "8M-840-12", spec: "105", applicable: "840" },
+                    { model: "8M-848-12", spec: "106", applicable: "848" },
+                    { model: "8M-856-12", spec: "107", applicable: "856" },
+                    { model: "8M-864-12", spec: "108", applicable: "864" },
+                    { model: "8M-872-12", spec: "109", applicable: "872" },
+                    { model: "8M-880-12", spec: "110", applicable: "880" },
+                    { model: "8M-888-12", spec: "111", applicable: "888" },
+                    { model: "8M-896-12", spec: "112", applicable: "896" },
+                    { model: "8M-912-12", spec: "114", applicable: "912" },
+                    { model: "8M-920-12", spec: "115", applicable: "920" },
+                    { model: "8M-928-12", spec: "116", applicable: "928" },
+                    { model: "8M-936-12", spec: "117", applicable: "936" },
+                    { model: "8M-952-12", spec: "119", applicable: "952" },
+                    { model: "8M-960-12", spec: "120", applicable: "960" },
+                    { model: "8M-968-12", spec: "121", applicable: "968" },
+                    { model: "8M-976-12", spec: "122", applicable: "976" },
+                    { model: "8M-1000-12", spec: "125", applicable: "1000" },
+                    { model: "8M-1008-12", spec: "126", applicable: "1008" },
+                    { model: "8M-1016-12", spec: "127", applicable: "1016" },
+                    { model: "8M-1024-12", spec: "128", applicable: "1024" },
+                    { model: "8M-1040-12", spec: "130", applicable: "1040" },
+                    { model: "8M-1048-12", spec: "131", applicable: "1048" },
+                    { model: "8M-1056-12", spec: "132", applicable: "1056" },
+                    { model: "8M-1064-12", spec: "133", applicable: "1064" },
+                    { model: "8M-1080-12", spec: "135", applicable: "1080" },
+                    { model: "8M-1096-12", spec: "137", applicable: "1096" },
+                    { model: "8M-1104-12", spec: "138", applicable: "1104" },
+                    { model: "8M-1120-12", spec: "140", applicable: "1120" },
+                    { model: "8M-1128-12", spec: "141", applicable: "1128" },
+                    { model: "8M-1136-12", spec: "142", applicable: "1136" },
+                    { model: "8M-1144-12", spec: "143", applicable: "1144" },
+                    { model: "8M-1152-12", spec: "144", applicable: "1152" },
+                    { model: "8M-1160-12", spec: "145", applicable: "1160" },
+                    { model: "8M-1168-12", spec: "146", applicable: "1168" },
+                    { model: "8M-1176-12", spec: "147", applicable: "1176" },
+                    { model: "8M-1184-12", spec: "148", applicable: "1184" },
+                    { model: "8M-1200-12", spec: "150", applicable: "1200" },
+                    { model: "8M-1208-12", spec: "151", applicable: "1208" },
+                    { model: "8M-1216-12", spec: "152", applicable: "1216" },
+                    { model: "8M-1224-12", spec: "153", applicable: "1224" },
+                    { model: "8M-1232-12", spec: "154", applicable: "1232" },
+                    { model: "8M-1240-12", spec: "155", applicable: "1240" },
+                    { model: "8M-1248-12", spec: "156", applicable: "1248" },
+                    { model: "8M-1256-12", spec: "157", applicable: "1256" },
+                    { model: "8M-1264-12", spec: "158", applicable: "1264" },
+                    { model: "8M-1272-12", spec: "159", applicable: "1272" },
+                    { model: "8M-1280-12", spec: "160", applicable: "1280" },
+                    { model: "8M-1296-12", spec: "162", applicable: "1296" },
+                    { model: "8M-1304-12", spec: "163", applicable: "1304" },
+                    { model: "8M-1312-12", spec: "164", applicable: "1312" },
+                    { model: "8M-1320-12", spec: "165", applicable: "1320" },
+                    { model: "8M-1328-12", spec: "166", applicable: "1328" },
+                    { model: "8M-1344-12", spec: "168", applicable: "1344" },
+                    { model: "8M-1352-12", spec: "169", applicable: "1352" },
+                    { model: "8M-1360-12", spec: "170", applicable: "1360" },
+                    { model: "8M-1392-12", spec: "174", applicable: "1392" },
+                    { model: "8M-1400-12", spec: "175", applicable: "1400" }
                 ]
             },
 
@@ -2044,10 +2093,8 @@
                     lastToolTitle: title
                 });
                 
-                // 如果是微信浏览器，保存状态
-                if (WechatHelper.isWechatBrowser()) {
-                    WechatHelper.savePageState();
-                }
+                // 保存状态到sessionStorage
+                WechatHelper.savePageState();
             },
             
             /**
@@ -2067,10 +2114,8 @@
                     lastToolTitle: null
                 });
                 
-                // 如果是微信浏览器，保存状态
-                if (WechatHelper.isWechatBrowser()) {
-                    WechatHelper.savePageState();
-                }
+                // 保存状态到sessionStorage
+                WechatHelper.savePageState();
             },
             
             /**
@@ -2166,10 +2211,8 @@
                     history.pushState({ page: pageId }, '', `#${pageId}`);
                 }
                 
-                // 如果是微信浏览器，保存状态
-                if (WechatHelper.isWechatBrowser()) {
-                    WechatHelper.savePageState();
-                }
+                // 保存状态到sessionStorage
+                WechatHelper.savePageState();
             },
             
             /**
@@ -2247,10 +2290,8 @@
                         // 重新渲染工具
                         ViewRenderer.renderTools(category);
                         
-                        // 如果是微信浏览器，保存状态
-                        if (WechatHelper.isWechatBrowser()) {
-                            WechatHelper.savePageState();
-                        }
+                        // 保存状态到sessionStorage
+                        WechatHelper.savePageState();
                     });
                 });
                 
@@ -2294,10 +2335,8 @@
                         // 渲染对应规格表
                         ViewRenderer.renderSpecs(specType);
                         
-                        // 如果是微信浏览器，保存状态
-                        if (WechatHelper.isWechatBrowser()) {
-                            WechatHelper.savePageState();
-                        }
+                        // 保存状态到sessionStorage
+                        WechatHelper.savePageState();
                     });
                 });
                 
