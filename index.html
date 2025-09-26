@@ -304,13 +304,20 @@
             width: 100%;
             margin-bottom: 10px;
             overflow: hidden;
+            /* 固定高度，防止图片加载失败时布局错乱 */
+            height: 90px;
+            background: #f0f4f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
         }
         
         .specs-ad img {
             width: 100%;
-            height: auto;
-            max-height: 90px;
+            height: 100%;
             object-fit: cover;
+            border-radius: 8px;
         }
         
         .specs-search {
@@ -320,7 +327,7 @@
         
         .specs-search input {
             width: 100%;
-            padding: 12px 15px;
+            padding: 12px 15px 12px 15px; /* 增加右侧内边距为按钮留空间 */
             border: 1px solid #e2e8f0;
             border-radius: 25px;
             font-size: 0.95rem;
@@ -329,7 +336,8 @@
         .specs-search button {
             position: absolute;
             right: 5px;
-            top: 5px;
+            top: 50%;
+            transform: translateY(-50%);
             background: var(--accent);
             border: none;
             border-radius: 50%;
@@ -337,6 +345,10 @@
             height: 36px;
             color: white;
             cursor: pointer;
+            z-index: 10; /* 确保按钮在最上层 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .specs-tabs {
@@ -453,16 +465,23 @@
         .knowledge-ad {
             width: 100%;
             overflow: hidden;
+            /* 固定高度，防止图片加载失败时布局错乱 */
+            height: 80px;
+            background: #f0f4f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
         }
         
         .knowledge-ad img {
             width: 100%;
-            height: auto;
-            max-height: 80px;
+            height: 100%;
             object-fit: cover;
+            border-radius: 8px;
         }
         
-        /* 知识库内容区域 */
+        /* 知识库内容区域 - 优化后的样式 */
         .knowledge-content {
             padding: 15px;
             min-height: calc(100vh - var(--nav-height) - var(--sticky-knowledge-height));
@@ -484,29 +503,61 @@
             box-shadow: var(--card-shadow);
             cursor: pointer;
             transition: all 0.3s;
-            padding: 15px;
+            padding: 20px;
             position: relative;
+            border-left: 4px solid var(--accent);
+            display: flex;
+            flex-direction: column;
+            min-height: 120px;
+            justify-content: center;
         }
         
         .knowledge-card:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            border-left-color: var(--secondary);
         }
         
         .knowledge-title {
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             color: var(--primary);
+            display: flex;
+            align-items: center;
+            line-height: 1.3;
+        }
+        
+        .knowledge-title i {
+            margin-right: 10px;
+            color: var(--accent);
+            font-size: 1.2rem;
         }
         
         .knowledge-desc {
             color: #718096;
             line-height: 1.5;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
         
-        /* 额外信息区域 */
+        /* 知识库分类标签 */
+        .knowledge-category {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--accent);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        /* 额外信息区域 - 优化样式 */
         .additional-info {
             background: white;
             border-radius: 12px;
@@ -517,10 +568,14 @@
         
         .info-section {
             margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
         }
         
         .info-section:last-child {
             margin-bottom: 0;
+            border-bottom: none;
+            padding-bottom: 0;
         }
         
         .info-title {
@@ -550,30 +605,36 @@
             margin-bottom: 8px;
             display: flex;
             align-items: center;
+            padding: 5px 0;
         }
         
         .contact-list i {
             margin-right: 10px;
             color: var(--accent);
             width: 20px;
+            text-align: center;
         }
         
         /* 公众号二维码样式 */
         .qrcode-container {
             margin-top: 15px;
             text-align: center;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 8px;
         }
         
         .qrcode {
             width: 150px;
             height: 150px;
             margin: 0 auto;
-            background-color: #f0f4f8;
+            background-color: white;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 8px;
             overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
         
         .qrcode img {
@@ -624,6 +685,12 @@
             align-items: center;
             justify-content: center;
             z-index: 1001;
+            transition: all 0.3s;
+        }
+        
+        .close-button:hover {
+            background: rgba(0, 0, 0, 0.7);
+            transform: scale(1.1);
         }
         
         /* ===== 响应式设计 ===== */
@@ -641,18 +708,23 @@
                 --sticky-knowledge-height: 90px;
             }
             
-            .specs-ad img {
-                max-height: 80px;
+            .specs-ad {
+                height: 80px;
             }
             
-            .knowledge-ad img {
-                max-height: 80px;
+            .knowledge-ad {
+                height: 80px;
             }
             
             .additional-info {
                 display: grid;
                 grid-template-columns: repeat(2, 1fr);
                 gap: 20px;
+            }
+            
+            .info-section {
+                border-bottom: none;
+                padding-bottom: 0;
             }
             
             .specs-table th:nth-child(1),
@@ -722,6 +794,15 @@
             .specs-table th:nth-child(3),
             .specs-table td:nth-child(3) {
                 width: 30%;
+            }
+            
+            .knowledge-card {
+                padding: 15px;
+                min-height: 100px;
+            }
+            
+            .knowledge-title {
+                font-size: 1rem;
             }
         }
         
@@ -885,9 +966,16 @@
             cursor: pointer;
             margin-top: 10px;
         }
+        
+        /* 微信浏览器特定样式修复 */
+        .wechat-fix {
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: transparent;
+        }
     </style>
 </head>
-<body>
+<body class="wechat-fix">
     <div class="app-container">
         <!-- ===== 工具页面 ===== -->
         <div id="toolsPage" class="page active">
@@ -900,10 +988,10 @@
                             <img src="https://raw.githubusercontent.com/cadenqi/tools/main/images/banner1.jpg" alt="轮播图1">
                         </div>
                         <div class="carousel-item">
-                            <img src="https://raw.githubusercontent.com/cadenqi/tools/main/images/banner2.jpg" alt="轮播图2" onerror="this.src='https://placehold.co/600x300/3498db/white?text=loading…'">
+                            <img src="https://raw.githubusercontent.com/cadenqi/tools/main/images/banner2.jpg" alt="轮播图2" onerror="this.src='https://placehold.co/600x300/3498db/white?text=JKaero工具箱'">
                         </div>
                         <div class="carousel-item">
-                            <img src="https://raw.githubusercontent.com/cadenqi/tools/main/images/banner3.jpg" alt="轮播图3" onerror="this.src='https://placehold.co/600x300/3498db/white?text=loading…'">
+                            <img src="https://raw.githubusercontent.com/cadenqi/tools/main/images/banner3.jpg" alt="轮播图3" onerror="this.src='https://placehold.co/600x300/3498db/white?text=JKaero工具箱'">
                         </div>
                     </div>
                     <div class="carousel-indicators" id="carouselIndicators">
@@ -946,7 +1034,7 @@
             <!-- 固定顶部区域：广告 + 搜索 + 标签 -->
             <div class="specs-sticky-header">
                 <div class="specs-ad">
-                    <img src="https://raw.githubusercontent.com/cadenqi/tools/main/images/banner1.jpg" alt="赞助商广告">
+                    <img src="https://raw.githubusercontent.com/cadenqi/tools/main/images/banner1.jpg" alt="赞助商广告" onerror="this.src='https://placehold.co/600x150/1a365d/white?text=JKaero选型表'">
                 </div>
                 
                 <div class="specs-search">
@@ -985,7 +1073,7 @@
             <!-- 固定顶部区域：广告 -->
             <div class="knowledge-sticky-header">
                 <div class="knowledge-ad">
-                    <img src="https://raw.githubusercontent.com/cadenqi/tools/main/images/banner2.jpg" alt="知识库广告">
+                    <img src="https://raw.githubusercontent.com/cadenqi/tools/main/images/banner2.jpg" alt="知识库广告" onerror="this.src='https://placehold.co/600x150/2a69ac/white?text=JKaero知识库'">
                 </div>
             </div>
             
@@ -1022,7 +1110,7 @@
                             </ul>
                             <div class="qrcode-container">
                                 <div class="qrcode">
-                                    <img src="https://raw.githubusercontent.com/cadenqi/tools/main/images/GZH.jpg" alt="公众号二维码">
+                                    <img src="https://raw.githubusercontent.com/cadenqi/tools/main/images/GZH.jpg" alt="公众号二维码" onerror="this.src='https://placehold.co/150x150/38b2ac/white?text=公众号二维码'">
                                 </div>
                                 <div class="qrcode-text">扫码关注我们的公众号</div>
                             </div>
@@ -1083,6 +1171,117 @@
     <script>
         // ==================== 模块化重构：JKaero工具箱应用 ====================
         
+        /**
+         * 微信浏览器检测和兼容性处理
+         */
+        const WechatHelper = {
+            isWechatBrowser: function() {
+                return /micromessenger/i.test(navigator.userAgent);
+            },
+            
+            /**
+             * 初始化微信浏览器特定处理
+             */
+            init: function() {
+                if (this.isWechatBrowser()) {
+                    console.log("检测到微信浏览器，启用特殊处理");
+                    this.handleWechatPageLifecycle();
+                }
+            },
+            
+            /**
+             * 处理微信浏览器页面生命周期
+             */
+            handleWechatPageLifecycle: function() {
+                // 监听页面可见性变化
+                document.addEventListener('visibilitychange', () => {
+                    if (document.visibilityState === 'visible') {
+                        // 页面重新可见（从后台切回）
+                        console.log("微信浏览器页面重新激活");
+                        this.restorePageState();
+                    } else {
+                        // 页面隐藏（最小化或切换）
+                        console.log("微信浏览器页面隐藏，保存状态");
+                        this.savePageState();
+                    }
+                });
+                
+                // 监听页面卸载（微信可能会直接销毁页面）
+                window.addEventListener('beforeunload', () => {
+                    this.savePageState();
+                });
+                
+                // 监听页面加载完成
+                window.addEventListener('load', () => {
+                    this.restorePageState();
+                });
+            },
+            
+            /**
+             * 保存页面状态到sessionStorage（微信专用）
+             */
+            savePageState: function() {
+                try {
+                    const state = {
+                        timestamp: Date.now(),
+                        currentPage: StateManager.getState().currentPage,
+                        toolDisplayState: StateManager.getSessionState(),
+                        activeCategory: StateManager.getState().activeCategory,
+                        activeSpecTab: StateManager.getState().activeSpecTab
+                    };
+                    sessionStorage.setItem('wechatPageState', JSON.stringify(state));
+                } catch (e) {
+                    console.error("保存微信页面状态失败:", e);
+                }
+            },
+            
+            /**
+             * 从sessionStorage恢复页面状态（微信专用）
+             */
+            restorePageState: function() {
+                try {
+                    const savedState = sessionStorage.getItem('wechatPageState');
+                    if (savedState) {
+                        const state = JSON.parse(savedState);
+                        const now = Date.now();
+                        
+                        // 只恢复5分钟内的状态
+                        if (now - state.timestamp < 5 * 60 * 1000) {
+                            console.log("恢复微信页面状态");
+                            
+                            // 恢复页面状态
+                            StateManager.updateState({
+                                currentPage: state.currentPage,
+                                activeCategory: state.activeCategory,
+                                activeSpecTab: state.activeSpecTab
+                            });
+                            
+                            // 恢复会话状态
+                            StateManager.updateSessionState(state.toolDisplayState);
+                            
+                            // 切换到正确的页面
+                            HistoryManager.switchToPage(state.currentPage, false);
+                            
+                            // 恢复工具显示（如果需要）
+                            if (state.toolDisplayState.toolDisplayOpen) {
+                                setTimeout(() => {
+                                    ToolDisplayManager.openToolDisplay(
+                                        state.toolDisplayState.lastToolUrl,
+                                        state.toolDisplayState.lastToolTitle
+                                    );
+                                }, 500);
+                            }
+                        } else {
+                            console.log("微信页面状态已过期，清除");
+                            sessionStorage.removeItem('wechatPageState');
+                        }
+                    }
+                } catch (e) {
+                    console.error("恢复微信页面状态失败:", e);
+                }
+            }
+        };
+
         /**
          * 数据管理模块 - 负责管理工具、规格和知识库数据
          */
@@ -1243,42 +1442,54 @@
                     { model: "8M-001", spec: "8速", applicable: "示例数据" },
                     { model: "8M-002", spec: "8极", applicable: "示例数据" },
                     { model: "8M-003", spec: "8速", applicable: "示例数据" },
-                    { model: "8M-004", spec: "8速", applicable: "示例数据" },
+                    { model: "8M-004", spec: "8极", applicable: "示例数据" },
                     { model: "8M-005", spec: "8速", applicable: "示例数据" }
                 ]
             },
 
-            // 知识库数据配置
+            // 知识库数据配置 - 更新为皮带驱动系统相关内容
             knowledgeData: [
                 {
-                    title: "自行车车架几何指南",
-                    description: "深入了解自行车车架几何参数的含义及其对骑行体验的影响",
-                    link: "https://www.szjiankun.com/15.html"
+                    title: "自行车皮带驱动系统如何选型",
+                    description: "详细介绍自行车皮带驱动系统的选型原则、参数计算和匹配方法，帮助您选择最适合的皮带系统",
+                    link: "https://www.szjiankun.com/15.html",
+                    category: "选型指南",
+                    icon: "fas fa-cog"
                 },
                 {
-                    title: "传动系统维护技巧",
-                    description: "学习如何正确维护和调整自行车的传动系统，延长使用寿命",
-                    link: "https://www.szjiankun.com/15.html"
+                    title: "皮带系统关于车架设计以及要求",
+                    description: "解析皮带驱动系统对自行车车架的特殊要求，包括开口设计、尺寸配合和材料选择等关键技术要点",
+                    link: "https://www.szjiankun.com/15.html",
+                    category: "车架设计",
+                    icon: "fas fa-bicycle"
                 },
                 {
-                    title: "材料科学与自行车设计",
-                    description: "探索不同材料在自行车制造中的应用及其特性比较",
-                    link: "https://www.szjiankun.com/15.html"
+                    title: "皮带驱动系统的检测与注意事项",
+                    description: "掌握皮带驱动系统的日常检测方法、维护要点和使用注意事项，确保系统长期稳定运行",
+                    link: "https://www.szjiankun.com/15.html",
+                    category: "检测维护",
+                    icon: "fas fa-search"
                 },
                 {
-                    title: "空气动力学原理",
-                    description: "了解空气动力学如何影响自行车性能及降低风阻的方法",
-                    link: "https://www.szjiankun.com/15.html"
+                    title: "皮带驱动系统故障诊断说明",
+                    description: "系统介绍皮带驱动系统常见故障现象、诊断方法和解决方案，帮助快速排除问题",
+                    link: "https://www.szjiankun.com/15.html",
+                    category: "故障诊断",
+                    icon: "fas fa-exclamation-triangle"
                 },
                 {
-                    title: "自行车fitting指南",
-                    description: "如何正确调整自行车以适应个人身体尺寸，提升舒适度和效率",
-                    link: "https://www.szjiankun.com/15.html"
+                    title: "皮带驱动系统工具使用说明",
+                    description: "详细说明皮带驱动系统专用工具的正确使用方法、操作步骤和安全注意事项",
+                    link: "https://www.szjiankun.com/15.html",
+                    category: "工具使用",
+                    icon: "fas fa-wrench"
                 },
                 {
-                    title: "轮胎选择与维护",
-                    description: "根据骑行条件选择合适的轮胎并学习正确的维护方法",
-                    link: "https://www.szjiankun.com/15.html"
+                    title: "皮带驱动系统皮带张紧知多少",
+                    description: "深入探讨皮带张紧的重要性、正确张紧方法和张力检测技术，优化传动效率",
+                    link: "https://www.szjiankun.com/15.html",
+                    category: "张紧技术",
+                    icon: "fas fa-compress-alt"
                 }
             ],
 
@@ -1575,7 +1786,7 @@
             },
 
             /**
-             * 渲染知识库内容
+             * 渲染知识库内容 - 优化版
              */
             renderKnowledge: function() {
                 const knowledgeGrid = document.getElementById('knowledgeGrid');
@@ -1601,7 +1812,7 @@
             },
 
             /**
-             * 创建知识库卡片DOM元素
+             * 创建知识库卡片DOM元素 - 优化版（去掉右侧图标）
              * @param {object} knowledge - 知识库数据对象
              */
             createKnowledgeCard: function(knowledge) {
@@ -1610,27 +1821,20 @@
                 card.setAttribute('data-link', knowledge.link);
                 card.setAttribute('data-title', knowledge.title);
                 
-                // 检测链接类型
-                let linkType = '网页';
-                let iconClass = 'fas fa-external-link-alt';
-                
-                if (knowledge.link.toLowerCase().endsWith('.pdf')) {
-                    linkType = 'PDF';
-                    iconClass = 'fas fa-file-pdf';
-                } else if (/(\.jpg|\.jpeg|\.png|\.gif|\.bmp|\.webp)$/i.test(knowledge.link)) {
-                    linkType = '图片';
-                    iconClass = 'fas fa-image';
-                }
-                
                 card.innerHTML = `
-                    <div class="link-type-indicator">${linkType}</div>
-                    <h3 class="knowledge-title">${knowledge.title} <i class="fas fa-external-link-alt external-link-icon"></i></h3>
+                    <div class="knowledge-category">${knowledge.category}</div>
+                    <h3 class="knowledge-title">
+                        <i class="${knowledge.icon}"></i>
+                        ${knowledge.title}
+                    </h3>
                     <p class="knowledge-desc">${knowledge.description}</p>
                 `;
                 
                 return card;
             }
         };
+
+        // 其他模块保持不变（CarouselManager, LinkHandler, ToolDisplayManager, HistoryManager, EventBinder）
 
         /**
          * 轮播图模块 - 负责轮播图功能
@@ -1839,6 +2043,11 @@
                     lastToolUrl: url,
                     lastToolTitle: title
                 });
+                
+                // 如果是微信浏览器，保存状态
+                if (WechatHelper.isWechatBrowser()) {
+                    WechatHelper.savePageState();
+                }
             },
             
             /**
@@ -1857,6 +2066,11 @@
                     lastToolUrl: null,
                     lastToolTitle: null
                 });
+                
+                // 如果是微信浏览器，保存状态
+                if (WechatHelper.isWechatBrowser()) {
+                    WechatHelper.savePageState();
+                }
             },
             
             /**
@@ -1951,6 +2165,11 @@
                 if (pushState) {
                     history.pushState({ page: pageId }, '', `#${pageId}`);
                 }
+                
+                // 如果是微信浏览器，保存状态
+                if (WechatHelper.isWechatBrowser()) {
+                    WechatHelper.savePageState();
+                }
             },
             
             /**
@@ -2027,6 +2246,11 @@
                         
                         // 重新渲染工具
                         ViewRenderer.renderTools(category);
+                        
+                        // 如果是微信浏览器，保存状态
+                        if (WechatHelper.isWechatBrowser()) {
+                            WechatHelper.savePageState();
+                        }
                     });
                 });
                 
@@ -2069,6 +2293,11 @@
                         
                         // 渲染对应规格表
                         ViewRenderer.renderSpecs(specType);
+                        
+                        // 如果是微信浏览器，保存状态
+                        if (WechatHelper.isWechatBrowser()) {
+                            WechatHelper.savePageState();
+                        }
                     });
                 });
                 
@@ -2076,7 +2305,11 @@
                 const specSearchBtn = document.getElementById('specSearchBtn');
                 const specSearchInput = document.getElementById('specSearchInput');
                 
-                specSearchBtn.addEventListener('click', this.performSpecSearch);
+                // 修复搜索按钮事件绑定
+                specSearchBtn.addEventListener('click', () => {
+                    this.performSpecSearch();
+                });
+                
                 specSearchInput.addEventListener('keyup', (event) => {
                     if (event.key === 'Enter') {
                         this.performSpecSearch();
@@ -2089,6 +2322,17 @@
                     const activeTab = document.querySelector('.specs-tab.active').getAttribute('data-spec');
                     const tableRows = document.querySelectorAll('#specsTable tbody tr');
                     
+                    // 检查是否有数据行（排除加载指示器和无数据提示）
+                    const hasDataRows = tableRows.length > 0 && 
+                                       !tableRows[0].querySelector('.loading') && 
+                                       !tableRows[0].classList.contains('search-result');
+                    
+                    if (!hasDataRows) {
+                        // 如果没有数据行，重新渲染当前规格表
+                        ViewRenderer.renderSpecs(activeTab);
+                        return;
+                    }
+                    
                     if (searchTerm === '') {
                         // 如果搜索为空，重新渲染当前规格表
                         ViewRenderer.renderSpecs(activeTab);
@@ -2098,6 +2342,11 @@
                     let found = false;
                     
                     tableRows.forEach(row => {
+                        // 跳过非数据行
+                        if (row.querySelector('.loading') || row.classList.contains('search-result')) {
+                            return;
+                        }
+                        
                         const model = row.cells[0].textContent.toLowerCase();
                         const spec = row.cells[1].textContent.toLowerCase();
                         const applicable = row.cells[2].textContent.toLowerCase();
@@ -2113,7 +2362,14 @@
                     // 显示搜索结果提示
                     if (!found) {
                         const tbody = document.querySelector('#specsTable tbody');
-                        tbody.innerHTML = `<tr><td colspan="3" class="search-result">未找到匹配的规格</td></tr>`;
+                        // 先隐藏所有行
+                        tableRows.forEach(row => {
+                            row.style.display = 'none';
+                        });
+                        // 添加搜索结果提示
+                        const noResultRow = document.createElement('tr');
+                        noResultRow.innerHTML = `<td colspan="3" class="search-result">未找到匹配的规格</td>`;
+                        tbody.appendChild(noResultRow);
                     }
                 };
             },
@@ -2155,16 +2411,6 @@
                         e.preventDefault();
                     }
                 }, { passive: false });
-                
-                // 页面可见性变化事件（用于处理微信端页面重新打开）
-                document.addEventListener('visibilitychange', function() {
-                    if (document.visibilityState === 'visible') {
-                        // 页面重新可见时，检查是否需要恢复工具显示
-                        if (HistoryManager.getCurrentPage() === 'toolsPage') {
-                            ToolDisplayManager.restoreToolDisplayIfNeeded();
-                        }
-                    }
-                });
             }
         };
 
@@ -2176,6 +2422,9 @@
             
             // 初始化状态管理器
             StateManager.init();
+            
+            // 初始化微信浏览器处理
+            WechatHelper.init();
             
             // 初始化各模块
             HistoryManager.init();
